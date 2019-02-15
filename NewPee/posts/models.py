@@ -13,6 +13,7 @@ class Posts(models.Model):
     #have to figure out how to render markdown
     body = JSONField()
 
+
     #will be stored as '{"images":[url1, url2,...]}'
     images = JSONField()
 
