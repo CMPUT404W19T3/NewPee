@@ -31,58 +31,58 @@ class Posts(models.Model):
 
 
     #pass in author object in json 
-    def setAuthor(self,author):
+    def set_author(self,author):
         self.author = author
 
-    def getAuthor(self):
+    def get_author(self):
         return self.author
 
-    def writeTitle(self,title):
+    def write_title(self,title):
         self.title = json.dumps(title)
 
     #return string 
-    def getTitle(self):
+    def get_title(self):
         title = json.loads(self.title)
         return title 
 
-    def writeBody(self,body):
+    def write_body(self,body):
         self.body = json.dumps(body)
 
-    def getBody(self):
+    def get_body(self):
         body = json.loads(self.body)
         return body
     
-    def addImage(self,image_url):
+    def add_image(self,image_url):
         stringImages = json.loads(self.images)
         stringImages['images'].append(image_url)
         self.images = json.dumps(stringImages)
 
     #returns a list of images 
-    def getAllImages(self):
+    def get_all_images(self):
         stringImages = json.loads(self.images)
         images = stringImages['images']
         return images
 
     #return a single url for the image 
-    def getImage(self,index):
+    def get_image(self,index):
         stringImages = json.loads(self.images)
         image = stringImages['images'][index]
         return image
         
 
-    def addComment(self,username, comment):
+    def add_comment(self,username, comment):
         stringComments = json.loads(self.comments)
         commentInfo = username + ":" + comment
         stringComments['comments'].append(commentInfo)
         self.comments = json.dumps(stringComments)
 
-    def getAllComments(self):
+    def get_all_comments(self):
         stringComments = json.loads(self.comments)
         comments = stringComments['comments']
         return comments
         
     #return username and comment 
-    def getComment(self,index):
+    def get_comment(self,index):
         stringComments = json.loads(self.comments)
         comment = stringComments['comments'][index]
         username = comment.split(":")[0]
