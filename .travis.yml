@@ -1,0 +1,22 @@
+language: python
+
+python:
+  - "3.6"
+
+env:
+  global:
+    - DJANGO_SETTINGS_MODULE="mysite.settings"
+
+# command to install dependencies
+install:
+  - pip install -q -r requirements.txt
+
+# command to run the tests
+script:
+  - python manage.py makemigrations
+  - python manage.py migrate
+  - python manage.py test -v 2
+
+# Notify Slack
+notifications:
+  slack: cmput404workspace:uUFmB4ZXnesFZ8cLtWuBtyTq
