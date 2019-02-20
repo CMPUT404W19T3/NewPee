@@ -1,104 +1,64 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 import json
 import datetime
+import uuid
 
-# Create your models here.
-class Posts(models.Model):
-    #have to change to a user model
-    author = JSONField()
-    #author = models.ForeignKey(User)
+# Post model represents post, 
+# stores an unique id, author which is a user model, title, body, image and a timestamp
+class Post(models.Model):
+    # override Django id 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # have to change to a user model
+    author = models.CharField(max_length=25, null=False,blank=False)
+    # author = models.ForeignKey(User)
+    title = models.CharField(max_length=30, null=False,blank=False)
+    body = models.TextField(null=False,blank=False)
+    image = models.URLField(null=True,blank=True)
+    post_date = models.DateTimeField(auto_now_add=True)
 
-    title = JSONField()
-    #have to figure out how to render markdown
-    body = JSONField()
-
-
-    #will be stored as '{"images":[url1, url2,...]}'
-    images = JSONField()
-
-    #"{comments:[user1:comment1, user2:comment2,...]}""
-    comments = JSONField()
-
-    #'{"like":0, "dislike":0}'
-    votes = JSONField()
-    timestamp = json.dumps(str(datetime.datetime.now()))
-    
-    def __init__(self):
-        self.images = json.dumps({"images":[]})
-        self.comments = json.dumps({"comments":[]})
-        self.votes = json.dumps({"like": 0, "dislike": 0})
-
-
-    #pass in author object in json 
-    def set_author(self,author):
-        self.author = author
+    def get_id(self):
+        return self.id
 
     def get_author(self):
         return self.author
 
-    def write_title(self,title):
-        self.title = json.dumps(title)
-
-    #return string 
     def get_title(self):
-        title = json.loads(self.title)
-        return title 
-
-    def write_body(self,body):
-        self.body = json.dumps(body)
+        return self.title 
 
     def get_body(self):
-        body = json.loads(self.body)
-        return body
+        return self.body
     
-    def add_image(self,image_url):
-        stringImages = json.loads(self.images)
-        stringImages['images'].append(image_url)
-        self.images = json.dumps(stringImages)
+    def set_image(self,image_url):
+        self.image = image_url
 
-    #returns a list of images 
-    def get_all_images(self):
-        stringImages = json.loads(self.images)
-        images = stringImages['images']
-        return images
+    def get_image(self):
+        return self.image
 
-    #return a single url for the image 
-    def get_image(self,index):
-        stringImages = json.loads(self.images)
-        image = stringImages['images'][index]
-        return image
+    def get_post_date(self):
+        return self.post_date
+
+
+#Comment class represents comment,
+#stores an unique id, a parent post, author and body 
+class Comment(models.Model):
+    # override Django id 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    parent = models.ForeignKey('Post', on_delete=models.CASCADE , null=False,blank=False)
+    author = models.CharField(max_length=25, null=False,blank=False)
+    body = models.CharField(max_length=140, null=False,blank=False)
+    post_date = models.DateTimeField(auto_now_add=True)
         
+    def get_id(self):
+        return self.id
 
-    def add_comment(self,username, comment):
-        stringComments = json.loads(self.comments)
-        commentInfo = username + ":" + comment
-        stringComments['comments'].append(commentInfo)
-        self.comments = json.dumps(stringComments)
+    def get_parent(self):
+        return self.parent
 
-    def get_all_comments(self):
-        stringComments = json.loads(self.comments)
-        comments = stringComments['comments']
-        return comments
-        
-    #return username and comment 
-    def get_comment(self,index):
-        stringComments = json.loads(self.comments)
-        comment = stringComments['comments'][index]
-        username = comment.split(":")[0]
-        commentText = comment.split(":")[1]
-        return username, commentText
+    def get_author(self):
+        return self.author
 
-    def like(self):
-        stringVotes = json.loads(self.votes)
-        likes = stringVotes['like']
-        likes += 1 
-        stringVotes['like'] = likes
-        self.votes = json.dumps(stringVotes)
-
-    def dislike(self):
-        stringVotes = json.loads(self.votes)
-        dislikes = stringVotes['dislike']
-        dislikes += 1 
-        stringVotes['dislike'] = dislikes
-        self.votes = json.dumps(stringVotes)
+    def get_body(self):
+        return self.body
+    
+    def get_post_date(self):
+        return self.post_date
