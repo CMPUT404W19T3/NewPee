@@ -6,6 +6,9 @@ import uuid
 # Post model represents post, 
 # stores an unique id, author which is a user model, title, body, image and a timestamp
 class Post(models.Model):
+    class Meta(object):
+        app_label = 'NewPee'
+        db_table = 'NewPee_post'
     # override Django id 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # have to change to a user model
@@ -41,6 +44,10 @@ class Post(models.Model):
 #Comment class represents comment,
 #stores an unique id, a parent post, author and body 
 class Comment(models.Model):
+    class Meta(object):
+        app_label = 'NewPee'
+        db_table = 'NewPee_comment'
+
     # override Django id 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     parent = models.ForeignKey('Post', on_delete=models.CASCADE , null=False,blank=False)
