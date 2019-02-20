@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
-    'posts.apps.PostsConfig',
+
+    # My Apps
+    'NewPee.apps.NewPeeConfig',
 ]
 
 MIDDLEWARE = [
