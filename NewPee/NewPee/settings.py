@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
 
     # My App
-    'apps.NewPeeConfig',
+    'NewPee.apps.NewPeeConfig',
 ]
 
 MIDDLEWARE = [
