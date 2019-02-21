@@ -2,6 +2,7 @@ from django.db import models
 import json
 import datetime
 import uuid
+from .author import Author
 
 # Post model represents post, 
 # stores an unique id, author which is a user model, title, body, image and a timestamp
@@ -13,7 +14,7 @@ class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # have to change to a user model
     author = models.CharField(max_length=25, null=False,blank=False)
-    # author = models.ForeignKey(User)
+    author = models.ForeignKey('Author')
     title = models.CharField(max_length=30, null=False,blank=False)
     body = models.TextField(null=False,blank=False)
     image = models.URLField(null=True,blank=True)
