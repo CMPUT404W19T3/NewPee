@@ -11,7 +11,7 @@ class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     bio = models.TextField(max_length=500, blank=True)
-    posts = models.PositiveIntegerField(default=0)  # correspond to a unique_id
+    posts_created = models.PositiveIntegerField(default=0)  # correspond to a unique_id
     picture = models.URLField(blank=True)
     github_url = models.URLField(blank=True)
     friends = models.ManyToManyField("self", blank=True)
@@ -28,6 +28,8 @@ class Author(models.Model):
         return self.id
 
     # Determine what relationship an author has with another author
+    # TODO: Remove from this class
+
     def check_relationship(self, author_id):
         pass
 
