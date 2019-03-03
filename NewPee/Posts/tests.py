@@ -1,5 +1,5 @@
 from django.test import TestCase
-from models import posts
+from .models import Post
 
 class PostModelTests(TestCase):
     def setUp(self):
