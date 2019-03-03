@@ -2,4 +2,14 @@
 
 {% block content %}
 <p>This is the sign up page</p>
+
+
+<h1> Create a User </h1>
+
+<form  name ="user_creation" method="post">{% csrf_token %}
+username:<br>
+<input type="text" name="username">
+<input type="submit" value="OK">
+</form>
+
 {% endblock %}

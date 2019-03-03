@@ -6,6 +6,10 @@ import uuid
 class Author(models.Model):
 
 
+
+
+
+
     # Using the default Django User model and adding additional features
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -14,6 +18,7 @@ class Author(models.Model):
     posts_created = models.PositiveIntegerField(default=0)  # correspond to a unique_id
     picture = models.URLField(blank=True)
     github_url = models.URLField(blank=True)
+
     friends = models.ManyToManyField("self", blank=True)
     following = models.ManyToManyField("self", symmetrical=False, blank=True)
 
