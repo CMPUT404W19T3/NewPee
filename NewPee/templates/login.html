@@ -7,4 +7,20 @@
 
 
 
+<form  name ="get_user" method="POST">{% csrf_token %}
+
+<div>
+username:<br>
+<input type="text" name="username"> <br>
+</div>
+
+<div>
+password: <br>
+
+<input type="text" name="password"> <br>
+
+<input type="submit" value="OK">
+<div>
+</form>
+
 {% endblock %}
