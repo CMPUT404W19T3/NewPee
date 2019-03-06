@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NewPee</title>
+        <link rel="shortcut icon" type="image/png" href="{% static 'Logo.png' %}" sizes="16x16" />
+        <link rel="stylesheet" type="text/css" href="{% static 'header.css' %}" />
+        {% comment %} https://fontawesome.com/start {% endcomment %}
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <body>
+        
+        <div class="header">
+            <img src="{% static 'Logo.png' %}" alt="Logo">
+            {% comment %} https://codepen.io/anon/pen/gELjKx {% endcomment %}
+            
+            <div class="headerWrap">
+                <div class="headerSearch">
+                    <input type="text" class="headerSearchTerm" placeholder="Search by author or keywords">
+                    <button type="submit" class="headerSearchButton">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div> 
+            <span class="headerIcons">
+                <i class="fas fa-home"></i>
+                <i class="fas fa-bell"></i>
+                <i class="fas fa-caret-down"></i>
+            </span>
+            
+            
+            
+        </div> 
+
+
+        {% block content %}
+        {% endblock %}
+        
+    </body>
+</html>

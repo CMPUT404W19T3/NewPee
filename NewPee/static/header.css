@@ -1,0 +1,105 @@
+html, body{
+    width: 100%;
+    height: 100%;
+    padding: 0%;
+    margin: 0%;
+}
+.header {
+    height: 7%;
+    margin: 0;
+    padding-left: 3%;
+    background-color: #0d0630;
+    overflow: auto; 
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.header img{
+    margin: 0%;
+    padding: 0%;
+    width: 3%;
+    height: auto;
+    border: 2px solid #36558f;
+    border-radius: 20%;
+}
+
+p {
+    color: white;
+}
+
+/* code taken from http://code-chunk.com/chunks/5746559c9acf7/simple-html-css-search-box */
+
+body{
+  background: #f2f2f2;
+}
+
+.headerSearch {
+  width: 100%;
+  position: relative
+}
+
+.headerSearchTerm {
+  float: left;
+  width: 100%;
+  border: 3px solid #36558f;
+  padding: 5px;
+  height: 20px;
+  border-radius: 5px;
+  outline: none;
+  color: #9DBFAF;
+}
+
+::placeholder {
+    font-size:14px;
+  }
+  
+
+.headerSearchTerm:focus{
+  color: #36558f;
+}
+
+.headerSearchButton {
+  position: absolute;
+  right: -50px;
+  width: 40px;
+  height: 36px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.headerSearch:before {
+  position: absolute;
+  right: -50px;
+  width: 40px;
+  height: 36px;
+  line-height: 36px;
+  background: #36558f;
+  text-align: center;
+  color: #fff;
+  border-radius: 5px;
+  font-family: 'FontAwesome';
+  content: '\f002';
+}
+
+/*Resize the wrap to see the search bar change!*/
+.headerWrap{
+  width: 30%;
+}
+
+.headerIcons{
+    width: 10%;
+}
+
+.headerIcons i{
+    padding:2%;
+    color: white;  
+    font-size: 28px;
+}
+
+.headerIcons i:hover{
+    color: #36558f;  
+}
+
+
