@@ -1,67 +1,31 @@
-from django.shortcuts import render
-
-
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from Authors.models import Author
 from Authors.serializers import AuthorSerializer
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.renderers import TemplateHTMLRenderer
 
-
-#https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
-
-
-@api_view(['GET', 'POST'])
-def Author_list(request, format=None):
+class AuthorList(APIView):
     """
-    List all Authors, or create an Author
-
+    List all Authors, or create a new Author.
     """
+    
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'homepage.html'
 
-    Authors = Author.objects.all()
-    print(Authors)
+    def get(self, request, format=None):
+        print("This is the request\n\n", request)
+        author = Author.objects.all()
+        serializer = AuthorSerializer(author, many=True)
+        # print("This is a serializer: ", serializer)
+        # print("This is the type: ", type(serializer))
+        # print("This is the data inside of serializer", serializer.data)
+        return Response({'authors': serializer.data})
 
-    if request.method == 'GET':
-        Authors = Author.objects.all()
-        serializer = AuthorSerializer(Authors, many=True)
-        return Response(serializer.data)
-
-    elif request.method == 'POST':
+    def post(self, request, format=None):
         serializer = AuthorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def Author_detail(request, pk, format= None):
-    """
-    Retrieve, update or delete an Author.
-    """
-    
-   
-    
-
-    try:
-       author_object = Author.objects.get(pk=pk)
-        
-
-    except Author.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = AuthorSerializer(author_object)
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = AuthorSerializer(author_object, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        author_object.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)

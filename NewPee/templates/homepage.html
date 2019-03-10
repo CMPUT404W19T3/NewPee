@@ -1,4 +1,5 @@
 {% extends 'header.html' %}
+{% load rest_framework %}
 {% load static %}
 
 
@@ -20,6 +21,10 @@
             </div>
             <div class="username">
                 <p>NEWPEEEE</p>
+                <!-- {{ data }} -->
+                {% for author in authors %}
+                <li>{{ author.id }}</li>
+                {% endfor %}
             </div>
             <div class="stats">
                 <div class="stat"><p>32</p><p>posts</p></div>
