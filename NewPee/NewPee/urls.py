@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import include, url
 from django.urls import path
-from views.general_views import header
+from views.general_views import header, homepage
 from templates.views.author_views import log_in, sign_up, create_post
 from Authors import views
 from rest_framework.urlpatterns import format_suffix_patterns
@@ -24,6 +24,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 
 urlpatterns = [
+    path('',log_in),
     path('admin/', admin.site.urls),
     path('login/', log_in),
     path('signup/', sign_up),
@@ -31,6 +32,8 @@ urlpatterns = [
     path('post/', create_post),
     path('Authors/', views.Author_list),
     path('Authors/<int:pk>', views.Author_detail),
+    path('home/',homepage),
+
 ]
 
 # https://www.django-rest-framework.org/api-guide/format-suffixes/
