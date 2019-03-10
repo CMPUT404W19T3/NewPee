@@ -62,10 +62,12 @@ html, body{
   height: 30px;
 }
 
-.btn {
+.search button {
   height: 30px;
   position: absolute;
   right: 0;
   top: 5px;
-  border-radius:1px;
+  border-radius:3px;
 }
+
+
