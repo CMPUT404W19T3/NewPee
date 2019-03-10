@@ -4,6 +4,7 @@
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'homepage.css' %}" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 {% endblock %}
@@ -32,46 +33,26 @@
         <div class="stream">
             <div class="postingOutter">
                 <div class="postingInner">
-                    <div class="tab">
-                        <button class="tablinks" onclick="switchTab(event, 'Post')">Post</button>
-                        <button class="tablinks" onclick="switchTab(event, 'Pull')">Pull</button>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="post-tab" data-toggle="tab" href="#post" role="tab" aria-controls="post" aria-selected="true">Post</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pull-tab" data-toggle="tab" href="#pull" role="tab" aria-controls="pull" aria-selected="false">Pull from GitHub</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade" id="post" role="tabpanel" aria-labelledby="post-tab">Post</div>
+                    <div class="tab-pane fade" id="pull" role="tabpanel" aria-labelledby="pull-tab">Pull</div>
                     </div>
-
-                    <div id="Post" class="tabcontent">
-                        <p>post.</p>
-                    </div>
-
-                    <div id="Pull" class="tabcontent">
-                        <p>post</p> 
-                    </div>
+  
                 </div>
             </div>
-            <p>block post</p>
+            <div class="postingOutter">post</div>
         </div>
+
     
     </div>
 </div>
 
-<script>
-function switchTab(evt, cityName) {
-  // Declare all variables
-  var i, tabcontent, tablinks;
-
-  // Get all elements with class="tabcontent" and hide them
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-
-  // Get all elements with class="tablinks" and remove the class "active"
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-
-  // Show the current tab, and add an "active" class to the button that opened the tab
-  document.getElementById(cityName).style.display = "block";
-  evt.currentTarget.className += " active";
-}
-</script>
 {% endblock %}
