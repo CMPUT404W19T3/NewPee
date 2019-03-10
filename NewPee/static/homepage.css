@@ -91,3 +91,8 @@ p{
     float: right;
     width: 100px;
 }
+
+.comment img{
+    width: 30px;
+    height: 30px;
+}
