@@ -19,6 +19,7 @@ from django.urls import path
 from views.general_views import header, homepage
 from templates.views.author_views import log_in, sign_up, create_post
 from views import api_views
+from Authors import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 
@@ -34,7 +35,7 @@ urlpatterns = [
     path('Authors/<uuid:pk>', api_views.Author_detail),
     path('Posts/', api_views.post_list),
     path('Posts/<uuid:pk>', api_views.post_detail),
-    path('home/',homepage),
+    path('home/', views.AuthorList.as_view()),
 
 ]
 
