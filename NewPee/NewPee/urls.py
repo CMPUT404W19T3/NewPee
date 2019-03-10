@@ -30,7 +30,9 @@ urlpatterns = [
     path('header/', header),
     path('post/', create_post),
     path('Authors/', views.Author_list),
-    path('Authors/<int:pk>', views.Author_detail),
+
+    #https://docs.djangoproject.com/en/2.1/topics/http/urls/
+    path('Authors/<str:pk>', views.Author_detail),
 ]
 
 # https://www.django-rest-framework.org/api-guide/format-suffixes/

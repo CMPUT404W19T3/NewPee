@@ -18,6 +18,9 @@ def Author_list(request, format=None):
 
     """
 
+    Authors = Author.objects.all()
+    print(Authors)
+
     if request.method == 'GET':
         Authors = Author.objects.all()
         serializer = AuthorSerializer(Authors, many=True)
@@ -37,22 +40,28 @@ def Author_detail(request, pk, format= None):
     """
     Retrieve, update or delete an Author.
     """
+    
+   
+    
+
     try:
-        Author = Author.objects.get(pk=pk)
+       author_object = Author.objects.get(pk=pk)
+        
+
     except Author.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = AuthorSerializer(Author)
+        serializer = AuthorSerializer(author_object)
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = AuthorSerializer(Author, data=request.data)
+        serializer = AuthorSerializer(author_object, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        Author.delete()
+        author_object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
