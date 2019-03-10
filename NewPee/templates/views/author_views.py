@@ -7,9 +7,16 @@ from django.contrib.auth.models import User
 from Posts.models import Post
 from django.contrib.auth import authenticate, login
 
+
+from rest_framework import status
+#from rest_framework import api_view
+from rest_framework.response import Response 
+
+
+
 # Create your views here.
 
-def create_post(request):
+def create_post(request, format=None):
 
 
         if request.method == 'POST':
@@ -44,7 +51,7 @@ def create_post(request):
 
         return render(request, 'create_post.html', {'form_title': form_title, 'form_info': form_info})
 
-def log_in(request):
+def log_in(request, format=None):
 
 
         if request.method == 'POST':
@@ -67,7 +74,7 @@ def log_in(request):
             return render(request, 'login.html', {})
 
 
-def sign_up(request):
+def sign_up(request, format=None):
 
 
 
