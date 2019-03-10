@@ -39,6 +39,7 @@ urlpatterns = [
 
 ]
 
+#https://docs.djangoproject.com/en/2.1/topics/http/urls/
 # https://www.django-rest-framework.org/api-guide/format-suffixes/
 
 

@@ -10,6 +10,7 @@ class AuthorList(APIView):
     """
     List all Authors, or create a new Author.
     """
+    
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'homepage.html'
 
