@@ -7,6 +7,12 @@ from rest_framework import status
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.views.decorators.csrf import csrf_exempt
 
+from django.shortcuts import render
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+
+from Posts.models import Image   
+
 
 class AuthorList(APIView):
     """
@@ -18,6 +24,12 @@ class AuthorList(APIView):
 
     @csrf_exempt
     def get(self, request, format=None):
+
+
+
+      
+
+
 
         if request.method == "POST":
             return HttpResponse("Hello, world.")
@@ -36,6 +48,36 @@ class AuthorList(APIView):
 
     def post(self, request, format=None):
 
+
+        if request.method == 'POST' and request.FILES['myfile']:
+
+
+            myfile = request.FILES['myfile']
+
+            try:
+                Image.objects.create(myfile)
+            
+            except:
+                print("Not an image!")
+
+            print(myfile)
+
+
+
+            print("FILE Uploaded")
+
+            
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            return render(request, 'homepage.html', {
+            'uploaded_file_url': uploaded_file_url
+            })
+            
+
+
+
+
         print("Posting the authors post")
 
         serializer = AuthorSerializer(data=request.data)
@@ -43,6 +85,5 @@ class AuthorList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
     

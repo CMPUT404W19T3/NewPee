@@ -3,6 +3,8 @@ import json
 import datetime
 import uuid
 from django.contrib.auth.models import User
+from .storage import AppEngineBlobStorage
+from django.db.models.fields.files import ImageField
 
 
 # Post model represents post,
@@ -73,3 +75,15 @@ class Comment(models.Model):
 
     def get_post_date(self):
         return self.post_date
+
+
+'''
+Possible future addon 
+https://stackoverflow.com/questions/18747730/storing-images-in-db-using-django-models
+
+'''
+
+class Photo(models.Model):
+    #
+    viewers = models.ManyToManyField(User)
+    photo = models.ImageField(upload_to='media/')

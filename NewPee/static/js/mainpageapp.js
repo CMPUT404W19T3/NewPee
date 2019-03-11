@@ -1,5 +1,13 @@
 
 
+function getFileData(myFile){
+    var file = myFile.files[0];  
+    var filename = file.name;
+    console.log(filename)
+ }
+
+
+
 
 //https://stackoverflow.com/questions/30211605/javascript-html-collection-showing-as-0-length
 $(document).ready(function(){ 
@@ -43,7 +51,7 @@ element.addEventListener('submit', event => {
     var post_title = document.querySelector("#post-title").value
     var post_content = document.querySelector("#post-comment-content").value
     var post_description = document.querySelector("#post-comment-description").value
-
+    var image = document.get
 
 
 

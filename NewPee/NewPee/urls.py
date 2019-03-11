@@ -21,8 +21,8 @@ from templates.views.author_views import log_in, sign_up, create_post
 from views import api_views
 from Authors import views
 from rest_framework.urlpatterns import format_suffix_patterns
-
-
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('',log_in),
@@ -44,3 +44,6 @@ urlpatterns = [
 
 
 urlpatterns = format_suffix_patterns(urlpatterns)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

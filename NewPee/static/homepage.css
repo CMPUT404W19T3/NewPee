@@ -18,6 +18,12 @@ p{
     margin-top:2%;
 }
 
+.fileupload{
+    display: block;
+    float: left;
+    
+}
+
 .profile{
     display:block;
     box-sizing: border-box;
@@ -95,4 +101,9 @@ p{
 .comment img{
     width: 30px;
     height: 30px;
+}
+
+#btnfileupload {
+    float: left;
+
 }

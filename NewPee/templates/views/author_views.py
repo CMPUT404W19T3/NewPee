@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 from Posts.models import Post
 from django.contrib.auth import authenticate, login
 import json
-import requests
 
 from rest_framework import status
 #from rest_framework import api_view
@@ -24,6 +23,9 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def create_post(request, format=None):
 
+
+        print(request.user)
+        
 
         if request.method == 'POST':
 

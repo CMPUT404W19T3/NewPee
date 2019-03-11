@@ -50,12 +50,27 @@
                             <input class="form-check-input" type="radio" name="private-radio-option" id="PrivatePrivacy" value="option1">
                             <label class="form-check-label" for="private-radio-option">Private</label>
                         </div>
-                    <div class="form-check form-check-inline">
+                        <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="friends-radio-option" id="FriendsPrivay" value="option2">
                             <label class="form-check-label" for="friends-radio-option">Friends</label>
                         </div>
                         
+                    
+                        <div class="file_upload">
+                        <form method="post" enctype="multipart/form-data" data-ajax="false">
+                          {% csrf_token %}
+                          <input type="file" name="myfile" onchange="getFileData(this)">
+                          <button type="submit" id = "btnfileupload" class="btn btn-primary">upload file</button>
+                            
+                        </form>
+                        </div>
+                      
+                        {% if uploaded_file_url %}
+                          <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+                        {% endif %}
 
+                    <br>
+                    <br>
 
                     <!-- mainpageapp.js handles form submission-->
                     <form id="post_creation_submit">
