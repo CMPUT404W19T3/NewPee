@@ -2,6 +2,7 @@ from django.db import models
 import json
 import datetime
 import uuid
+from django.contrib.auth.models import User
 
 
 # Post model represents post,
@@ -10,14 +11,21 @@ class Post(models.Model):
 
     # override Django id
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
     # have to change to a user model
     author = models.CharField(max_length=25, null=False,blank=False)
     # author = models.ForeignKey(User)
+
     title = models.CharField(max_length=30, null=False, blank=False)
     description = models.CharField(max_length=150, default="No Description", null=False, blank=False)
     content = models.TextField(null=False,blank=False)
     image = models.URLField(null=True,blank=True)
     post_date = models.DateTimeField(auto_now_add=True)
+
+    # which viewers are allowed to see it.
+    viewers = models.ManyToManyField(User)
+
+
 
     def get_id(self):
         return self.id

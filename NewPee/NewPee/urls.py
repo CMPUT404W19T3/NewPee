@@ -30,12 +30,12 @@ urlpatterns = [
     path('login/', log_in),
     path('signup/', sign_up),
     path('header/', header),
-    path('post/', create_post),
     path('Authors/', api_views.Author_list),
     path('Authors/<uuid:pk>', api_views.Author_detail),
     path('Posts/', api_views.post_list),
     path('Posts/<uuid:pk>', api_views.post_detail),
     path('home/', views.AuthorList.as_view()),
+    path('post_created/', create_post)
 
 ]
 

@@ -6,50 +6,89 @@ from Authors.models import Author
 from django.contrib.auth.models import User
 from Posts.models import Post
 from django.contrib.auth import authenticate, login
-
+import json
+import requests
 
 from rest_framework import status
 #from rest_framework import api_view
 from rest_framework.response import Response 
-
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
 
+
+# The post is now created. 
+# TODO : May need some work? on handling the body content. 
+
+@csrf_exempt
 def create_post(request, format=None):
 
 
         if request.method == 'POST':
 
-            form_title = postTitleForm(request.POST)
-            form_info = postInfoForm(request.POST)
+            title = None;
+            info = None;
+
+            body_unicode = request.body.decode('utf-8')
+
+            values = body_unicode.split("&")
 
 
-            if form_title.is_valid() and form_info.is_valid():
+            # Convert the body into useable info. 
+
+            title = values[0].split('=')[1]
+            title = title.split('+')
+
+            final_title = ""
+            for item in title:
+                final_title = final_title + item + " "
+
+            content = values[1].split('=')[1]
+            content =  content.split('+')
+
+            final_content = ""
+            for item in  content:
+                final_content =  final_content + item + " "
 
 
-                title = form_title.cleaned_data['post_title']
-                info = form_info.cleaned_data['post_info']
+            print(final_content)
 
 
-                new_post = Post.objects.create(title= title, author = "Temp_author", body = info)
+            description = values[2].split('=')[1]
+            description =  description.split('+')
+
+            final_description = ""
+            for item in  description:
+                final_description =  final_description + item + " "
 
 
-
-
-
-
-                return HttpResponse(new_post)
-                #return HttpResponseRedirect('/thanks/')
-        else:
-
-            form_title = postTitleForm()
-            form_info = postInfoForm()
+            print(final_description)
 
 
 
 
-        return render(request, 'create_post.html', {'form_title': form_title, 'form_info': form_info})
+
+            #form_title = postTitleForm(request.POST)
+            #form_info = postInfoForm(request.POST)
+
+
+            if (title != None and description != None):
+
+                new_post = Post.objects.create(title= title, author = "Temp_author", description = description, content = content)
+                print(" A new post was created.")
+
+
+
+
+
+
+            return HttpResponse("?")
+
+
+
+
+
 
 def log_in(request, format=None):
 
