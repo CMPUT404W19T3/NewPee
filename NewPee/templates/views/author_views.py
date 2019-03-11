@@ -25,7 +25,7 @@ def create_post(request, format=None):
 
 
         print(request.user)
-        
+
 
         if request.method == 'POST':
 
@@ -36,6 +36,7 @@ def create_post(request, format=None):
 
             values = body_unicode.split("&")
 
+            print(body_unicode)
 
             # Convert the body into useable info. 
 
@@ -54,7 +55,7 @@ def create_post(request, format=None):
                 final_content =  final_content + item + " "
 
 
-            print(final_content)
+            print("content = " + final_content)
 
 
             description = values[2].split('=')[1]
@@ -65,10 +66,15 @@ def create_post(request, format=None):
                 final_description =  final_description + item + " "
 
 
-            print(final_description)
+            print("descrption= " + final_description)
+
+            privacy = values[4].split('=')[1]
+
+            print("privacy = " + privacy)
 
 
 
+                
 
 
             #form_title = postTitleForm(request.POST)
@@ -78,6 +84,23 @@ def create_post(request, format=None):
             if (title != None and description != None):
 
                 new_post = Post.objects.create(title= title, author = "Temp_author", description = description, content = content)
+
+                if privacy == "private":
+                    new_post.viewers.add( request.user)
+                else: 
+
+                    # TODO: search for user friend
+                    '''
+                    friends = get_friend(request.user)
+
+                    for friend in friends:
+                        new_post.viewers.add(friend)
+
+                    '''
+                    pass
+
+
+
                 print(" A new post was created.")
 
 

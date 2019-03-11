@@ -11,7 +11,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
-from Posts.models import Image   
+from Posts.models import Photo  
 
 
 class AuthorList(APIView):
@@ -49,23 +49,20 @@ class AuthorList(APIView):
     def post(self, request, format=None):
 
 
+        # we are posting with an image, store it usign FileSystemStorage in our media folder.
         if request.method == 'POST' and request.FILES['myfile']:
 
 
             myfile = request.FILES['myfile']
 
+            # Future TODO: Possibly add it to the DB, but don't have too. 
             try:
-                Image.objects.create(myfile)
+                Photo.objects.create(myfile)
             
             except:
                 print("Not an image!")
 
             print(myfile)
-
-
-
-            print("FILE Uploaded")
-
             
             fs = FileSystemStorage()
             filename = fs.save(myfile.name, myfile)
@@ -74,8 +71,6 @@ class AuthorList(APIView):
             'uploaded_file_url': uploaded_file_url
             })
             
-
-
 
 
         print("Posting the authors post")

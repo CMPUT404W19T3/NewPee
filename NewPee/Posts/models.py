@@ -3,7 +3,6 @@ import json
 import datetime
 import uuid
 from django.contrib.auth.models import User
-from .storage import AppEngineBlobStorage
 from django.db.models.fields.files import ImageField
 
 

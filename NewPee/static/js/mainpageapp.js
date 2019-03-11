@@ -3,7 +3,7 @@
 function getFileData(myFile){
     var file = myFile.files[0];  
     var filename = file.name;
-    console.log(filename)
+    console.log(filename);
  }
 
 
@@ -41,36 +41,55 @@ element.addEventListener('submit', event => {
   // actual logic, e.g. validate the form
   alert('Form submission cancelled.');
   var csrftoken = getCookie('csrftoken');
-  console.log(csrftoken)
+  console.log(csrftoken);
 
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     console.log("button clicked");
-    var request_data = "Data" // TODO: include all post data
+    var request_data = "Data"; // TODO: include all post data
 
 
-    var post_title = document.querySelector("#post-title").value
-    var post_content = document.querySelector("#post-comment-content").value
-    var post_description = document.querySelector("#post-comment-description").value
-    var image = document.get
+    var post_title = document.querySelector("#post-title").value;
+    var post_content = document.querySelector("#post-comment-content").value;
+    var post_description = document.querySelector("#post-comment-description").value;
+    var radioButtons = document.getElementsByName("friends-radio-option");
+
+
+    var radio_value;
+
+    for (var i = 0; i < radioButtons.length; i++) {
+        if (radioButtons[i].checked){
+            radio_value = radioButtons[i].value;
+        }
+    }
+
+
+    console.log(radio_value);
 
 
 
 
-    console.log("data: " + post_title + post_content);
+
+    // Goes to post_created
+    // author.view post_created view
 
     $.ajax({
         type: "POST",
         url: "/post_created/",
         data : { post_title : post_title,
+            
             post_content : post_content,
             post_description : post_description,
-            request_data: request_data,
-            csrfmidddlewaretoken: csrftoken
+            csrfmidddlewaretoken: csrftoken,
+            privacy : radio_value,
 
         },
+
+
+
         success : function(json) {
             $("#request-access").hide();
             console.log("requested access complete");
+
         }
     })
    
