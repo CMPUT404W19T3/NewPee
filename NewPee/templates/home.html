@@ -4,11 +4,11 @@
 
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{% static 'homepage.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'styles/home.css' %}" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<script src="{% static 'js/mainpageapp.js' %}"></script>
+<script src="{% static 'scripts/home.js' %}"></script>
 
 
 {% endblock %}
@@ -20,8 +20,8 @@
         <!--left column-->
         <div class="profile">
             <div class="profilePic">
-                {% if user.picutre %}
-                    <img src="{{user.picutre}}" alt="profile picture">
+                {% if user.picture %}
+                    <img src="{{user.picture}}" alt="profile picture">
                 {% else %}
                     <img src="{% static 'Logo.png' %}" alt="profile picture">
                 {% endif %}
@@ -62,8 +62,8 @@
                 <a href="{{user.github_url}}">{{user.github_url}}</a>
             {% endif %}
             <hr>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">Edit Profile</button>
-            {% include "./editProfileModal.html" %}
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
+            {% include "./edit_profile_modal.html" %}
         </div> 
 
         <!--right column-->
@@ -101,7 +101,7 @@
                     <br>
                     <br>
 
-                    <!-- mainpageapp.js handles form submission-->
+                    <!-- home.js handles form submission-->
                     <form id="post_creation_submit">
                     <button type="submit" class ="btn btn-primary">Post</button>
                     </form>
@@ -117,14 +117,14 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#postModal">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_modal">
                         modal
                     </button>
                 </div>
             </div>
 
 
-            {% include "./postModal.html" %}
+            {% include "./post_modal.html" %}
         </div>
 
     

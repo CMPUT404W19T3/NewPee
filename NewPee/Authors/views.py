@@ -14,28 +14,27 @@ from django.core.files.storage import FileSystemStorage
 from Posts.models import Photo  
 
 
+class AuthorDetail(APIView):
+    """
+    Retrieve, update or delete an Author.
+    """
+
+    def get(self, request, pk, *args, **kwargs):
+        if request.method == "GET":
+            author = Author.objects.get(pk=pk)
+            serializer = AuthorSerializer(author, many=True)
+            return Response({'author': serializer.data})
+
 class AuthorList(APIView):
     """
     List all Authors, or create a new Author.
     """
-    
+
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'homepage.html'
+    template_name = 'home.html'
 
     @csrf_exempt
     def get(self, request, format=None):
-
-
-
-      
-
-
-
-        if request.method == "POST":
-            return HttpResponse("Hello, world.")
-
-
-
         if request.method == "GET":
             print("This is the request\n\n", request)
             author = Author.objects.all()
@@ -67,7 +66,7 @@ class AuthorList(APIView):
             fs = FileSystemStorage()
             filename = fs.save(myfile.name, myfile)
             uploaded_file_url = fs.url(filename)
-            return render(request, 'homepage.html', {
+            return render(request, 'home.html', {
             'uploaded_file_url': uploaded_file_url
             })
             
@@ -80,5 +79,3 @@ class AuthorList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    
