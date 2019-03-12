@@ -19,7 +19,8 @@ from django.urls import path
 from views.general_views import header, homepage
 from templates.views.author_views import log_in, sign_up, create_post
 from views import api_views
-from Authors import views
+from Authors.views import AuthorList
+from Posts.views import PostList, PostDetail
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.conf.urls.static import static
 from django.conf import settings
@@ -32,14 +33,14 @@ urlpatterns = [
     path('header/', header),
     path('Authors/', api_views.Author_list),
     path('Authors/<uuid:pk>', api_views.Author_detail),
-    path('Posts/', api_views.post_list),
+    path('posts/', PostList.as_view()),
     path('Posts/<uuid:pk>', api_views.post_detail),
-    path('home/', views.AuthorList.as_view()),
+    path('home/', AuthorList.as_view()),
     path('post_created/', create_post)
 
 ]
 
-#https://docs.djangoproject.com/en/2.1/topics/http/urls/
+# https://docs.djangoproject.com/en/2.1/topics/http/urls/
 # https://www.django-rest-framework.org/api-guide/format-suffixes/
 
 

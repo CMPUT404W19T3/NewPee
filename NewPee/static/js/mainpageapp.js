@@ -74,11 +74,12 @@ element.addEventListener('submit', event => {
 
     $.ajax({
         type: "POST",
-        url: "/post_created/",
-        data : { post_title : post_title,
-            
-            post_content : post_content,
-            post_description : post_description,
+        url: "/posts/",
+        data : { 
+            title : post_title,
+            author : 'hello',
+            content : post_content,
+            description : post_description,
             csrfmidddlewaretoken: csrftoken,
             privacy : radio_value,
 

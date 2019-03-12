@@ -49,27 +49,27 @@ class AuthorList(APIView):
     def post(self, request, format=None):
 
 
-        # we are posting with an image, store it usign FileSystemStorage in our media folder.
-        if request.method == 'POST' and request.FILES['myfile']:
+        # # we are posting with an image, store it usign FileSystemStorage in our media folder.
+        # if request.method == 'POST' and request.FILES['myfile']:
 
 
-            myfile = request.FILES['myfile']
+        #     myfile = request.FILES['myfile']
 
-            # Future TODO: Possibly add it to the DB, but don't have too. 
-            try:
-                Photo.objects.create(myfile)
+        #     # Future TODO: Possibly add it to the DB, but don't have too. 
+        #     try:
+        #         Photo.objects.create(myfile)
             
-            except:
-                print("Not an image!")
+        #     except:
+        #         print("Not an image!")
 
-            print(myfile)
+        #     print(myfile)
             
-            fs = FileSystemStorage()
-            filename = fs.save(myfile.name, myfile)
-            uploaded_file_url = fs.url(filename)
-            return render(request, 'homepage.html', {
-            'uploaded_file_url': uploaded_file_url
-            })
+        #     fs = FileSystemStorage()
+        #     filename = fs.save(myfile.name, myfile)
+        #     uploaded_file_url = fs.url(filename)
+        #     return render(request, 'homepage.html', {
+        #     'uploaded_file_url': uploaded_file_url
+        #     })
             
 
 
@@ -79,6 +79,7 @@ class AuthorList(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print("HEY BOSS", request.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     

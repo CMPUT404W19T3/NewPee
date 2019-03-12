@@ -73,7 +73,7 @@
                     <br>
 
                     <!-- mainpageapp.js handles form submission-->
-                    <form id="post_creation_submit">
+                    <form id="post_creation_submit">{{ csrf_token }}
                     <button type="submit" class ="btn btn-primary">Post</button>
                     </form>
 

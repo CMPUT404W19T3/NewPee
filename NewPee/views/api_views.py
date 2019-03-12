@@ -7,6 +7,7 @@ from Authors.models import Author
 from Authors.serializers import AuthorSerializer
 from Posts.models import Post, Comment
 from Posts.serializers import PostSerializer, CommentSerializer
+from django.views.decorators.csrf import csrf_exempt
 
 
 #https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
@@ -66,7 +67,6 @@ def post_list(request):
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
-
     elif request.method == 'POST':
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
