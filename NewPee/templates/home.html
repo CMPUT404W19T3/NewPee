@@ -15,15 +15,15 @@
 
 {% block content %}
 <div class="container">
-    <div class="content">
+    <div class="col-11 row m-4">
 
         <!--left column-->
-        <div class="profile">
-            <div class="profilePic">
+        <div class="col-3 mx-auto">
+            <div class="profile-pic">
                 {% if user.picture %}
                     <img src="{{user.picture}}" alt="profile picture">
                 {% else %}
-                    <img src="{% static 'Logo.png' %}" alt="profile picture">
+                    <img src="{% static 'imgs/logo.png' %}" alt="profile picture">
                 {% endif %}
             </div>
             <div class="username">
@@ -62,13 +62,13 @@
                 <a href="{{user.github_url}}">{{user.github_url}}</a>
             {% endif %}
             <hr>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
+            <button type="button" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
             {% include "./edit_profile_modal.html" %}
         </div> 
 
         <!--right column-->
-        <div class="stream">
-            <div class="postingOutter">
+        <div class="col-9 mx-auto">
+            <div class="posting-outter">
                 <div class="posting">
                    
                     <input type="text" id="post-title" class="form-control mb-2" placeholder="Title">
