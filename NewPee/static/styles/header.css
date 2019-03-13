@@ -14,12 +14,13 @@ html, body{
     align-items: center;
     display: flex;
     flex-flow: row wrap;
+    clear: both;
 }
 
-.newPeeHeader img{
+.newPeeHeaderImg{
     margin: 0%;
     padding: 0%;
-    height: 80%;
+    height: 100%;
     width: auto;
     border: 2px solid #36558f;
     border-radius: 20%;
