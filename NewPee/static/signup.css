@@ -17,10 +17,13 @@ html, body {
 .card-header {
     color: #8bbeb2;
     border-bottom: 1px solid #36558f;
+    vertical-align: middle;
+    text-align: center;
+    margin-top: 1rem;
 }
 
 .card{
-    height: 25rem;
+    height: 41rem;
     margin-top: 50px;
     margin-bottom: auto;
     width: 32rem;
@@ -30,20 +33,7 @@ html, body {
 
 .form-control {
     background: #e6f9af;
-    margin-right: 3rem;
-}
-
-.input-group-prepend span{
-    width: 50px;
-    background-color: #8bbeb2;
-    color: black;
-    border:0 !important;
-    margin-left: 3rem;
-}
-
-.input-group {
-    margin-bottom: 2rem;
-    margin-top: 1rem;
+    margin: 1rem 3rem 1rem 3rem;
 }
 
 .logo {
@@ -54,17 +44,17 @@ html, body {
     height: 21.08rem;
 }
 
-.login_btn{
+.signup_btn{
     color: #18314f;
     background-color: #8bbeb2;
-    width: 7rem;
+    width: 9rem;
     display: block;
-    margin-right: 3rem;
-    margin-top: 1.2rem;
-    margin-bottom: auto;
+    margin-top: 3rem;
+    margin-right: 3rem;;
+    margin-bottom: 1rem;
 }
 
-.login_btn:hover{
+.signup_btn:hover{
     color: #18314f;
     background-color: #e6f9af;
 }
@@ -88,9 +78,4 @@ html, body {
 
 .card-footer {
     border-top: 1px solid #36558f;
-    font-size: 1.25rem;
-}
-
-i {
-    size: 100%;
 }

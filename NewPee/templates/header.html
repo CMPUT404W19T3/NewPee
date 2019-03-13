@@ -4,17 +4,50 @@
 <html>
     <head>
         <title>NewPee</title>
-        <link rel="shortcut icon" type="image/png" href="{% static 'Logo.png' %}" sizes="16x16" />
-        <link rel="stylesheet" type="text/css" href="{% static 'header.css' %}" />
+        <link rel="shortcut icon" type="image/png" href="{% static 'imgs/logo.png' %}" sizes="16x16" />
+        <link rel="stylesheet" type="text/css" href="{% static 'styles/header.css' %}" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         {% block head %}{% endblock %}
+    </head>
     <body>
-        
+        {% comment %} <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+  <div class="container">
+
+    <a class="navbar-brand" href="#">
+          <img src="{% static 'imgs/logo.png' %}" alt="Logo" class="newPeeHeaderImg">
+        </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home
+                <span class="sr-only">(current)</span>
+              </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+         {% endcomment %}
         <div class="newPeeHeader">
-            <img src="{% static 'Logo.png' %}" alt="Logo">
+            <a href="//google.ca">
+                <img src="{% static 'imgs/logo.png' %}" alt="Logo" class="newPeeHeaderImg">
+            </a> 
             {% comment %} https://codepen.io/anon/pen/gELjKx {% endcomment %}
+            
             
             <div class="search">
                 <input type="text" class="form-control input-sm" maxlength="64" placeholder="Search by author or keywords" />
@@ -22,16 +55,13 @@
             </div>
 
             <span class="newPeeHeaderIcons">
-                <i class="fas fa-home"></i>
                 <i class="fas fa-bell"></i>
                 <i class="fas fa-caret-down"></i>
             </span>
             
             
             
-        </div> 
-
-
+        </div>  
         {% block content %}
         {% endblock %}
         

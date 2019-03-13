@@ -17,28 +17,27 @@ from Posts.models import Post
 from Posts.serializers import PostSerializer
 
 
+class AuthorDetail(APIView):
+    """
+    Retrieve, update or delete an Author.
+    """
+
+    def get(self, request, pk, *args, **kwargs):
+        if request.method == "GET":
+            author = Author.objects.get(pk=pk)
+            serializer = AuthorSerializer(author, many=True)
+            return Response({'author': serializer.data})
+
 class AuthorList(APIView):
     """
     List all Authors, or create a new Author.
     """
-    
+
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'homepage.html'
+    template_name = 'home.html'
 
     @csrf_exempt
     def get(self, request, format=None):
-
-
-
-      
-
-
-
-        if request.method == "POST":
-            return HttpResponse("Hello, world.")
-
-
-
         if request.method == "GET":
             print("This is the request\n\n", request)
             authors = Author.objects.all()
@@ -87,7 +86,4 @@ class AuthorList(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        print("HEY BOSS", request.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    
