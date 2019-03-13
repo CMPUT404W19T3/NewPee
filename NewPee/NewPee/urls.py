@@ -31,10 +31,6 @@ urlpatterns = [
     path('login/', log_in),
     path('signup/', sign_up),
 
-
-    # Author Home 
-    path('home/', views.AuthorList.as_view(), name="home"),
-
     # Admin
     path('admin/', admin.site.urls),
 
@@ -46,14 +42,14 @@ urlpatterns = [
     path('api/posts/', api_views.post_list),
     path('api/posts/<uuid:pk>', api_views.post_detail),
 
-    path('post_created/', create_post)
+    path('post_created/', create_post),
 
     # Posts API
     path('api/posts/', PostList.as_view()),
     path('api/posts/<uuid:pk>', PostDetail.as_view()),
 
     # Home 
-    path('home/', AuthorList.as_view()),
+    path('home/', AuthorList.as_view(), name="home"),
 ]
 
 # https://docs.djangoproject.com/en/2.1/topics/http/urls/
