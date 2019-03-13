@@ -28,7 +28,7 @@ from django.conf import settings
 urlpatterns = [
     # Login, Signup and Logout
     # path('',log_in), Root should be home if user is logged in
-    path('login/', log_in),
+    path('login/', log_in, name="login"),
     path('signup/', sign_up),
 
     # Admin

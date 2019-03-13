@@ -4,48 +4,45 @@ html, body{
     padding: 0%;
     margin: 0%;
 }
-.newPeeHeader {
-    height: 7%;
-    margin: 0%;
-    padding-left: 3%;
-    background-color: #0d0630;
-    overflow: auto; 
-    justify-content: space-between;
-    align-items: center;
-    display: flex;
-    flex-flow: row wrap;
-    clear: both;
+
+.bg-color{
+  background-color: #0d0630;
 }
 
 .newPeeHeaderImg{
-    margin: 0%;
-    padding: 0%;
-    height: 100%;
-    width: auto;
-    border: 2px solid #36558f;
-    border-radius: 20%;
+  border: 2px solid #36558f;
+  border-radius: 20%;
 }
-
-.newPeeHeader p {
-    color: white;
-}
-
 /*Resize the wrap to see the search bar change!*/
 .newPeeHeaderIcons{
-  display: flex;
-  margin-right: 5%;
+  width: 60px;
 }
 
 .newPeeHeaderIcons i{
-  flex: 50%;
-  margin-left: 20%;
+  background-color: #0d0630;
   color: white;  
   font-size: 28px;
   display: inline-block;
+  margin-left: 10%;
 }
 
-.newPeeHeaderIcons i:hover{
+.newPeeHeaderIcons i:hover {
     color: #36558f;  
+    
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown{
+  background-color: #0d0630;
 }
 
 
@@ -73,4 +70,19 @@ html, body{
   border-radius:3px;
 }
 
+.col-1{
+  margin:0%;
+}
+.navbar-brand {
+  padding: 0%;
+  float: left;
+}
 
+
+.mr-auto{
+  margin-left: 3%;
+}
+
+.ml-auto{
+  margin-right: 3%;
+}
