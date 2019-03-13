@@ -19,8 +19,8 @@ html, body{
 .newPeeHeader img{
     margin: 0%;
     padding: 0%;
-    width: 3%;
-    height: auto;
+    height: 80%;
+    width: auto;
     border: 2px solid #36558f;
     border-radius: 20%;
 }
@@ -29,19 +29,18 @@ html, body{
     color: white;
 }
 
-
-
 /*Resize the wrap to see the search bar change!*/
-
-
 .newPeeHeaderIcons{
-  width: 10%;
+  display: flex;
+  margin-right: 5%;
 }
 
 .newPeeHeaderIcons i{
-    padding:2%;
-    color: white;  
-    font-size: 28px;
+  flex: 50%;
+  margin-left: 20%;
+  color: white;  
+  font-size: 28px;
+  display: inline-block;
 }
 
 .newPeeHeaderIcons i:hover{
@@ -49,13 +48,15 @@ html, body{
 }
 
 
+
 .search {
-  padding: 5px 0;
+  display:block;
   width: 30%;
   position: relative;
   left: 10px;
   float: left;
   line-height: 22px;
+  clear: both;
 }
 
 .form-control{
@@ -63,10 +64,11 @@ html, body{
 }
 
 .search button {
+  float: right;
   height: 30px;
   position: absolute;
   right: 0;
-  top: 5px;
+  top:0;
   border-radius:3px;
 }
 
