@@ -85,7 +85,7 @@ element.addEventListener('submit', event => {
 
     $.ajax({
         type: "POST",
-        url: "/posts/",
+        url: "/api/posts/",
         data : { 
             title : post_title,
             author : 'hello',
