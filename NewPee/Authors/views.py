@@ -13,6 +13,9 @@ from django.core.files.storage import FileSystemStorage
 
 from Posts.models import Photo  
 
+from Posts.models import Post
+from Posts.serializers import PostSerializer
+
 
 class AuthorList(APIView):
     """
@@ -38,12 +41,17 @@ class AuthorList(APIView):
 
         if request.method == "GET":
             print("This is the request\n\n", request)
-            author = Author.objects.all()
-            serializer = AuthorSerializer(author, many=True)
+            authors = Author.objects.all()
+            author_serializer = AuthorSerializer(authors, many=True)
+            posts = Post.objects.all()
+            post_serializer = PostSerializer(posts, many=True)
             # print("This is a serializer: ", serializer)
             # print("This is the type: ", type(serializer))
             # print("This is the data inside of serializer", serializer.data)
-            return Response({'authors': serializer.data})
+            return Response({
+                'authors': author_serializer.data,
+                'posts': post_serializer.data,
+            })
 
 
     def post(self, request, format=None):

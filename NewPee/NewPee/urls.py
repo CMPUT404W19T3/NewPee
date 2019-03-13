@@ -31,13 +31,17 @@ urlpatterns = [
     path('login/', log_in),
     path('signup/', sign_up),
     path('header/', header),
+
+    # Author API
     path('Authors/', api_views.Author_list),
     path('Authors/<uuid:pk>', api_views.Author_detail),
-    path('posts/', PostList.as_view()),
-    path('Posts/<uuid:pk>', api_views.post_detail),
-    path('home/', AuthorList.as_view()),
-    path('post_created/', create_post)
 
+    # Posts API
+    path('api/posts/', PostList.as_view()),
+    path('api/posts/<uuid:pk>', PostDetail.as_view()),
+
+    # Home 
+    path('home/', AuthorList.as_view()),
 ]
 
 # https://docs.djangoproject.com/en/2.1/topics/http/urls/
