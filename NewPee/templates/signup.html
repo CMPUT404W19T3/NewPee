@@ -28,8 +28,13 @@
             <div class="card-body">
             <form name ="user_creation" method="post">
                 {% csrf_token %}
+                {{ form.errors }}
+
+                <!---
                 <div class="input-group form-group">
-                    <input type="text" class="form-control" placeholder="First Name *">
+
+                <input type="text" class="form-control" placeholder="First Name *">
+                    {{form.first_name}}
                 </div>
                 <div class="input-group form-group">
                     <input type="text" class="form-control" placeholder="Last Name *">
@@ -49,6 +54,53 @@
                 <div class="form-group">
                     <input type="submit" value="Create Account" class="btn float-right signup_btn">
                 </div>
+
+            -->
+
+            <!--- Moved to django forms, so python can read in the forms and clean the data-->
+
+
+            <table>
+                {{form.as_table}}
+            </table>
+
+
+
+            <!-- In case moved wanted more custom control of the forms fields. 
+            <div class="input-group form-group" >
+                <label for="{{ form.first_name.id_for_label }}">First Name:</label>
+                <div class="form-control">
+                {{form.first_name}}
+                </div>
+            </div>
+
+            <div class="input-group form-group">
+                <label for="{{ form.last_name.id_for_label }}">Last Name:</label>
+                {{form.last_name}}
+            </div>
+
+            <div class="input-group form-group">
+                 <label for="{{ form.username.id_for_label }}">Username:</label>
+                {{form.username}}
+            </div>
+
+            <div class="input-group form-group">
+                <label for="{{ form.email.id_for_label }}">Email:</label>
+                {{form.email}}
+            </div>
+
+            <div class="input-group form-group">
+                <label for="{{ form.password.id_for_label }}">Username:</label>
+                {{form.password}}
+                </div>
+            -->
+            <div class="form-group">
+                    <input type="submit" value="Create Account" class="btn float-right signup_btn">
+                </div>
+            
+
+
+
             </form>
             </div>
         </div>

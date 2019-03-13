@@ -1,10 +1,32 @@
 
 
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
-class UserNameForm(forms.Form):
-    username = forms.CharField(label="username", max_length=100)
+class UserNameForm(UserCreationForm):
+    #username = forms.CharField(label="username", max_length=100, 
+    #                widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+
+    #password = forms.CharField(label="password", max_length=100,
+    #                widget=forms.TextInput(attrs={'placeholder': 'password'}))
+
+    first_name = forms.CharField(label="First Name", max_length=100,
+                    widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
+
+    last_name = forms.CharField(label="Last Name", max_length=100,
+                    widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
+
+    email = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+
+
+
+
 
 class postTitleForm(forms.Form):
     post_title = forms.CharField(label="username", max_length=100)
