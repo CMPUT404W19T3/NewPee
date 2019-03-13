@@ -30,7 +30,7 @@ urlpatterns = [
     # Login, Signup and Logout
     # path('',log_in), Root should be home if user is logged in
     #path('login/', log_in),
-    url( r'^login/$',auth_views.LoginView.as_view(), name="login"),    
+    url( r'^login/$',auth_views.LoginView.as_view(), name="login"),
     path('signup/', sign_up),
 
     # Admin
@@ -50,10 +50,10 @@ urlpatterns = [
     path('api/posts/', PostList.as_view()),
     path('api/posts/<uuid:pk>', PostDetail.as_view()),
 
-    # Home 
+    # Home
     path('home/', AuthorList.as_view(), name="home"),
-    path('logout/', logout_view),
-    
+    path('logout/', logout_view, name="logout"),
+
 
 
 ]
