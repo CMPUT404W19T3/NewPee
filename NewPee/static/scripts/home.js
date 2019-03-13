@@ -25,7 +25,7 @@ let posts = getPosts();
 const element = document.querySelector("#post_creation_submit")
 
 
-https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
+//https:docs.djangoproject.com/en/dev/ref/csrf/#ajax
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -63,6 +63,7 @@ element.addEventListener('submit', event => {
     var post_content = document.querySelector("#post-comment-content").value;
     var post_description = document.querySelector("#post-comment-description").value;
     var radioButtons = document.getElementsByName("friends-radio-option");
+    console.log(radio_value);
 
 
     var radio_value;
@@ -74,8 +75,17 @@ element.addEventListener('submit', event => {
     }
 
 
-    console.log(radio_value);
+    var data = JSON.stringify({ 
+        title : post_title,
+        author : 'hello',
+        content : post_content,
+        description : post_description,
+        csrfmidddlewaretoken: csrftoken,
+        privacy : radio_value,
 
+    });
+
+    console.log(data);
 
 
 
@@ -86,23 +96,18 @@ element.addEventListener('submit', event => {
     $.ajax({
         type: "POST",
         url: "/api/posts/",
-        data : { 
-            title : post_title,
-            author : 'hello',
-            content : post_content,
-            description : post_description,
-            csrfmidddlewaretoken: csrftoken,
-            privacy : radio_value,
-
-        },
-
-
-
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        data : data,
         success : function(json) {
             $("#request-access").hide();
             console.log("requested access complete");
-
+        },
+        error: function (e) {
+                    
+            console.log("ERROR: ", e);
         }
+        
     })
 });
 
