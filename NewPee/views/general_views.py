@@ -6,5 +6,5 @@ from django.shortcuts import render
 def header(request, format=None):
     return render(request, 'header.html', {})
   
-def homepage(request, format=None):
+def home(request, format=None):
     return render(request, 'homepage.html', {})

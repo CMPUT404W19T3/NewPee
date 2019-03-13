@@ -1,0 +1,134 @@
+{% extends 'header.html' %}
+{% load rest_framework %}
+{% load static %}
+
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/home.css' %}" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script src="{% static 'scripts/home.js' %}"></script>
+
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="col-11 row m-4">
+
+        <!--left column-->
+        <div class="col-3 mx-auto">
+            <div class="profile-pic">
+                {% if user.picture %}
+                    <img src="{{user.picture}}" alt="profile picture">
+                {% else %}
+                    <img src="{% static 'imgs/logo.png' %}" alt="profile picture">
+                {% endif %}
+            </div>
+            <div class="username">
+                <p>{{user.username}}</p>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    {% if user.posts_created %}
+                        <p>{{user.posts_created}}</p>
+                    {% else %}
+                        <p>0</p>
+                    {% endif %}
+                    <p>posts</p>
+                </div>
+                <div class="stat">
+                    {% if user.following %}
+                        <p>{{user.following}}</p>
+                    {% else %}
+                        <p>fake</p>
+                    {% endif %}
+                    <p>followers</p>
+                </div>
+                <div class="stat">
+                    {% if user.following %}
+                        <p>{{user.following}}</p>
+                    {% else %}
+                        <p>0</p>
+                    {% endif %}
+                    <p>following</p>
+                </div>
+            </div>
+            {% if user.bio %}
+                <p>{{user.bio}}</p>
+            {% endif %}
+            {% if user.github_url %}
+                <a href="{{user.github_url}}">{{user.github_url}}</a>
+            {% endif %}
+            <hr>
+            <button type="button" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
+            {% include "./edit_profile_modal.html" %}
+        </div> 
+
+        <!--right column-->
+        <div class="col-9 mx-auto">
+            <div class="posting-outter">
+                <div class="posting">
+                   
+                    <input type="text" id="post-title" class="form-control mb-2" placeholder="Title">
+                    <textarea class="form-control mb-2" rows="2" id="post-comment-description" placeholder="Write your description here."></textarea>
+                    <textarea class="form-control mb-2" rows="4" id="post-comment-content" placeholder="Write your content here."></textarea>  
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="friends-radio-option" id="PrivatePrivacy" value="private">
+                        <label class="form-check-label" for="private-radio-option">Private</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="friends-radio-option" id="FriendsPrivay" value="friends">
+                        <label class="form-check-label" for="friends-radio-option">Friends</label>
+                    </div>
+                        
+                    
+                    <div class="file_upload">
+                        <form method="post" enctype="multipart/form-data" data-ajax="false">
+                          {% csrf_token %}
+                          <input type="file" name="myfile" onchange="getFileData(this)">
+                          <button type="submit" id = "btnfileupload" class="btn btn-primary">upload file</button>
+                            
+                        </form>
+                    </div>
+                      
+                    {% if uploaded_file_url %}
+                        <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+                    {% endif %}
+
+                    <br>
+                    <br>
+
+                    <!-- home.js handles form submission-->
+                    <form id="post_creation_submit">
+                    <button type="submit" class ="btn btn-primary">Post</button>
+                    </form>
+
+
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    Title
+                </div>
+                <div class="card-body">
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_modal">
+                        modal
+                    </button>
+                </div>
+            </div>
+
+
+            {% include "./post_modal.html" %}
+        </div>
+
+    
+    </div>
+</div>
+
+{% endblock %}

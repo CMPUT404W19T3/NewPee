@@ -11,11 +11,20 @@ p{
     height: 100%;
 }
 
+.col-centered{
+    float: none;
+    margin: 0 auto;
+    margin-left: 0%;
+    margin-right: 0%;
+}
+
 .content{
+    display: inline-block;
     box-sizing: border-box;
-    width: 80%;
+    width: 900px;
     height: 100%;
     margin-top:2%;
+    margin: auto;
 }
 
 .fileupload{
@@ -24,43 +33,19 @@ p{
     
 }
 
-.profile{
-    display:block;
-    box-sizing: border-box;
-    float: left;
-    width: 27%;
-    height: 100%;
-    border-radius: 10px;
-    padding-left:2%;
-    padding-right:2%;
-    word-wrap: break-word;
-}
-
-.stream{
-    display:block;
-    box-sizing: border-box;
-    float: right;
-    width: 73%;
-    height: 100%;
-    border-radius: 10px;
-    text-align: center;
-    word-wrap: break-word;
+.profile-pic{
     padding: 0%;
-}
-
-.profilePic{
-    padding: 0%;
-    width: 100%;
-    height: 30%;
+    width:100%;
+    height: auto;
     border:1px solid grey;
     border-radius: px;
 }
 
-.profilePic img{
+.profile-pic img{
     margin: 0%;
     padding: 0%;
-    width: 100%;
-    height: 100%;
+    width:100%;
+    height: 200px;
     object-fit: cover;
 }
 
@@ -72,23 +57,33 @@ p{
 }
 
 .stats{
+    width: 100%;
     margin-top: 5% ;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5%;
+    margin-bottom: 5%;  
+}
+
+.stat {
+    width: 30%;
+    float: none;
+    margin:0%;
+    word-wrap: break-word;
 }
 
 .stat p{
     font-size: 12pt;
     text-align: center;
+    margin: 0%;
 }
 
-.postingOutter{
+.posting-outter{
     padding: 1% 2% 1% 2%;
     width: 100%;
     height: 350px;
     border:1px solid grey;
     border-radius: 5px;
+    margin-bottom: 15px;
 }
 
 
@@ -106,4 +101,13 @@ p{
 #btnfileupload {
     float: left;
 
+}
+
+.card{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+textarea {
+    resize: none;
 }
