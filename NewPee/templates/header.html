@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NewPee</title>
+        <link rel="shortcut icon" type="image/png" href="{% static 'Logo.png' %}" sizes="16x16" />
+        <link rel="stylesheet" type="text/css" href="{% static 'header.css' %}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        {% block head %}{% endblock %}
+    <body>
+        
+        <div class="newPeeHeader">
+            <img src="{% static 'Logo.png' %}" alt="Logo">
+            {% comment %} https://codepen.io/anon/pen/gELjKx {% endcomment %}
+            
+            <div class="search">
+                <input type="text" class="form-control input-sm" maxlength="64" placeholder="Search by author or keywords" />
+                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i></button>
+            </div>
+
+            <span class="newPeeHeaderIcons">
+                <i class="fas fa-home"></i>
+                <i class="fas fa-bell"></i>
+                <i class="fas fa-caret-down"></i>
+            </span>
+            
+            
+            
+        </div> 
+
+
+        {% block content %}
+        {% endblock %}
+        
+    </body>
+</html>

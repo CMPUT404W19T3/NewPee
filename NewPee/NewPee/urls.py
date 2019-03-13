@@ -14,8 +14,41 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls import include, url
 from django.urls import path
+from views.general_views import header, homepage
+from templates.views.author_views import log_in, sign_up, create_post
+from views import api_views
+from Authors.views import AuthorList
+from Posts.views import PostList, PostDetail
+from rest_framework.urlpatterns import format_suffix_patterns
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
+    path('',log_in),
     path('admin/', admin.site.urls),
+    path('login/', log_in),
+    path('signup/', sign_up),
+    path('header/', header),
+
+    # Author API
+    path('Authors/', api_views.Author_list),
+    path('Authors/<uuid:pk>', api_views.Author_detail),
+
+    # Posts API
+    path('api/posts/', PostList.as_view()),
+    path('api/posts/<uuid:pk>', PostDetail.as_view()),
+
+    # Home 
+    path('home/', AuthorList.as_view()),
 ]
+
+# https://docs.djangoproject.com/en/2.1/topics/http/urls/
+# https://www.django-rest-framework.org/api-guide/format-suffixes/
+
+
+urlpatterns = format_suffix_patterns(urlpatterns)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

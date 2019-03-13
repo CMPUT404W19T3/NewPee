@@ -9,3 +9,6 @@ CMPUT 404 Project, Winter 2019
 * [Extending User Model](https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html
 )
 * [Customizing User Model](https://docs.djangoproject.com/en/2.0/topics/auth/customizing/#using-a-custom-user-model-when-starting-a-project)
+* [Adding icons](https://fontawesome.com/start)
+* [Adding search box in the header](http://code-chunk.com/chunks/5746559c9acf7/simple-html-css-search-box)
+

@@ -1,0 +1,92 @@
+
+@import url('https://fonts.googleapis.com/css?family=Martel Sans');
+
+html, body {
+    background-color: #0d0630;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    font-family: 'Martel Sans';
+}
+
+.container{
+    height: 100%;
+    align-content: center;
+    }
+
+.card-header {
+    color: #8bbeb2;
+    border-bottom: 1px solid #36558f;
+}
+
+.card{
+    height: 25rem;
+    margin-top: 50px;
+    margin-bottom: auto;
+    width: 32rem;
+    background-color: rgba(24, 49, 79) !important;
+    border: 2px solid rgba(54, 85, 143);
+}
+
+.form-control {
+    background: #e6f9af;
+    margin-right: 3rem;
+}
+
+.input-group-prepend span{
+    width: 50px;
+    background-color: #8bbeb2;
+    color: black;
+    border:0 !important;
+    margin-left: 3rem;
+}
+
+.input-group {
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+}
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 29.7925rem;
+    height: 21.08rem;
+}
+
+.login_btn{
+    color: #18314f;
+    background-color: #8bbeb2;
+    width: 7rem;
+    display: block;
+    margin-right: 3rem;
+    margin-top: 1.2rem;
+    margin-bottom: auto;
+}
+
+.login_btn:hover{
+    color: #18314f;
+    background-color: #e6f9af;
+}
+
+.links{
+    color: white;
+}
+
+.links a{
+    margin-left: 4px;
+}
+
+.signup {
+    color: #e6f9af;
+    text-decoration: underline;
+}
+
+.signup:hover {
+    color: #36558f;
+}
+
+.card-footer {
+    border-top: 1px solid #36558f;
+    font-size: 1.25rem;
+}
