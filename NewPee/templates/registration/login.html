@@ -1,0 +1,63 @@
+{% block content %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}static/login.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" />
+    <link rel="shortcut icon" href="{{STATIC_URL}}./static/favicon.ico">
+    <title>NewPee Login</title>
+  </head>
+  <body>
+    <img class="logo" src="{{STATIC_URL}}static/NewPee.png">
+    <div class="container">
+      <div class="d-flex justify-content-center h-100">
+        <div class="card">
+          <div class="card-header">
+            <h3>Log In</h3>
+          </div>
+          <div class="card-body">
+            <form name = "get_user" method="POST"> {% csrf_token %}
+
+              <!--
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i style="max-width:100%;" class="fas fa-user-graduate fa-lg"></i></span>
+                </div>
+                  <input type="text" class="form-control" placeholder="Username">
+                </div>
+              <div class="input-group form-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i style="max-width: 100%" class="fas fa-key fa-lg"></i></span>
+                </div>
+                <input type="password" class="form-control" placeholder="Password">
+              </div>
+              <div class="form-group">
+                <input type="submit" value="Login" class="btn float-right login_btn">
+              </div>
+              -->
+
+              {{ form.as_p}}
+              <button type="submit">Login</button>
+
+            </form>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex justify-content-center links" style="color: #8bbeb2">
+              Don't have an account?<a class="signup" href="/signup/">Sign Up</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+{% endblock %}

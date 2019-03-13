@@ -34,6 +34,7 @@ html, body {
 .form-control {
     background: #e6f9af;
     margin: 1rem 3rem 1rem 3rem;
+    display: block;
 }
 
 .logo {
@@ -78,4 +79,9 @@ html, body {
 
 .card-footer {
     border-top: 1px solid #36558f;
+    
+}
+
+input, label {
+    display:block;
 }

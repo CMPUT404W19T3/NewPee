@@ -17,18 +17,20 @@ from django.contrib import admin
 from django.conf.urls import include, url
 from django.urls import path
 from views.general_views import header, home
-from views.author_views import log_in, sign_up, create_post
+from views.author_views import log_in, sign_up, create_post, logout_view
 from views import api_views
 from Authors.views import AuthorList
 from Posts.views import PostList, PostDetail
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.conf.urls.static import static
 from django.conf import settings
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     # Login, Signup and Logout
     # path('',log_in), Root should be home if user is logged in
-    path('login/', log_in, name="login"),
+    #path('login/', log_in),
+    url( r'^login/$',auth_views.LoginView.as_view(), name="login"),    
     path('signup/', sign_up),
 
     # Admin
@@ -50,6 +52,10 @@ urlpatterns = [
 
     # Home 
     path('home/', AuthorList.as_view(), name="home"),
+    path('logout/', logout_view),
+    
+
+
 ]
 
 # https://docs.djangoproject.com/en/2.1/topics/http/urls/

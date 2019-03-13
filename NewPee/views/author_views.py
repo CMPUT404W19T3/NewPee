@@ -12,7 +12,11 @@ from rest_framework import status
 #from rest_framework import api_view
 from rest_framework.response import Response 
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.forms import UserCreationForm
 
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 # Create your views here.
 
@@ -112,20 +116,25 @@ def create_post(request, format=None):
 
 
 
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 
 
 def log_in(request, format=None):
 
-
         if request.method == 'POST':
 
-            username = request.POST['username']
-            password = request.POST['password']
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+
+            print(username, password)
 
             user = authenticate(request, username=username, password=password)
 
             if user is not None:
+                
                 login(request,user)
 
                 return HttpResponseRedirect('/')
@@ -144,26 +153,60 @@ def sign_up(request, format=None):
 
     if request.method == 'POST':
 
+        # form = UserNameForm(request.POST)
+        # form2 = passwordLoginForm(request.POST)
+
+        #username = request.POST.get('username')
+        #password = request.POST.get('password')
+
+
+
+        #print("Username and password accept.")
+        #print(username, password)
+
+
+        # views/forms/
+
         form = UserNameForm(request.POST)
-        form2 = passwordLoginForm(request.POST)
+
+    
+        if form.is_valid():
+
+            form.save()
+
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            print(username, raw_password)
+
+            temp_user = authenticate(username=username, password=raw_password) 
+
+            print(temp_user)
+            login(request,temp_user)
+
+            temp_user.email = "fake@gmail.com"
+
+        #username = form.cleaned_data['username']
+        #password = form2.cleaned_data['password']
 
 
-        if form.is_valid() and form2.is_valid():
 
-            username = form.cleaned_data['username']
-            password = form2.cleaned_data['password']
 
-            temp_user = User.objects.create_user(username, "fake@gmail.com", password)
+            #temp_user = User.objects.create_user(username, "fake@gmail.com", password)
 
             new_user = Author.objects.create(user=temp_user)
 
+            print("Account was created.")
 
 
-            return HttpResponseRedirect('/')
             #return HttpResponseRedirect('/thanks/')
+
+        
+            return HttpResponseRedirect("/home")
+        return HttpResponseRedirect("/signup")
+
     else:
 
         form = UserNameForm()
-        form2 = passwordLoginForm()
+        #form2 = passwordLoginForm()
 
         return render(request, 'signup.html', {'form': form})
