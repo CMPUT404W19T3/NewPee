@@ -76,14 +76,8 @@ def create_post(request, format=None):
 
             print("privacy = " + privacy)
 
-
-
-                
-
-
             #form_title = postTitleForm(request.POST)
             #form_info = postInfoForm(request.POST)
-
 
             if (title != None and description != None):
 
@@ -175,33 +169,26 @@ def sign_up(request, format=None):
             form.save()
 
             username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
+            raw_password = form.cleaned_data.get('password')
+            raw_confirm_password = form.cleaned_data.get('confirm_password')
             print(username, raw_password)
 
-            temp_user = authenticate(username=username, password=raw_password) 
+            if raw_password == raw_confirm_password:
 
-            print(temp_user)
-            login(request,temp_user)
+                temp_user = authenticate(username=username, password=raw_password) 
 
-            temp_user.email = "fake@gmail.com"
+                print(temp_user)
+                login(request,temp_user)
 
-        #username = form.cleaned_data['username']
-        #password = form2.cleaned_data['password']
+                temp_user.email = "fake@gmail.com"
 
+                new_user = Author.objects.create(user=temp_user)
 
-
-
-            #temp_user = User.objects.create_user(username, "fake@gmail.com", password)
-
-            new_user = Author.objects.create(user=temp_user)
-
-            print("Account was created.")
-
-
-            #return HttpResponseRedirect('/thanks/')
+                print("Account was created.")
 
         
-            return HttpResponseRedirect("/home")
+                return HttpResponseRedirect("/home")
+
         return HttpResponseRedirect("/signup")
 
     else:
