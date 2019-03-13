@@ -5,11 +5,6 @@ import uuid
 # Author represents a user that creates posts
 class Author(models.Model):
 
-
-
-
-
-
     # Using the default Django User model and adding additional features
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)

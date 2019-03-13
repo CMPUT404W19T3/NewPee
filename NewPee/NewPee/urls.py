@@ -16,30 +16,43 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import include, url
 from django.urls import path
-from views.general_views import header, homepage
-from templates.views.author_views import log_in, sign_up, create_post
+from views.general_views import header, home
+from views.author_views import log_in, sign_up, create_post
 from views import api_views
-from Authors import views
+from Authors.views import AuthorList
+from Posts.views import PostList, PostDetail
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('',log_in),
-    path('admin/', admin.site.urls),
+    # Login, Signup and Logout
+    # path('',log_in), Root should be home if user is logged in
     path('login/', log_in),
     path('signup/', sign_up),
-    path('header/', header),
-    path('Authors/', api_views.Author_list),
-    path('Authors/<uuid:pk>', api_views.Author_detail),
-    path('Posts/', api_views.post_list),
-    path('Posts/<uuid:pk>', api_views.post_detail),
-    path('home/', views.AuthorList.as_view()),
-    path('post_created/', create_post)
 
+    # Admin
+    path('admin/', admin.site.urls),
+
+    # Author API
+    path('api/authors/', api_views.Author_list),
+    path('api/authors/<uuid:pk>', api_views.Author_detail),
+
+    # Post API
+    path('api/posts/', api_views.post_list),
+    path('api/posts/<uuid:pk>', api_views.post_detail),
+
+    path('post_created/', create_post),
+
+    # Posts API
+    path('api/posts/', PostList.as_view()),
+    path('api/posts/<uuid:pk>', PostDetail.as_view()),
+
+    # Home 
+    path('home/', AuthorList.as_view(), name="home"),
 ]
 
-#https://docs.djangoproject.com/en/2.1/topics/http/urls/
+# https://docs.djangoproject.com/en/2.1/topics/http/urls/
 # https://www.django-rest-framework.org/api-guide/format-suffixes/
 
 

@@ -73,7 +73,7 @@
                     <br>
 
                     <!-- mainpageapp.js handles form submission-->
-                    <form id="post_creation_submit">
+                    <form id="post_creation_submit">{{ csrf_token }}
                     <button type="submit" class ="btn btn-primary">Post</button>
                     </form>
 
@@ -93,6 +93,16 @@
                     </button>
                 </div>
             </div>
+
+            {% if posts %}
+            {% for post in posts %}
+            <div class="card">
+                <div class="card-header">
+                    {{ post.title }}
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
 
 
             {% include "./modal.html" %}

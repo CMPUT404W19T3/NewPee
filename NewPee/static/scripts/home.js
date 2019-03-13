@@ -1,16 +1,26 @@
 
-
 function getFileData(myFile){
     var file = myFile.files[0];  
     var filename = file.name;
     console.log(filename);
  }
 
-
-
-
 //https://stackoverflow.com/questions/30211605/javascript-html-collection-showing-as-0-length
-$(document).ready(function(){ 
+$(document).ready(function(){
+    
+function getPosts() {
+    fetch('../api/posts')
+    .then(function(response) {
+        console.log("This is response", response);
+        return response.json();
+    })
+    .then(function(responseJSON) {
+        console.log("This is the JSON: ", responseJSON);
+        posts = responseJSON;
+    })
+}
+
+let posts = getPosts();
 
 const element = document.querySelector("#post_creation_submit")
 
@@ -40,6 +50,7 @@ element.addEventListener('submit', event => {
   event.preventDefault();
   // actual logic, e.g. validate the form
   alert('Form submission cancelled.');
+
   var csrftoken = getCookie('csrftoken');
   console.log(csrftoken);
 
@@ -74,11 +85,12 @@ element.addEventListener('submit', event => {
 
     $.ajax({
         type: "POST",
-        url: "/post_created/",
-        data : { post_title : post_title,
-            
-            post_content : post_content,
-            post_description : post_description,
+        url: "/api/posts/",
+        data : { 
+            title : post_title,
+            author : 'hello',
+            content : post_content,
+            description : post_description,
             csrfmidddlewaretoken: csrftoken,
             privacy : radio_value,
 
@@ -92,10 +104,6 @@ element.addEventListener('submit', event => {
 
         }
     })
-   
-
-
-  
 });
 
 

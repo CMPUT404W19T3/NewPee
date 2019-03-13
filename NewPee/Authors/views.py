@@ -13,63 +13,70 @@ from django.core.files.storage import FileSystemStorage
 
 from Posts.models import Photo  
 
+from Posts.models import Post
+from Posts.serializers import PostSerializer
+
+
+class AuthorDetail(APIView):
+    """
+    Retrieve, update or delete an Author.
+    """
+
+    def get(self, request, pk, *args, **kwargs):
+        if request.method == "GET":
+            author = Author.objects.get(pk=pk)
+            serializer = AuthorSerializer(author, many=True)
+            return Response({'author': serializer.data})
 
 class AuthorList(APIView):
     """
     List all Authors, or create a new Author.
     """
-    
+
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'homepage.html'
+    template_name = 'home.html'
 
     @csrf_exempt
     def get(self, request, format=None):
-
-
-
-      
-
-
-
-        if request.method == "POST":
-            return HttpResponse("Hello, world.")
-
-
-
         if request.method == "GET":
             print("This is the request\n\n", request)
-            author = Author.objects.all()
-            serializer = AuthorSerializer(author, many=True)
+            authors = Author.objects.all()
+            author_serializer = AuthorSerializer(authors, many=True)
+            posts = Post.objects.all()
+            post_serializer = PostSerializer(posts, many=True)
             # print("This is a serializer: ", serializer)
             # print("This is the type: ", type(serializer))
             # print("This is the data inside of serializer", serializer.data)
-            return Response({'authors': serializer.data})
+            return Response({
+                'authors': author_serializer.data,
+                'posts': post_serializer.data,
+            })
 
 
     def post(self, request, format=None):
 
 
-        # we are posting with an image, store it usign FileSystemStorage in our media folder.
-        if request.method == 'POST' and request.FILES['myfile']:
+        # # we are posting with an image, store it usign FileSystemStorage in our media folder.
+        # if request.method == 'POST' and request.FILES['myfile']:
 
 
-            myfile = request.FILES['myfile']
+        #     myfile = request.FILES['myfile']
 
-            # Future TODO: Possibly add it to the DB, but don't have too. 
-            try:
-                Photo.objects.create(myfile)
+        #     # Future TODO: Possibly add it to the DB, but don't have too. 
+        #     try:
+        #         Photo.objects.create(myfile)
             
-            except:
-                print("Not an image!")
+        #     except:
+        #         print("Not an image!")
 
-            print(myfile)
+        #     print(myfile)
             
-            fs = FileSystemStorage()
-            filename = fs.save(myfile.name, myfile)
-            uploaded_file_url = fs.url(filename)
-            return render(request, 'homepage.html', {
-            'uploaded_file_url': uploaded_file_url
-            })
+        #     fs = FileSystemStorage()
+        #     filename = fs.save(myfile.name, myfile)
+        #     uploaded_file_url = fs.url(filename)
+        #     return render(request, 'homepage.html', {
+        #     'uploaded_file_url': uploaded_file_url
+        #     })
             
 
 
@@ -80,5 +87,3 @@ class AuthorList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    
