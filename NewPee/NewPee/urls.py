@@ -30,7 +30,6 @@ urlpatterns = [
     # Login, Signup and Logout
     # path('',log_in), Root should be home if user is logged in
     #path('login/', log_in),
-    
     url( r'^login/$',auth_views.LoginView.as_view(), name="login"),    
     path('signup/', sign_up),
 
