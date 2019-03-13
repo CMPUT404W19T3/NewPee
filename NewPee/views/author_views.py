@@ -10,7 +10,7 @@ import json
 
 from rest_framework import status
 #from rest_framework import api_view
-from rest_framework.response import Response 
+from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.forms import UserCreationForm
 
@@ -21,8 +21,8 @@ from django.shortcuts import redirect
 # Create your views here.
 
 
-# The post is now created. 
-# TODO : May need some work? on handling the body content. 
+# The post is now created.
+# TODO : May need some work? on handling the body content.
 
 @csrf_exempt
 def create_post(request, format=None):
@@ -42,7 +42,7 @@ def create_post(request, format=None):
 
             print(body_unicode)
 
-            # Convert the body into useable info. 
+            # Convert the body into useable info.
 
             title = values[0].split('=')[1]
             title = title.split('+')
@@ -78,7 +78,7 @@ def create_post(request, format=None):
 
 
 
-                
+
 
 
             #form_title = postTitleForm(request.POST)
@@ -91,7 +91,7 @@ def create_post(request, format=None):
 
                 if privacy == "private":
                     new_post.viewers.add( request.user)
-                else: 
+                else:
 
                     # TODO: search for user friend
                     '''
@@ -118,7 +118,7 @@ def create_post(request, format=None):
 
 def logout_view(request):
     logout(request)
-    return redirect('home')
+    return redirect('/login')
 
 
 
@@ -134,7 +134,7 @@ def log_in(request, format=None):
             user = authenticate(request, username=username, password=password)
 
             if user is not None:
-                
+
                 login(request,user)
 
                 return HttpResponseRedirect('/')
@@ -169,7 +169,7 @@ def sign_up(request, format=None):
 
         form = UserNameForm(request.POST)
 
-    
+
         if form.is_valid():
 
             form.save()
@@ -178,7 +178,7 @@ def sign_up(request, format=None):
             raw_password = form.cleaned_data.get('password1')
             print(username, raw_password)
 
-            temp_user = authenticate(username=username, password=raw_password) 
+            temp_user = authenticate(username=username, password=raw_password)
 
             print(temp_user)
             login(request,temp_user)
@@ -200,7 +200,7 @@ def sign_up(request, format=None):
 
             #return HttpResponseRedirect('/thanks/')
 
-        
+
             return HttpResponseRedirect("/home")
         return HttpResponseRedirect("/signup")
 
