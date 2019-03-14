@@ -31,8 +31,8 @@
             </div>
             <div class="stats">
                 <div class="stat">
-                    {% if user.posts_created %}
-                        <p>{{user.posts_created}}</p>
+                    {% if author.posts_created %}
+                        <p>{{author.posts_created}}</p>
                     {% else %}
                         <p>0</p>
                     {% endif %}
@@ -111,31 +111,18 @@
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-header">
-                    Title
-                </div>
-                <div class="card-body">
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post_modal">
-                        modal
-                    </button>
-                </div>
-            </div>
 
 
             {% if posts %}
             {% for post in posts %}
-            <div class="card">
-                <div class="card-header">
-                    {{ post.title }}
-                </div>
-            </div>
+                {% include "./post_card_view.html" with post=post%}
+                
             {% endfor %}
             {% endif %}
+             
 
 
-            {% include "./post_modal.html" %}
+            
         </div>
 
     
