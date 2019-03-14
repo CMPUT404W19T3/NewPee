@@ -163,19 +163,23 @@ def sign_up(request, format=None):
 
         form = UserNameForm(request.POST)
 
+        print(form)
+
 
         if form.is_valid():
+
+            print("Form is valid:")
 
             form.save()
 
             username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password')
-            raw_confirm_password = form.cleaned_data.get('confirm_password')
+            raw_password = form.cleaned_data.get('password1')
+            raw_confirm_password = form.cleaned_data.get('password2')
             print(username, raw_password)
 
             if raw_password == raw_confirm_password:
 
-                temp_user = authenticate(username=username, password=raw_password) 
+                temp_user = authenticate(username=username, password=raw_password)
 
                 print(temp_user)
                 login(request,temp_user)
@@ -186,10 +190,10 @@ def sign_up(request, format=None):
 
                 print("Account was created.")
 
-        
+
                 return HttpResponseRedirect("/home")
 
-        return HttpResponseRedirect("/signup")
+        return render(request, 'signup.html', {'form': form})
 
     else:
 
