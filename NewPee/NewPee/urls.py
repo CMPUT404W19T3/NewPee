@@ -19,7 +19,7 @@ from django.urls import path
 from views.general_views import header, home
 from views.author_views import log_in, sign_up, create_post, logout_view
 from views import api_views
-from Authors.views import AuthorList
+from Authors.views import AuthorList, AuthorDetail
 from Posts.views import PostList, PostDetail
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.conf.urls.static import static
@@ -45,6 +45,7 @@ urlpatterns = [
     path('api/posts/<uuid:pk>', api_views.post_detail),
 
     path('post_created/', create_post),
+    path('friends/<uuid:pk>', AuthorDetail.as_view()),
 
     # Posts API
     path('api/posts/', PostList.as_view()),

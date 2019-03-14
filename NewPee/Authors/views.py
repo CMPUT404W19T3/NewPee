@@ -21,11 +21,19 @@ class AuthorDetail(APIView):
     """
     Retrieve, update or delete an Author.
     """
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'friends.html'
+
+    def get_object(self, pk):
+        try:
+            return Author.objects.get(pk=pk)
+        except Author.DoesNotExist:
+            raise Http404
 
     def get(self, request, pk, *args, **kwargs):
         if request.method == "GET":
-            author = Author.objects.get(pk=pk)
-            serializer = AuthorSerializer(author, many=True)
+            author = self.get_object(pk)
+            serializer = AuthorSerializer(author)
             return Response({'author': serializer.data})
 
 class AuthorList(APIView):
@@ -41,6 +49,7 @@ class AuthorList(APIView):
         if request.method == "GET":
             print("This is the request\n\n", request)
             authors = Author.objects.all()
+            print(authors)
             author_serializer = AuthorSerializer(authors, many=True)
             posts = Post.objects.all()
             post_serializer = PostSerializer(posts, many=True)

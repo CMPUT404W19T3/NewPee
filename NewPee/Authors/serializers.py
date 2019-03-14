@@ -22,6 +22,6 @@ class AuthorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Author
-        fields = ('id', 'user', 'bio', 'posts_created', 'picture', 'github_url', 'friends', 'following')
+        fields = ('id', 'user', 'bio', 'posts_created', 'picture', 'github_url', 'friends', 'following', 'followers')
         lookup_field = 'id'
 
