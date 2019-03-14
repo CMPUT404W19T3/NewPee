@@ -18,6 +18,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
+
 # Create your views here.
 
 
@@ -140,6 +141,17 @@ def log_in(request, format=None):
 
             return render(request, 'login.html', {})
 
+
+def get_author(request, format=None):
+
+
+        print(request.user)
+
+        pariedAuthor = Author.objects.get(user = request.user)
+
+        author_id = pariedAuthor.get_author_id()
+        print(author_id)
+        return HttpResponseRedirect("/authors/" + str(pariedAuthor.get_author_id()))
 
 def sign_up(request, format=None):
 

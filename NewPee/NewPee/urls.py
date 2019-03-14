@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.conf.urls import include, url
 from django.urls import path
 from views.general_views import header, home
-from views.author_views import log_in, sign_up, create_post, logout_view
+from views.author_views import log_in, sign_up, create_post, logout_view, get_author    
 from views import api_views
 from Authors.views import AuthorList
 from Posts.views import PostList, PostDetail
@@ -53,6 +53,8 @@ urlpatterns = [
     # Home
     path('home/', AuthorList.as_view(), name="home"),
     path('logout/', logout_view, name="logout"),
+
+    path('authors/', get_author),
 
 
 
