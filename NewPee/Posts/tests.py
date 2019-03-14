@@ -5,6 +5,16 @@ class PostModelTests(TestCase):
     def setUp(self):
         pass
 
+    def test_get_post_id(self):
+        test_post = Post()
+        test_id = test_post.get_id()
+        self.assertIsNotNone(test_id)
+
+    def test_get_author(self):
+        test_post = Post(author="Garfield")
+        test_author = test_post.get_author()
+        self.assertEqual(test_author, "Garfield")
+
     def test_make_private_to_me(self):
         pass
 
