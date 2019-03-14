@@ -22,19 +22,30 @@ class AuthorDetail(APIView):
     Retrieve, update or delete an Author.
     """
 
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'home.html'
+
+    def get_object(self, pk):
+        try:
+            return Author.objects.get(pk=pk)
+        except:
+            raise Http404
+
     def get(self, request, pk, *args, **kwargs):
         if request.method == "GET":
             author = Author.objects.get(pk=pk)
-            serializer = AuthorSerializer(author, many=True)
-            return Response({'author': serializer.data})
+            author_serializer = AuthorSerializer(author)
+            posts = Post.objects.all()
+            post_serializer = PostSerializer(posts, many=True)
+            return Response({
+                'author': author_serializer.data,
+                'posts': post_serializer.data,
+            })
 
 class AuthorList(APIView):
     """
     List all Authors, or create a new Author.
     """
-
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'home.html'
 
     @csrf_exempt
     def get(self, request, format=None):

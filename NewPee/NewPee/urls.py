@@ -18,7 +18,7 @@ from django.conf.urls import include, url
 from django.urls import path
 from views.author_views import log_in, sign_up, create_post, logout_view, get_author    
 from views import api_views
-from Authors.views import AuthorList
+from Authors.views import AuthorList, AuthorDetail
 from Posts.views import PostList, PostDetail
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.conf.urls.static import static
@@ -29,7 +29,7 @@ urlpatterns = [
     # Login, Signup and Logout
     # path('',log_in), Root should be home if user is logged in
     #path('login/', log_in),
-    url( r'^login/$',auth_views.LoginView.as_view(), name="login"),
+    url( r'^login/$', auth_views.LoginView.as_view(), name="login"),
     path('signup/', sign_up),
 
     # Admin
@@ -48,6 +48,9 @@ urlpatterns = [
     # Posts API
     path('api/posts/', PostList.as_view()),
     path('api/posts/<uuid:pk>', PostDetail.as_view()),
+
+    # Author page
+    path('authors/<uuid:pk>', AuthorDetail.as_view()),
 
     # Home
     path('home/', AuthorList.as_view(), name="home"),
