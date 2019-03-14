@@ -23,7 +23,7 @@
         <h3>Log In</h3>
       </div>
       <div class="card-body">
-        <form name = "get_user" method="POST"> {% csrf_token %}
+        <form name = "get_user" method="POST" action="/authors/"> {% csrf_token %}
           <div class="input-group form-group">
             <div class="input-group-prepend">
               <span class="input-group-text"><i style="max-width:100%;" class="fas fa-user-graduate fa-lg"></i></span>
