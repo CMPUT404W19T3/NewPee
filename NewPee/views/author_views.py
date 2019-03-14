@@ -18,6 +18,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
+
 # Create your views here.
 
 
@@ -141,6 +142,17 @@ def log_in(request, format=None):
             return render(request, 'login.html', {})
 
 
+def get_author(request, format=None):
+
+
+        print(request.user)
+
+        pariedAuthor = Author.objects.get(user = request.user)
+
+        author_id = pariedAuthor.get_author_id()
+        print(author_id)
+        return HttpResponseRedirect("/authors/" + str(pariedAuthor.get_author_id()))
+
 def sign_up(request, format=None):
 
 
@@ -163,19 +175,23 @@ def sign_up(request, format=None):
 
         form = UserNameForm(request.POST)
 
+        print(form)
+
 
         if form.is_valid():
+
+            print("Form is valid:")
 
             form.save()
 
             username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password')
-            raw_confirm_password = form.cleaned_data.get('confirm_password')
+            raw_password = form.cleaned_data.get('password1')
+            raw_confirm_password = form.cleaned_data.get('password2')
             print(username, raw_password)
 
             if raw_password == raw_confirm_password:
 
-                temp_user = authenticate(username=username, password=raw_password) 
+                temp_user = authenticate(username=username, password=raw_password)
 
                 print(temp_user)
                 login(request,temp_user)
@@ -186,10 +202,10 @@ def sign_up(request, format=None):
 
                 print("Account was created.")
 
-        
+
                 return HttpResponseRedirect("/home")
 
-        return HttpResponseRedirect("/signup")
+        return render(request, 'signup.html', {'form': form})
 
     else:
 
