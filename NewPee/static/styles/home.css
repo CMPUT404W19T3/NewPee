@@ -50,12 +50,18 @@ p{
 }
 
 
+
+
 .username p{
     color: #0d0630;
     font-weight: bold;
     font-size: 24pt;
 }
 
+.other-info a{
+    width: 100%;
+    word-wrap: break-word;
+}
 .stats{
     width: 100%;
     margin-top: 5% ;
