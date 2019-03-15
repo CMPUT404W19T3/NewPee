@@ -104,12 +104,8 @@ def sign_up(request, format=None):
 
                 print("Account was created.")
 
-<<<<<<< Updated upstream
-                return HttpResponseRedirect("/home")
-=======
         
                 return HttpResponseRedirect("/",)
->>>>>>> Stashed changes
 
         return render(request, 'signup.html', {'form': form})
 
