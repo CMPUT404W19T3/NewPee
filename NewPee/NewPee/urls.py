@@ -43,12 +43,8 @@ urlpatterns = [
     path('api/posts/', api_views.post_list),
     path('api/posts/<uuid:pk>', api_views.post_detail),
 
-<<<<<<< HEAD
-    # path('post_created/', create_post),
-=======
     path('friends/<uuid:pk>', AuthorDetail.as_view()),
 
->>>>>>> development
 
     # Posts API
     path('api/posts/', PostList.as_view()),
