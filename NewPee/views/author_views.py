@@ -22,6 +22,95 @@ from django.shortcuts import redirect
 # The post is now created.
 # TODO : May need some work? on handling the body content.
 
+<<<<<<< Updated upstream
+=======
+@csrf_exempt
+def create_post(request, format=None):
+
+
+        print(request.user)
+
+
+        if request.method == 'POST':
+
+            title = None
+            info = None
+
+            body_unicode = request.body.decode('utf-8')
+
+            values = body_unicode.split("&")
+
+            print(body_unicode)
+
+            # Convert the body into useable info.
+
+            title = values[0].split('=')[1]
+            title = title.split('+')
+
+            final_title = ""
+            for item in title:
+                final_title = final_title + item + " "
+
+            content = values[1].split('=')[1]
+            content =  content.split('+')
+
+            final_content = ""
+            for item in  content:
+                final_content =  final_content + item + " "
+
+
+            print("content = " + final_content)
+
+
+            description = values[2].split('=')[1]
+            description =  description.split('+')
+
+            final_description = ""
+            for item in  description:
+                final_description =  final_description + item + " "
+
+
+            print("descrption= " + final_description)
+
+            privacy = values[4].split('=')[1]
+
+            print("privacy = " + privacy)
+
+            #form_title = postTitleForm(request.POST)
+            #form_info = postInfoForm(request.POST)
+
+            if (title != None and description != None):
+
+                new_post = Post.objects.create(title= title, author = "Temp_author", description = description, content = content)
+
+                if privacy == "private":
+                    new_post.viewers.add( request.user)
+                else:
+
+                    # TODO: search for user friend
+                    '''
+                    friends = get_friend(request.user)
+
+                    for friend in friends:
+                        new_post.viewers.add(friend)
+
+                    '''
+                    pass
+
+
+
+                print(" A new post was created.")
+
+
+
+
+
+
+            return HttpResponse("?")
+
+
+
+>>>>>>> Stashed changes
 def logout_view(request):
     logout(request)
     return redirect('/login')
@@ -104,7 +193,12 @@ def sign_up(request, format=None):
 
                 print("Account was created.")
 
+<<<<<<< Updated upstream
                 return HttpResponseRedirect("/home")
+=======
+        
+                return HttpResponseRedirect("/",)
+>>>>>>> Stashed changes
 
         return render(request, 'signup.html', {'form': form})
 
