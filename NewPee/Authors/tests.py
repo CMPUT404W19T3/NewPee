@@ -8,6 +8,18 @@ class AuthorModelTests(TestCase):
         test_author_id = test_author.get_author_id()
         self.assertIsNotNone(test_author_id)
 
+    def test_friend(self):
+        friend = Author()
+        has_friend = Author()
+        has_friend.friends.add(friend)
+        self.assertIsNotNone(has_friend.get_friends())
+
+    def test_follow(self):
+        person_to_follow = Author()
+        person_following = Author()
+        person_following.follow(person_to_follow)
+        self.assertIsNotNone(person_following.get_following())
+
     def test_check_if_friend(self):
         pass
         # original_user = Author()

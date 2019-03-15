@@ -1,5 +1,5 @@
 from django.test import TestCase
-from Posts.models import Post
+from Posts.models import Post, Comment
 import datetime
 
 class PostModelTests(TestCase):
@@ -52,3 +52,8 @@ class PostModelTests(TestCase):
 class CommentModelTests(TestCase):
     def setUp(self):
         pass
+
+    def test_parent(self):
+        test_post = Post()
+        test_comment = Comment(parent=test_post)
+        self.assertEquals(test_comment.get_parent(), test_post)
