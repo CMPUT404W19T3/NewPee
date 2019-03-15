@@ -1,6 +1,7 @@
 from django.test import TestCase
 from Posts.models import Post, Comment
 import datetime
+import time
 
 class PostModelTests(TestCase):
     def setUp(self):
@@ -24,6 +25,12 @@ class PostModelTests(TestCase):
     def test_post_date(self):
         test_post = Post(post_date=datetime.datetime.now())
         self.assertIsNotNone(test_post.get_post_date())
+
+    def test_time_linear(self):
+        test_post = Post(post_date=datetime.datetime.now())
+        time.sleep(1)
+        later_time = datetime.datetime.now()
+        self.assertLess(test_post.get_post_date(), later_time)
 
     def test_make_private_to_me(self):
         pass
