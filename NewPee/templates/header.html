@@ -15,12 +15,13 @@
 
       <nav class="navbar bg-color justify-content-center">
         <a class="newPeeHeaderImg mr-auto" href="//127.0.0.1:8000/home/">
-          <img src={% static 'imgs/logo.png' %} alt="Logo" width="30" height="30" class="d-inline-block align-top">
+          <img src="{% static 'imgs/logo.png' %}" alt="Logo" width="30" height="30" class="d-inline-block align-top">
         </a>
 
         <div class="search mx-auto">
           <form>
-            <input type="text" class="form-control input-sm" maxlength="64" placeholder="Search by author or keywords" />
+            <input type="text" class="form-control input-sm" maxlength="64" placeholder="Search by author or keywords" id="ajax" list="ajax_authors"/>
+            <datalist id="ajax_authors"></datalist>
             <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i></button>
           </form>
         </div>

@@ -2,9 +2,12 @@
     <div class="card-header">
         {{ post.title }}
     </div>
-    <div class="card-body">
+        <div class="card-body">
+        <h6 class="card-subtitle mb-2 text-muted">{{ post.author}}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">{{ post.post_date}}</h6>
         <p class="card-text">{{post.description}}</p>
-    </div>
+  </div>
+   
 </div>
 
 {% include "./post_modal.html" with post=post %}

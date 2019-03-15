@@ -27,7 +27,7 @@
                 {% endif %}
             </div>
             <div class="username">
-                <p>{{user.username}}</p>
+                <p>{{author.username}}</p>
             </div>
             <div class="stats">
                 <div class="stat">
@@ -39,31 +39,34 @@
                     <p>posts</p>
                 </div>
                 <div class="stat">
-                    {% if user.following %}
-                        <p>{{user.following}}</p>
+                    {% if author.following %}
+                        <p>{{author.following}}</p>
                     {% else %}
                         <p>fake</p>
                     {% endif %}
                     <p>followers</p>
                 </div>
                 <div class="stat">
-                    {% if user.following %}
-                        <p>{{user.following}}</p>
+                    {% if author.following %}
+                        <p>{{author.following}}</p>
                     {% else %}
                         <p>0</p>
                     {% endif %}
                     <p>following</p>
                 </div>
+                
             </div>
-            {% if user.bio %}
-                <p>{{user.bio}}</p>
-            {% endif %}
-            {% if user.github_url %}
-                <a href="{{user.github_url}}">{{user.github_url}}</a>
-            {% endif %}
-            <hr>
-            <button type="button" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
-            {% include "./edit_profile_modal.html" %}
+            <div class="other-info">
+                {% if author.bio %}
+                    <p>{{author.bio}}</p>
+                {% endif %}
+                {% if author.github_url %}
+                    <a href="{{author.github_url}}">{{author.github_url}}</a>
+                {% endif %}
+                <hr>
+                <button type="button" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
+                {% include "./edit_profile_modal.html" %}
+            </div>
         </div> 
 
         <!--right column-->
@@ -111,6 +114,16 @@
                 </div>
             </div>
 
+
+            {% if posts %}
+            {% for post in posts %}
+            <div class="card">
+                <div class="card-header">
+                    {{ post.title }}
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
 
 
             {% if posts %}
