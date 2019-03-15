@@ -4,17 +4,28 @@
 {% block head %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- These libraries are required for bootstrap import -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'styles/signup.css' %}">
+
+    <!-- Favicon -->
     <link rel="shortcut icon" href="{% static 'imgs/favicon.ico' %}">
+
     <title>NewPee Sign Up</title>
 {% endblock %}
 
 {% block content %}
+
+<!-- Logo on the top of the screen -->
 <img class="logo" src="{% static 'imgs/NewPee.png' %}">
+
+<!-- This container has the input boxes for creating a profile: First Name, Last Name, Username, Email, Password -->
 <div class="container">
     <div class="d-flex justify-content-center h-100">
     <div class="card">
@@ -25,24 +36,38 @@
             <form name ="user_creation" method="post">
                 {% csrf_token %}
                 {{ form.errors }}
+
+                <!-- First Name Form and styling found in forms.py -->
                 <div class="input-group form-group">
                     {{form.first_name}}
                 </div>
+
+                <!-- Last Name Form and styling found in forms.py -->
                 <div class="input-group form-group">
                     {{form.last_name}}
                 </div>
+
+                <!-- Username Form and styling found in forms.py -->
                 <div class="input-group form-group">
                     {{form.username}}
                 </div>
+
+                <!-- Email Form and styling found in forms.py -->
                 <div class="input-group form-group">
                     {{form.email}}
                 </div>
+
+                <!-- Password Form and styling found in forms.py -->
                 <div class="input-group form-group">
-                    {{form.password}}
+                    {{form.password1}}
                 </div>
+
+                <!-- Confirm Password Form and styling found in forms.py -->
                 <div class="input-group form-group">
-                    {{form.confirm_password}}
+                    {{form.password2}}
                 </div>
+
+                <!-- Submit Button for Account Creations -->
                 <div class="form-group">
                     <input type="submit" value="Create Account" class="btn float-right signup_btn">
                 </div>

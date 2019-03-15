@@ -42,9 +42,40 @@ function getCookie(name) {
     return cookieValue;
 }
 
+// https://blog.teamtreehouse.com/creating-autocomplete-dropdowns-datalist-element
+
+// Get the <datalist> and <input> elements.
+var dataList = document.getElementById('ajax_authors');
+var input = document.getElementById('ajax');
 
 
+var delay = (function(){
+    var timer = 0;
+    return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+   };
+})();
 
+$(input).keyup(function() {
+    delay(function(){
+        fetch('../api/authors').then(function(response) {
+            return response.json();
+        }).then(function (JSONresponse) {
+            JSONresponse.forEach(function(item) {
+                    // Create a new <option> element.
+                    let option = document.createElement('option');
+                    link = document.createAttribute("value");
+                    link.value = "authors/"+String(item.id);
+                    option.setAttributeNode(link);
+                    // Set the value using the item in the JSON array.
+                    option.value = JSONresponse.user;
+                    // Add the <option> element to the <datalist>.
+                    dataList.appendChild(option);
+            })
+        })
+    }, 1000);
+});
 
 element.addEventListener('submit', event => {
   event.preventDefault();

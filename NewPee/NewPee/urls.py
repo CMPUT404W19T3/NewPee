@@ -16,8 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import include, url
 from django.urls import path
-from views.general_views import header, home
-from views.author_views import log_in, sign_up, create_post, logout_view
+from views.author_views import log_in, sign_up, logout_view, get_author    
 from views import api_views
 from Authors.views import AuthorList, AuthorDetail
 from Posts.views import PostList, PostDetail
@@ -30,7 +29,7 @@ urlpatterns = [
     # Login, Signup and Logout
     # path('',log_in), Root should be home if user is logged in
     #path('login/', log_in),
-    url( r'^login/$',auth_views.LoginView.as_view(), name="login"),
+    url( r'^login/$', auth_views.LoginView.as_view(), name="login"),
     path('signup/', sign_up),
 
     # Admin
@@ -44,16 +43,21 @@ urlpatterns = [
     path('api/posts/', api_views.post_list),
     path('api/posts/<uuid:pk>', api_views.post_detail),
 
-    path('post_created/', create_post),
     path('friends/<uuid:pk>', AuthorDetail.as_view()),
+
 
     # Posts API
     path('api/posts/', PostList.as_view()),
     path('api/posts/<uuid:pk>', PostDetail.as_view()),
 
+    # Author page
+    path('authors/<uuid:pk>', AuthorDetail.as_view()),
+
     # Home
     path('home/', AuthorList.as_view(), name="home"),
     path('logout/', logout_view, name="logout"),
+
+    path('authors/', get_author),
 
 
 

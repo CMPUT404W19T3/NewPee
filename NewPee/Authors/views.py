@@ -30,6 +30,15 @@ class AuthorDetail(APIView):
         except Author.DoesNotExist:
             raise Http404
 
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'home.html'
+
+    def get_object(self, pk):
+        try:
+            return Author.objects.get(pk=pk)
+        except:
+            raise Http404
+
     def get(self, request, pk, *args, **kwargs):
         if request.method == "GET":
             author = self.get_object(pk)
@@ -40,9 +49,6 @@ class AuthorList(APIView):
     """
     List all Authors, or create a new Author.
     """
-
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'home.html'
 
     @csrf_exempt
     def get(self, request, format=None):
