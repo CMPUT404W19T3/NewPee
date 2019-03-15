@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-
+# Naming and cleanup
 class UserNameForm(UserCreationForm):
 
     first_name = forms.CharField(label="First Name", max_length=100,
@@ -36,8 +36,13 @@ class postTitleForm(forms.Form):
 class postInfoForm(forms.Form):
     post_info = forms.CharField(label="username", max_length=100)
 
-class userLoginForm(forms.Form):
-    username = forms.CharField(label="username", max_length=100)
+# 
+class UserLoginForm(forms.Form):
+    username = forms.CharField(label="username", max_length=100,
+                    widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'form-control'}))
+
+    password = forms.CharField(label="password", max_length=100,
+                    widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'form-control'}))
 
 class passwordLoginForm(forms.Form):
     password = forms.CharField(label="username", max_length=100)

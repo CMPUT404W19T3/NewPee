@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
-from .forms import UserNameForm, postTitleForm, postInfoForm, userLoginForm, passwordLoginForm
+from .forms import UserNameForm, UserLoginForm, postTitleForm, postInfoForm, passwordLoginForm
 from Authors.models import Author
 from django.contrib.auth.models import User
 from Posts.models import Post
@@ -30,29 +30,42 @@ def log_in(request, format=None):
 
         if request.method == 'POST':
 
-            username = request.POST.get('username')
-            password = request.POST.get('password')
+            form = UserLoginForm(request.POST)
 
-            print(username, password)
+            if form.is_valid():
 
-            user = authenticate(request, username=username, password=password)
+                print("Form is valid:")
 
-            if user is not None:
+                #form.save()
 
-                login(request,user)
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password')
 
-                return HttpResponseRedirect('/')
+                user = authenticate(request, username=username, password=password)
 
-            return HttpResponse("didn't work")
+                if user is not None:
+
+                    login(request, user)
+
+                    return HttpResponseRedirect('../authors/', {'form': form})
+
+                return render(request, 'login.html', {'form': form})
+
+            else:
+                
+                return render(request, 'login.html', {})
+
         else:
 
-            return render(request, 'login.html', {})
+            form = UserLoginForm()
+
+            return render(request, 'registration/login.html', {'form': form})
 
 
 def get_author(request, format=None):
 
 
-        print(request.user)
+        print(request)
 
         pariedAuthor = Author.objects.get(user = request.user)
         author_id = pariedAuthor.get_author_id()
@@ -74,7 +87,7 @@ def sign_up(request, format=None):
         #print("Username and password accept.")
         #print(username, password)
 
-        # views/forms/
+        # views/forms/form
 
         form = UserNameForm(request.POST)
 
@@ -115,3 +128,10 @@ def sign_up(request, format=None):
         #form2 = passwordLoginForm()
 
         return render(request, 'signup.html', {'form': form})
+
+def custom_login(request):
+    print(request)
+    if request.user.is_authenticated():
+        return HttpResponseRedirect("/")
+    else:
+        return login(request)
