@@ -14,8 +14,9 @@ class Author(models.Model):
     picture = models.URLField(blank=True)
     github_url = models.URLField(blank=True)
 
-    friends = models.ManyToManyField("self", blank=True)
-    following = models.ManyToManyField("self", symmetrical=False, blank=True)
+    friends = models.ManyToManyField("self", related_name="_friends", blank=True)
+    following = models.ManyToManyField("self", related_name="_following", symmetrical=False, blank=True)
+    followers = models.ManyToManyField("self", related_name="_followers", symmetrical=False, blank=True)
 
 
     # This return is inherited from Django's built-in User
@@ -30,8 +31,40 @@ class Author(models.Model):
     # Determine what relationship an author has with another author
     # TODO: Remove from this class
 
-    def check_relationship(self, author_id):
-        pass
+    def is_friend(self, author_id):
+        """
+        Check if an author is a friend.
+        """
+        return self.friends.filter(uuid=author_id).exists()
+
+    def get_friend_models(self):
+        return self.friends
+
+    def get_friends(self):
+        """
+        Returns all local friends.
+        """
+        return self.friends.all()
+
+    def follow(self, author):
+        """
+        Follow local author.
+        """
+        self.following.add(author)
+        self.save()
+
+    def unfollow(self, author):
+        """
+        Unfollow local author.
+        """
+        self.following.remove(author)
+        self.save()
+    
+    def get_following(self):
+        """
+        Return all authors that the current author is following.
+        """
+        return self.following.all()
 
     # Return all pending friend requests
     def get_friend_request(self):
@@ -43,12 +76,4 @@ class Author(models.Model):
 
     # Remove an existing friend
     def remove_friend(self, author_id):
-        pass
-
-    # Follow an Author
-    def follow(self, author_id):
-        pass
-
-    # Unfollow an Author
-    def unfollow(self, author_id):
         pass
