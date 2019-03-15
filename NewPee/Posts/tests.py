@@ -19,8 +19,10 @@ class PostModelTests(TestCase):
 
     def test_set_image(self):
         test_post = Post()
-        test_post.set_image("https://i.ytimg.com/vi/rNxih0ikkDo/maxresdefault.jpg")
-        self.assertIsNotNone(test_post.get_image())
+        image_url = "https://i.ytimg.com/vi/rNxih0ikkDo/maxresdefault.jpg"
+        test_post.set_image(image_url)
+        # self.assertIsNotNone(test_post.get_image())
+        self.assertEqual(test_post.get_image(), image_url)
 
     def test_post_date(self):
         test_post = Post(post_date=datetime.datetime.now())
