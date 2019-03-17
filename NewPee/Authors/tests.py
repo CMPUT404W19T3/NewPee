@@ -8,6 +8,31 @@ class AuthorModelTests(TestCase):
         test_author_id = test_author.get_author_id()
         self.assertIsNotNone(test_author_id)
 
+    def test_distinct_ids(self):
+        author_1 = Author()
+        author_2 = Author()
+        self.assertNotEqual(author_1.get_author_id(), author_2.get_author_id())
+
+    def test_friend(self):
+        friend = Author()
+        has_friend = Author()
+        has_friend.friends.add(friend)
+        self.assertIsNotNone(has_friend.get_friends())
+
+    def test_is_friend(self):
+        pass
+        # friend_1 = Author()
+        # friend_2 = Author()
+        # friend_1.friends.add(friend_2)
+        # friend_2.friends.add(friend_1)
+        # self.assertTrue(friend_1.is_friend(friend_2.get_author_id()))
+
+    def test_follow(self):
+        person_to_follow = Author()
+        person_following = Author()
+        person_following.follow(person_to_follow)
+        self.assertIsNotNone(person_following.get_following())
+
     def test_check_if_friend(self):
         pass
         # original_user = Author()
