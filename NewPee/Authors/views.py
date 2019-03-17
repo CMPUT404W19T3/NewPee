@@ -1,13 +1,14 @@
 from Authors.models import Author
 from Authors.serializers import AuthorSerializer
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
+from views.forms import SearchForm
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.views.decorators.csrf import csrf_exempt
 
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
@@ -33,17 +34,21 @@ class AuthorDetail(APIView):
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'home.html'
 
-    def get_object(self, pk):
-        try:
-            return Author.objects.get(pk=pk)
-        except:
-            raise Http404
-
     def get(self, request, pk, *args, **kwargs):
         if request.method == "GET":
             author = self.get_object(pk)
             serializer = AuthorSerializer(author)
-            return Response({'author': serializer.data})
+            form = SearchForm()
+            print("\n\nSEARCH:", request.GET.get('search'))
+            search = request.GET.get('search')
+            
+            if search:
+                authors = Author.objects.filter(displayName__icontains = search)
+                print("This is the authors", authors)
+                return Response({'authors': authors, 'form': form, 'search': search}, template_name='search.html')
+
+            return Response({'author': serializer.data, 'form': form, 'search': search})
+            
 
 class AuthorList(APIView):
     """
