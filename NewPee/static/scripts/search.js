@@ -6,5 +6,5 @@ function getPosts(searchTerm) {
 }
 
 function getAuthors(searchTerm) {
-    var promise = fetch('../api.authors');
+    var promise = fetch('../api/authors');
 }
