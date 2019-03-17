@@ -113,7 +113,7 @@ def sign_up(request, format=None):
                 login(request,temp_user)
 
                 temp_user.email = "fake@gmail.com"
-                new_user = Author.objects.create(user=temp_user)
+                new_user = Author.objects.create(user=temp_user, displayName=temp_user.username)
 
                 print("Account was created.")
 

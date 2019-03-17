@@ -8,7 +8,7 @@ class Author(models.Model):
     # Using the default Django User model and adding additional features
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
+    displayName = models.CharField(max_length=15)
     bio = models.TextField(max_length=500, blank=True)
     posts_created = models.PositiveIntegerField(default=0)  # correspond to a unique_id
     picture = models.URLField(blank=True)

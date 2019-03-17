@@ -15,7 +15,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     '''
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
+    displayName = models.CharField(max_length=15)
     bio = models.TextField(max_length=500, blank=True)
     posts_created = models.PositiveIntegerField(default=0)  # correspond to a unique_id
     picture = models.URLField(blank=True)
@@ -28,6 +28,6 @@ class AuthorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Author
-        fields = ('id', 'user', 'bio', 'posts_created', 'picture', 'github_url', 'friends', 'following', 'followers')
+        fields = ('id', 'user', 'displayName', 'bio', 'posts_created', 'picture', 'github_url', 'friends', 'following', 'followers')
         lookup_field = 'id'
 
