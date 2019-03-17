@@ -39,7 +39,7 @@ class postInfoForm(forms.Form):
 # 
 class UserLoginForm(forms.Form):
     username = forms.CharField(label="username", max_length=100,
-                    widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'form-control'}))
+                    widget=forms.TextInput(attrs={'placeholder': 'Username',  'class': 'form-control'}))
 
     password = forms.CharField(label="password", max_length=100,
                     widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'form-control'}))
