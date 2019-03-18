@@ -31,27 +31,15 @@
             </div>
             <div class="stats">
                 <div class="stat">
-                    {% if author.posts_created %}
-                        <p>{{author.posts_created}}</p>
-                    {% else %}
-                        <p>0</p>
-                    {% endif %}
+                    <p>{{author.posts_created}}</p>
                     <p>posts</p>
                 </div>
                 <div class="stat">
-                    {% if author.following %}
-                        <p>{{author.following}}</p>
-                    {% else %}
-                        <p>fake</p>
-                    {% endif %}
+                    <p>{{author.following|length}}</p>
                     <p>followers</p>
                 </div>
                 <div class="stat">
-                    {% if author.following %}
-                        <p>{{author.following}}</p>
-                    {% else %}
-                        <p>0</p>
-                    {% endif %}
+                    <p>{{author.following|length}}</p>
                     <p>following</p>
                 </div>
                 
