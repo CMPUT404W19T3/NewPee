@@ -48,13 +48,15 @@ urlpatterns = [
     # Search 
     path('search/', get_authors, name="search"),
 
-
     # Posts API
     path('api/posts/', PostList.as_view()),
     path('api/posts/<uuid:pk>', PostDetail.as_view()),
 
     # Author page
     path('authors/<uuid:pk>', AuthorDetail.as_view()),
+
+    # Post Modal View
+    path('posts/<uuid:pk>', PostDetail.as_view()),
 
     # Home
     path('home/', AuthorList.as_view(), name="home"),
