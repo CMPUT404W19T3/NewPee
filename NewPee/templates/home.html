@@ -9,7 +9,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <script src="{% static 'scripts/home.js' %}"></script>
-
+<script src="{% static 'scripts/home.js' %}"></script>
 
 {% endblock %}
 
@@ -102,10 +102,10 @@
                 </div>
             </div>
 
-          
+
             {% if posts %}
             {% for post in posts %}
-                {% include "./post_card_view.html" with post=post %}
+                {% include "./post_card_view.html" with post=post%}
                 
             {% endfor %}
             {% endif %}
