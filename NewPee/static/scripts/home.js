@@ -18,9 +18,61 @@ function getPosts() {
         console.log("This is the JSON: ", responseJSON);
         posts = responseJSON;
     })
+    
 }
 
 let posts = getPosts();
+
+var author_url = location.pathname;
+console.log(author_url);
+var author_api_url = "/api" + author_url;
+console.log(author_api_url);
+var csrftoken = getCookie('csrftoken');
+console.log(csrftoken);
+
+
+
+
+function updateNumPostGet(){
+    $.ajax({
+        type: "GET",
+        url: author_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        success : function(json) {
+            author = json;
+            console.log(author);
+            author.posts_created += 1;
+            var numOfPost = "{'posts_created' :'" + author.posts_created.toString() + "'}";
+            console.log(JSON.stringify(numOfPost));
+            updateNumPostPut(numOfPost);
+            console.log(author);
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+};
+
+function updateNumPostPut(numOfPost){
+    $.ajax({
+        type: "PATCH",
+        url: author_api_url,
+        headers:{"X-CSRFToken": csrftoken},
+        data: (JSON.stringify(numOfPost)), 
+        success : function(json) {
+            console.log(json);
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+};
+    
+
+
 
 const element = document.querySelector("#post_creation_submit")
 
@@ -79,11 +131,8 @@ $(input).keyup(function() {
 
 element.addEventListener('submit', event => {
   event.preventDefault();
-  // actual logic, e.g. validate the form
-  alert('Form submission cancelled.');
 
-  var csrftoken = getCookie('csrftoken');
-  console.log(csrftoken);
+  
 
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     console.log("button clicked");
@@ -104,6 +153,8 @@ element.addEventListener('submit', event => {
             radio_value = radioButtons[i].value;
         }
     }
+
+    
 
 
     var data = JSON.stringify({ 
@@ -133,13 +184,19 @@ element.addEventListener('submit', event => {
         success : function(json) {
             $("#request-access").hide();
             console.log("requested access complete");
+            updateNumPostGet();
+
         },
         error: function (e) {
                     
             console.log("ERROR: ", e);
         }
         
-    })
+    });
+
+    
+    
+    
 });
 
 
