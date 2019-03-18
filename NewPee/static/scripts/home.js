@@ -127,6 +127,19 @@ $(input).keyup(function() {
     }, 1000);
 });
 
+$('a[data-toggle="modal"]').click(function(){
+    window.location.hash ="khkhajge";
+});
+
+function revertToOriginalURL() {
+    var original = window.location.href.substr(0, window.location.href.indexOf('#'))
+    history.replaceState({}, document.title, original);
+}
+
+$('.modal').on('hidden.bs.modal', function () {
+    revertToOriginalURL();
+});
+
 const elementMakePost = document.querySelector("#post_creation_submit");
 
 elementMakePost.addEventListener('submit', event => {
