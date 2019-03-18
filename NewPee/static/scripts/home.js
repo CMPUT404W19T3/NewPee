@@ -43,10 +43,10 @@ function updateNumPostGet(){
             author = json;
             console.log(author);
             author.posts_created += 1;
-            var numOfPost = "{'posts_created' :'" + author.posts_created.toString() + "'}";
+            var numOfPost = {posts_created : author.posts_created.toString()};
             console.log(JSON.stringify(numOfPost));
-            updateNumPostPut(numOfPost);
-            console.log(author);
+            updateNumPostPut(JSON.stringify(numOfPost));
+            console.log(author);      
             $("#request-access").hide();
         },
         error: function (e) {      
@@ -56,11 +56,13 @@ function updateNumPostGet(){
 };
 
 function updateNumPostPut(numOfPost){
+    console.log(numOfPost);
     $.ajax({
         type: "PATCH",
         url: author_api_url,
+        contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
-        data: (JSON.stringify(numOfPost)), 
+        data: (numOfPost), 
         success : function(json) {
             console.log(json);
             $("#request-access").hide();
