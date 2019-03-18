@@ -33,7 +33,7 @@ def Author_list(request, format=None):
 
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PUT', 'DELETE','PATCH'])
 def Author_detail(request, pk, format= None):
     """
     Retrieve, update or delete an Author.
@@ -49,6 +49,13 @@ def Author_detail(request, pk, format= None):
 
     elif request.method == 'PUT':
         serializer = AuthorSerializer(author, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'PATCH':
+        serializer = AuthorSerializer(author, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

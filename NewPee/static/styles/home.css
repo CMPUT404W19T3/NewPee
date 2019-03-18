@@ -75,6 +75,7 @@ p{
     float: none;
     margin:0%;
     word-wrap: break-word;
+    justify-content: space-between;
 }
 
 .stat p{

@@ -18,11 +18,61 @@ function getPosts() {
         console.log("This is the JSON: ", responseJSON);
         posts = responseJSON;
     })
+    
 }
 
 let posts = getPosts();
 
-const element = document.querySelector("#post_creation_submit")
+var author_url = location.pathname;
+var author_uuid = author_url.split("/")[2];
+var author_api_url = "/api" + author_url;
+
+var csrftoken = getCookie('csrftoken');
+console.log(csrftoken);
+
+
+
+
+function updateNumPostGet(){
+    $.ajax({
+        type: "GET",
+        url: author_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        success : function(json) {
+            author = json;
+            console.log(author);
+            author.posts_created += 1;
+            var numOfPost = {posts_created : author.posts_created.toString()};
+            console.log(JSON.stringify(numOfPost));
+            updateNumPostPut(JSON.stringify(numOfPost));
+            console.log(author);      
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+};
+
+function updateNumPostPut(numOfPost){
+    console.log(numOfPost);
+    $.ajax({
+        type: "PATCH",
+        url: author_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        data: (numOfPost), 
+        success : function(json) {
+            console.log(json);
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+};
+    
 
 
 //https:docs.djangoproject.com/en/dev/ref/csrf/#ajax
@@ -77,18 +127,26 @@ $(input).keyup(function() {
     }, 1000);
 });
 
-element.addEventListener('submit', event => {
+$('a[data-toggle="modal"]').click(function(){
+    window.location.hash ="khkhajge";
+});
+
+function revertToOriginalURL() {
+    var original = window.location.href.substr(0, window.location.href.indexOf('#'))
+    history.replaceState({}, document.title, original);
+}
+
+$('.modal').on('hidden.bs.modal', function () {
+    revertToOriginalURL();
+});
+
+const elementMakePost = document.querySelector("#post_creation_submit");
+
+elementMakePost.addEventListener('submit', event => {
   event.preventDefault();
-  // actual logic, e.g. validate the form
-  alert('Form submission cancelled.');
-
-  var csrftoken = getCookie('csrftoken');
-  console.log(csrftoken);
-
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     console.log("button clicked");
     var request_data = "Data"; // TODO: include all post data
-
 
     var post_title = document.querySelector("#post-title").value;
     var post_content = document.querySelector("#post-comment-content").value;
@@ -105,10 +163,9 @@ element.addEventListener('submit', event => {
         }
     }
 
-
     var data = JSON.stringify({ 
         title : post_title,
-        author : 'hello',
+        author : author_uuid,
         content : post_content,
         description : post_description,
         csrfmidddlewaretoken: csrftoken,
@@ -117,9 +174,6 @@ element.addEventListener('submit', event => {
     });
 
     console.log(data);
-
-
-
 
     // Goes to post_created
     // author.view post_created view
@@ -133,17 +187,55 @@ element.addEventListener('submit', event => {
         success : function(json) {
             $("#request-access").hide();
             console.log("requested access complete");
+            updateNumPostGet();
+
         },
         error: function (e) {
                     
             console.log("ERROR: ", e);
         }
         
-    })
+    });
 });
 
+const elementUpdateProfile = document.querySelector("#edit_profile_submit");
+elementUpdateProfile.addEventListener('submit', event => {
+    event.preventDefault();
+    $('#edit_profile_modal').modal('hide');
+    var newDisplayName = document.querySelector("#author-display-name").value;
+    var newBio = document.querySelector("#author-bio").value;
+    var newGitHubURL = document.querySelector("#author-github").value;
+    
+    var data = {}
+    if (newDisplayName){
+        data["displayName"] = newDisplayName;
+    }
+    if (newBio){
+        data["bio"] = newBio;
+    }
+    if (newGitHubURL){
+        data["github_url"] = newGitHubURL;
+    }
 
-});
+    
+
+    console.log(JSON.stringify(data));
 
 
+    $.ajax({
+        type: "PATCH",
+        url: author_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        data: JSON.stringify(data), 
+        success : function(json) {
+            console.log(json);
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
 
+});  
+});  
