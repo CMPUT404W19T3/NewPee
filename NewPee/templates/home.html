@@ -52,7 +52,17 @@
                     <a href="{{author.github_url}}">{{author.github_url}}</a>
                 {% endif %}
                 <hr>
+
+
+                {% if author.user.username == user.username %}
                 <button type="button" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
+                {% else %}
+                <form id="follow_user_submit" method="Post">
+
+                    <button type="submit" id="follow_user_submit_button" class="btn btn-primary col-12">Follow</button>
+                {% endif %}
+
+                </form>
                 {% include "./edit_profile_modal.html" %}
             </div>
         </div> 

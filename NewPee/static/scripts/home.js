@@ -1,9 +1,59 @@
 
+
+
+
+//https:docs.djangoproject.com/en/dev/ref/csrf/#ajax
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
 function getFileData(myFile){
     var file = myFile.files[0];  
     var filename = file.name;
     console.log(filename);
  }
+
+ var csrftoken = getCookie('csrftoken');
+ var author_url = location.pathname;
+ var author_uuid = author_url.split("/")[2];
+ var author_api_url = "/api" + author_url;
+ 
+
+ function grabAuthor(){
+
+
+    $.ajax({
+        type: "GET",
+        async:false,    // wait till we have the author.
+        url: author_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        success : function(json) {
+            page_author = json;
+            console.log(page_author, "This is the retrieved author.")
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+
+
+    }
+    
 
 //https://stackoverflow.com/questions/30211605/javascript-html-collection-showing-as-0-length
 $(document).ready(function(){
@@ -22,15 +72,92 @@ function getPosts() {
 }
 
 let posts = getPosts();
+var page_author;
+page_author = grabAuthor();
 
-var author_url = location.pathname;
-var author_uuid = author_url.split("/")[2];
-var author_api_url = "/api" + author_url;
 
-var csrftoken = getCookie('csrftoken');
+
+const follow_submit_form = document.querySelector("#follow_user_submit");
+
+const follow_submit_button = document.querySelector("#follow_user_submit_button");
+
+
+
+console.log(page_author, "This is my Author.")
+
+
+
+
 console.log(csrftoken);
 
 
+
+function updatefollowersPOST(follower){
+    console.log(follower);
+    $.ajax({
+        type: "PATCH",
+        url: author_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        data: (follower), 
+        success : function(json) {
+            console.log(json);
+            $("#request-access").hide();
+            follow_submit_button.innerHTML = "Unfollow";
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+};
+
+
+
+function updatefollowersGet(){
+    $.ajax({
+        type: "GET",
+        url: author_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        success : function(json) {
+            author = json;
+            //console.log(author);
+            var data = {};
+
+            data["followers"] = [author_uuid];
+
+            console.log(author.followers)
+            // Only add followers if they have some     
+            if(author.followers.length != 0){
+
+            for (var authors in author.followers){
+
+                console.log(authors);
+
+                if(authors != author_uuid && authors != 0){
+                    // push all the old followers onto the patch.
+
+
+                    data["followers"].push(authors);
+
+                    }  
+                }
+            }
+
+            console.log(data);
+
+
+            updatefollowersPOST(JSON.stringify(data));
+            //console.log(author);      
+
+
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+};
 
 
 function updateNumPostGet(){
@@ -75,22 +202,6 @@ function updateNumPostPut(numOfPost){
     
 
 
-//https:docs.djangoproject.com/en/dev/ref/csrf/#ajax
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
 
 // https://blog.teamtreehouse.com/creating-autocomplete-dropdowns-datalist-element
 
@@ -139,6 +250,19 @@ function revertToOriginalURL() {
 $('.modal').on('hidden.bs.modal', function () {
     revertToOriginalURL();
 });
+
+
+follow_submit_form.addEventListener('submit', event =>{
+
+    event.preventDefault();
+    updatefollowersGet();
+
+    //alert("button clicked");
+
+});
+
+
+
 
 const elementMakePost = document.querySelector("#post_creation_submit");
 
