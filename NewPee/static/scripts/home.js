@@ -24,9 +24,9 @@ function getPosts() {
 let posts = getPosts();
 
 var author_url = location.pathname;
-console.log(author_url);
+var author_uuid = author_url.split("/")[2];
 var author_api_url = "/api" + author_url;
-console.log(author_api_url);
+
 var csrftoken = getCookie('csrftoken');
 console.log(csrftoken);
 
@@ -161,7 +161,7 @@ element.addEventListener('submit', event => {
 
     var data = JSON.stringify({ 
         title : post_title,
-        author : 'hello',
+        author : author_uuid,
         content : post_content,
         description : post_description,
         csrfmidddlewaretoken: csrftoken,
