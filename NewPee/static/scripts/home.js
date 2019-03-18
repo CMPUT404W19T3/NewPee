@@ -75,10 +75,6 @@ function updateNumPostPut(numOfPost){
     
 
 
-
-const element = document.querySelector("#post_creation_submit")
-
-
 //https:docs.djangoproject.com/en/dev/ref/csrf/#ajax
 function getCookie(name) {
     var cookieValue = null;
@@ -131,15 +127,13 @@ $(input).keyup(function() {
     }, 1000);
 });
 
-element.addEventListener('submit', event => {
+const elementMakePost = document.querySelector("#post_creation_submit");
+
+elementMakePost.addEventListener('submit', event => {
   event.preventDefault();
-
-  
-
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     console.log("button clicked");
     var request_data = "Data"; // TODO: include all post data
-
 
     var post_title = document.querySelector("#post-title").value;
     var post_content = document.querySelector("#post-comment-content").value;
@@ -156,9 +150,6 @@ element.addEventListener('submit', event => {
         }
     }
 
-    
-
-
     var data = JSON.stringify({ 
         title : post_title,
         author : author_uuid,
@@ -170,9 +161,6 @@ element.addEventListener('submit', event => {
     });
 
     console.log(data);
-
-
-
 
     // Goes to post_created
     // author.view post_created view
@@ -195,14 +183,46 @@ element.addEventListener('submit', event => {
         }
         
     });
-
-    
-    
-    
 });
 
+const elementUpdateProfile = document.querySelector("#edit_profile_submit");
+elementUpdateProfile.addEventListener('submit', event => {
+    event.preventDefault();
+    $('#edit_profile_modal').modal('hide');
+    var newDisplayName = document.querySelector("#author-display-name").value;
+    var newBio = document.querySelector("#author-bio").value;
+    var newGitHubURL = document.querySelector("#author-github").value;
+    
+    var data = {}
+    if (newDisplayName){
+        data["displayName"] = newDisplayName;
+    }
+    if (newBio){
+        data["bio"] = newBio;
+    }
+    if (newGitHubURL){
+        data["github_url"] = newGitHubURL;
+    }
 
-});
+    
+
+    console.log(JSON.stringify(data));
 
 
+    $.ajax({
+        type: "PATCH",
+        url: author_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        data: JSON.stringify(data), 
+        success : function(json) {
+            console.log(json);
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
 
+});  
+});  
