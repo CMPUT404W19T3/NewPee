@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import include, url
 from django.urls import path
-from views.author_views import log_in, sign_up, logout_view, get_author    
+from views.author_views import log_in, sign_up, logout_view, get_author, get_authors    
 from views import api_views
 from Authors.views import AuthorList, AuthorDetail
 from Posts.views import PostList, PostDetail
@@ -44,6 +44,9 @@ urlpatterns = [
     path('api/posts/<uuid:pk>', api_views.post_detail),
 
     path('friends/<uuid:pk>', AuthorDetail.as_view()),
+
+    # Search 
+    path('search/', get_authors, name="search"),
 
 
     # Posts API

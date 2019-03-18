@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
-from .forms import UserNameForm, UserLoginForm, postTitleForm, postInfoForm, passwordLoginForm
+from .forms import UserNameForm, UserLoginForm, postTitleForm, postInfoForm, passwordLoginForm, SearchForm
 from Authors.models import Author
 from django.contrib.auth.models import User
 from Posts.models import Post
@@ -73,6 +73,12 @@ def get_author(request, format=None):
         print(author_id)
 
         return HttpResponseRedirect("/authors/" + str(pariedAuthor.get_author_id()))
+
+def get_authors(request, format=None):
+
+    form = SearchForm()
+    print(form)
+    return render(request, 'search.html/', {'form': form})
 
 def sign_up(request, format=None):
 
