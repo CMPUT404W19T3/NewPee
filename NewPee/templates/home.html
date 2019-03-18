@@ -105,18 +105,7 @@
 
             {% if posts %}
             {% for post in posts %}
-            <div class="card">
-                <div class="card-header">
-                    {{ post.title }}
-                </div>
-            </div>
-            {% endfor %}
-            {% endif %}
-
-
-            {% if posts %}
-            {% for post in posts %}
-                {% include "./post_card_view.html" with post=post%}
+                {% include "./post_card_view.html" with post=post %}
                 
             {% endfor %}
             {% endif %}

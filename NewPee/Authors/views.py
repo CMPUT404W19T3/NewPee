@@ -22,6 +22,8 @@ class AuthorDetail(APIView):
     """
     Retrieve, update or delete an Author.
     """
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'home.html'
 
     def get_object(self, pk):
         try:
@@ -29,15 +31,11 @@ class AuthorDetail(APIView):
         except Author.DoesNotExist:
             raise Http404
 
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'home.html'
-
     def get(self, request, pk, *args, **kwargs):
         if request.method == "GET":
             author = self.get_object(pk)
             author_serializer = AuthorSerializer(author)
-            posts = Post.objects.get(parent=pk)
-            post_serializer = PostSerializer(posts)
+
             form = SearchForm()
             print("\n\nSEARCH:", request.GET.get('search'))
             search = request.GET.get('search')
@@ -47,9 +45,14 @@ class AuthorDetail(APIView):
                 print("This is the authors", authors)
                 return Response({'authors': authors, 'form': form, 'search': search}, template_name='search.html')
 
-            return Response({'author': author_serializer.data, 'posts': post_serializer.data, 'form': form, 'posts': posts})
+            try:
+                posts = Post.objects.filter(author=pk)
+                post_serializer = PostSerializer(posts, many=True)
+                print("Hello", post_serializer.data)
+                return Response({'author': author_serializer.data, 'posts': post_serializer.data, 'form': form})
 
-    
+            except Post.DoesNotExist:
+                return Response({'author': author_serializer.data, 'form': form})
             
 
 class AuthorList(APIView):
