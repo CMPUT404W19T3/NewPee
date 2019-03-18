@@ -24,9 +24,9 @@ function getPosts() {
 let posts = getPosts();
 
 var author_url = location.pathname;
-console.log(author_url);
+var author_uuid = author_url.split("/")[2];
 var author_api_url = "/api" + author_url;
-console.log(author_api_url);
+
 var csrftoken = getCookie('csrftoken');
 console.log(csrftoken);
 
@@ -43,10 +43,10 @@ function updateNumPostGet(){
             author = json;
             console.log(author);
             author.posts_created += 1;
-            var numOfPost = "{'posts_created' :'" + author.posts_created.toString() + "'}";
+            var numOfPost = {posts_created : author.posts_created.toString()};
             console.log(JSON.stringify(numOfPost));
-            updateNumPostPut(numOfPost);
-            console.log(author);
+            updateNumPostPut(JSON.stringify(numOfPost));
+            console.log(author);      
             $("#request-access").hide();
         },
         error: function (e) {      
@@ -56,11 +56,13 @@ function updateNumPostGet(){
 };
 
 function updateNumPostPut(numOfPost){
+    console.log(numOfPost);
     $.ajax({
         type: "PATCH",
         url: author_api_url,
+        contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
-        data: (JSON.stringify(numOfPost)), 
+        data: (numOfPost), 
         success : function(json) {
             console.log(json);
             $("#request-access").hide();
@@ -159,7 +161,7 @@ element.addEventListener('submit', event => {
 
     var data = JSON.stringify({ 
         title : post_title,
-        author : 'hello',
+        author : author_uuid,
         content : post_content,
         description : post_description,
         csrfmidddlewaretoken: csrftoken,
