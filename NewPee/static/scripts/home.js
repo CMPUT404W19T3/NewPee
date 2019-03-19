@@ -1,6 +1,7 @@
 
 
 
+$(document).ready(function(){
 
 //https:docs.djangoproject.com/en/dev/ref/csrf/#ajax
 function getCookie(name) {
@@ -27,10 +28,20 @@ function getFileData(myFile){
  }
 
  var csrftoken = getCookie('csrftoken');
+
+
+
  var author_url = location.pathname;
  var author_uuid = author_url.split("/")[2];
  var author_api_url = "/api" + author_url;
  
+
+ var user_id = document.getElementById("userID").value; // grabbing from hidden value through django context
+ var user_api_url = "/api/authors/" + user_id;
+ 
+ console.log(user_api_url)
+
+
 
  function grabAuthor(){
 
@@ -56,7 +67,6 @@ function getFileData(myFile){
     
 
 //https://stackoverflow.com/questions/30211605/javascript-html-collection-showing-as-0-length
-$(document).ready(function(){
     
 function getPosts() {
     fetch('../api/posts')
@@ -73,17 +83,13 @@ function getPosts() {
 
 let posts = getPosts();
 var page_author;
+
 page_author = grabAuthor();
 
 
 
 const follow_submit_form = document.querySelector("#follow_user_submit");
-
 const follow_submit_button = document.querySelector("#follow_user_submit_button");
-
-
-
-console.log(page_author, "This is my Author.")
 
 
 
@@ -91,11 +97,14 @@ console.log(page_author, "This is my Author.")
 console.log(csrftoken);
 
 
+// Update page author profile.
+// adding the current logged in user to current authors page followers
 
 function updatefollowersPOST(follower){
     console.log(follower);
     $.ajax({
         type: "PATCH",
+        async: false,
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -111,11 +120,83 @@ function updatefollowersPOST(follower){
     });
 };
 
+// Update your following list
+// Patch onto 
+
+function updatefollowingPOST(following){
+    console.log(following);
+    $.ajax({
+        type: "PATCH",
+        async: false,
+        url: user_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        data: (following), 
+        success : function(json) {
+            console.log(json);
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+};
 
 
+// Get the current followers of the Profile.
+// Add 
+function updatefollowingGet(){
+
+
+
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: user_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        success : function(json) {
+            author = json;
+            //console.log(author);
+            var data = {};   
+            data["following"] = [author_uuid];
+            console.log(author.following, "We are currently following")
+
+            // Only add followers if they have some     
+            if(author.following.length != 0){
+            
+            // go through the page old following
+            for (var authors in author.following){
+                if(author.following[authors] != author_uuid && author.following[authors] != 0){
+                    // push all the old followers onto the patch.
+                    data["following"].push(author.following[authors]);
+
+                    }  
+                }
+            }
+
+
+            updatefollowingPOST(JSON.stringify(data)); // update the follower list
+
+
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+};
+
+
+
+
+
+// Get the current followers of the Profile.
+// Add 
 function updatefollowersGet(){
     $.ajax({
         type: "GET",
+        async: false,
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -124,30 +205,39 @@ function updatefollowersGet(){
             //console.log(author);
             var data = {};
 
-            data["followers"] = [author_uuid];
+            var user_id = document.getElementById("userID").value; // grabbing from hidden value through django context
 
-            console.log(author.followers)
+            console.log(user_id, "Logged in user id.")
+
+            
+            
+            data["followers"] = [user_id];
+
+            console.log(data, "Data Beforehand.")
+            //console.log(author.followers, "Current followers")
+
             // Only add followers if they have some     
             if(author.followers.length != 0){
-
+            
+            // go through the page old followers
             for (var authors in author.followers){
 
-                console.log(authors);
+                //console.log(author.followers[authors], "adding author..");
 
-                if(authors != author_uuid && authors != 0){
+                if(author.followers[authors] != user_id && author.followers[authors] != 0){
                     // push all the old followers onto the patch.
 
-
-                    data["followers"].push(authors);
+                    //console.log(author.followers[authors], "pushing onto stack.")
+                    data["followers"].push(author.followers[authors]);
 
                     }  
                 }
             }
 
-            console.log(data);
+            console.log(data, "Data afterwards.")
 
 
-            updatefollowersPOST(JSON.stringify(data));
+            updatefollowersPOST(JSON.stringify(data)); // update the follower list
             //console.log(author);      
 
 
@@ -158,6 +248,9 @@ function updatefollowersGet(){
         }
     });
 };
+
+
+
 
 
 function updateNumPostGet(){
@@ -186,6 +279,7 @@ function updateNumPostPut(numOfPost){
     console.log(numOfPost);
     $.ajax({
         type: "PATCH",
+        async: false,
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -252,10 +346,32 @@ $('.modal').on('hidden.bs.modal', function () {
 });
 
 
+function callFollowers(){
+    updatefollowingGet();
+}
+
+function callFollowing(callback){
+
+    updatefollowersGet();
+    callback();
+}
+
+
+
+
 follow_submit_form.addEventListener('submit', event =>{
 
     event.preventDefault();
-    updatefollowersGet();
+
+    //updatefollowersGet();
+    //updatefollowingGet();
+
+
+    callFollowing(callFollowers);
+
+
+
+
 
     //alert("button clicked");
 
@@ -297,13 +413,14 @@ elementMakePost.addEventListener('submit', event => {
 
     });
 
-    console.log(data);
+    console.log(data, "OUR DATA FOR POST");
 
     // Goes to post_created
     // author.view post_created view
 
     $.ajax({
         type: "POST",
+        async: false,
         url: "/api/posts/",
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},

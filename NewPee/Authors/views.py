@@ -36,6 +36,9 @@ class AuthorDetail(APIView):
             author = self.get_object(pk)
             author_serializer = AuthorSerializer(author)
 
+            logged_in_author = Author.objects.get(user = request.user)
+            logged_in_author_serializer = AuthorSerializer(logged_in_author)
+
             form = SearchForm()
             print("\n\nSEARCH:", request.GET.get('search'))
             search = request.GET.get('search')
@@ -49,7 +52,8 @@ class AuthorDetail(APIView):
                 posts = Post.objects.filter(author=pk)
                 post_serializer = PostSerializer(posts, many=True)
                 print("Hello", post_serializer.data)
-                return Response({'author': author_serializer.data, 'posts': post_serializer.data, 'form': form})
+                return Response({'author': author_serializer.data, 'posts': post_serializer.data, \
+                'form': form, 'logged_in_author':logged_in_author_serializer.data})
 
             except Post.DoesNotExist:
                 return Response({'author': author_serializer.data, 'form': form})
