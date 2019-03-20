@@ -8,6 +8,9 @@ var FriendsEnum = Object.freeze({"Add":1, "Subtract":2, });
 const follow_submit_form = document.querySelector("#follow_user_submit");
 const follow_submit_button = document.querySelector("#follow_user_submit_button");
 
+var page_author;
+var user_author;
+
 
 
 //https:docs.djangoproject.com/en/dev/ref/csrf/#ajax
@@ -52,6 +55,24 @@ function getFileData(myFile){
  console.log(user_api_url)
 
 
+function grabUser(){
+    $.ajax({
+        type: "GET",
+        async:false,    // wait till we have the author.
+        url: author_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        success : function(json) {
+            user_author = json;
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+
+}
+
 
  function grabAuthor(){
     $.ajax({
@@ -67,6 +88,7 @@ function getFileData(myFile){
             if(page_author.followers.includes(user_id)){
                 console.log("Already following");
                 follow_submit_button.innerHTML = "Unfollow";
+
 
             }
 
@@ -98,11 +120,175 @@ function getPosts() {
     
 }
 
+
+
+
+
+
+function subtractUserFriends(){
+    data = {};
+    data["friends"] = [0];
+
+    console.log(user_author.friends, "Current user friend list")
+
+    //Add all friends back except the current Authors page.
+    if(user_author.friends.length != 0){    
+        for (var authors in user_author.friends){
+            if(user_author.friends[authors] != author_uuid && user_author.friends[authors] != 0 && user_author.friends[authors] != user_id){
+                console.log(user_author.friends[authors], "pushing ___ user.");
+                data["friends"].push(user_author.friends[authors]);
+
+                }  
+            }
+        }
+
+    data["friends"].shift();    // remove the [0]
+    console.log(data, "user-subtract");
+
+
+    $.ajax({
+        type: "PATCH",
+        async: false,
+        url: user_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        data: JSON.stringify(data), 
+        success : function(json) {
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+
+}
+
+function subtractAuthorFriends(){
+    data ={};
+    data["friends"] = [0];
+
+    if(page_author.friends.length != 0){
+        for (var authors in page_author.friends){
+            if(page_author.friends[authors] != user_id && page_author.friends[authors] != 0 && user_author.friends[authors] != author_uuid){
+                data["friends"].push(page_author.friends[authors]);
+                }  
+            }
+        }
+
+    data["friends"].shift();    // remove the [0]
+    
+    console.log(data, "author-subtract");
+
+
+    $.ajax({
+        type: "PATCH",
+        async: false,
+        url: author_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        data: JSON.stringify(data), 
+        success : function(json) {
+            //console.log(json);
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+
+}
+
+
+
+
+
+
+
+function addUserFriends(){
+    data = {};
+    data["friends"] = [author_uuid];
+
+    if(user_author.friends.length != 0){    
+        for (var authors in user_author.friends){
+            if(user_author.friends[authors] != author_uuid && user_author.friends[authors] != 0){
+                data["friends"].push(user_author.friends[authors]);
+
+                }  
+            }
+        }
+    $.ajax({
+        type: "PATCH",
+        async: false,
+        url: user_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        data: JSON.stringify(data), 
+        success : function(json) {
+            console.log("User friends added")
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+
+}
+
+function addAuthorFriends(){
+    data ={};
+    data["friends"] = [user_id];
+    if(page_author.friends.length != 0){
+            
+        for (var authors in page_author.friends){
+            if(page_author.friends[authors] != user_id && page_author.friends[authors] != 0){
+                data["friends"].push(page_author.friends[authors]);
+                }  
+            }
+        }
+    $.ajax({
+        type: "PATCH",
+        async: false,
+        url: author_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        data: JSON.stringify(data), 
+        success : function(json) {
+            //console.log(json);
+            console.log("Author friends added")
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+
+}
+
+
+
+function updateFriends(enumType) {
+
+
+    if (enumType===FriendsEnum.Add){
+    addUserFriends();
+    addAuthorFriends();
+    }
+    if (enumType===FriendsEnum.Subtract){
+    console.log("Remove Friends");
+    console.log(user_author.friends, "Current user friend list")
+
+    subtractUserFriends();
+    subtractAuthorFriends();
+    }
+
+}
+
 let posts = getPosts();
 
-// Can you use Ajax or just Use Django.
-var page_author;
-page_author = grabAuthor();
+// In The future, we should keep these, then every ajax call just updates them depending.
+grabAuthor();
+grabUser();
+
 
 
 console.log(csrftoken);
@@ -138,7 +324,7 @@ function updatefollowersPOST(follower, enumType){
 };
 
 // Update your following list
-// Patch the authors to your following data.
+// Patch the authors(add or minus) to your following data.
 function updatefollowingPOST(following,enumType){
     console.log(following);
     $.ajax({
@@ -151,6 +337,23 @@ function updatefollowingPOST(following,enumType){
         success : function(json) {
             console.log(json);
             $("#request-access").hide();
+
+            // The author is following us
+            if (page_author.followers.includes(user_id)){
+                console.log("Updating Friends");
+
+                // Add friends to both Accounts.
+                if (enumType === FriendsEnum.Add){
+                    console.log(" updating friends with enum ADD");
+                    updateFriends(FriendsEnum.Add);
+                }
+                // Subtract friends from both Accounts.
+                if (enumType === FriendsEnum.Subtract){
+                    console.log("updating friends with enum Subtract");
+                    updateFriends(FriendsEnum.Subtract);
+                }
+            }
+
         },
         error: function (e) {      
             console.log("ERROR: ", e);
@@ -226,7 +429,7 @@ function updatefollowersGet(enumType){
             //console.log(author);
             var data = {};
 
-
+            // Adding the 0 to be able to push the rest onto the array
             if (enumType === FriendsEnum.Add){
                 data["followers"] = [user_id];
             }
@@ -240,6 +443,7 @@ function updatefollowersGet(enumType){
             // Only add followers if they have some     
             if(author.followers.length != 0){
             
+            // Add back all the previous followers
             for (var authors in author.followers){
                 if(author.followers[authors] != user_id && author.followers[authors] != 0){
                     data["followers"].push(author.followers[authors]);
@@ -247,6 +451,7 @@ function updatefollowersGet(enumType){
                 }
             }
 
+            // Remove the 0 as we no longer need it
             if (enumType === FriendsEnum.Subtract){
 
             data["followers"].shift();
@@ -394,18 +599,21 @@ follow_submit_form.addEventListener('submit', event =>{
 
     console.log(follow_unfollow_text);
 
-   //callFollowing(callFollowers);      // Add the followers
+    //callFollowing(callFollowers);      // Add the followers
+
     callRemoveFollowing(callRemoveFollowers);   // Remove the followers
 
 
-/*     if(follow_unfollow_text === "Follow"){
+
+    // Both of these are called on a single submit.
+ /*    if(follow_unfollow_text === "Follow"){
 
     callFollowing(callFollowers);   
     }
 
     else{
     callRemoveFollowing(callRemoveFollowers);   
-    }  */
+    }   */
 
 
 
