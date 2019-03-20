@@ -375,13 +375,13 @@ function updatefollowingGet(enumType){
             author = json;
             var data = {};   
 
+            // Either Adding to following list or removing from following list.
             if (enumType === FriendsEnum.Add){
                 data["following"] = [author_uuid];
             }
             else{
                 data["following"] = [0];
             }
-
 
             // Only add followers if they have some     
             if(author.following.length != 0){
@@ -394,15 +394,13 @@ function updatefollowingGet(enumType){
                 }
             }
 
+            // Remove the [0] from start of list.
             if (enumType === FriendsEnum.Subtract){
-
             data["following"].shift();
             }
 
 
             updatefollowingPOST(JSON.stringify(data),enumType); // update the follower list
-
-
             $("#request-access").hide();
         },
         error: function (e) {      
@@ -432,13 +430,16 @@ function updatefollowersGet(enumType){
             // Adding the 0 to be able to push the rest onto the array
             if (enumType === FriendsEnum.Add){
                 data["followers"] = [user_id];
+
+                page_author = author;
+                page_author.followers.push([user_id]);
+
             }
             else{
                 data["followers"] = [0];
             }
 
 
-            console.log(data, "Data Beforehand.")
 
             // Only add followers if they have some     
             if(author.followers.length != 0){
@@ -457,7 +458,10 @@ function updatefollowersGet(enumType){
             data["followers"].shift();
             }
 
-            console.log(data, "Data afterwards.")
+            //update our global 
+            page_author = author;
+            page_author.followers.push()
+
             updatefollowersPOST(JSON.stringify(data),enumType); // update the follower list
 
             $("#request-access").hide();
@@ -567,10 +571,15 @@ $('.modal').on('hidden.bs.modal', function () {
 
 // Functions for adding 
 function callFollowers(){
+    console.log("Second")
     updatefollowingGet(FriendsEnum.Add);
+
+
 }
 function callFollowing(callback){
-    updatefollowersGet(FriendsEnum.Add);
+    console.log("first");
+    updatefollowersGet(FriendsEnum.Add);    // Call second, friends piggybacks off Followers
+
     callback();
 }
 
@@ -599,9 +608,9 @@ follow_submit_form.addEventListener('submit', event =>{
 
     console.log(follow_unfollow_text);
 
-    //callFollowing(callFollowers);      // Add the followers
+    callFollowing(callFollowers);      // Add to your following list, add to their followers
 
-    callRemoveFollowing(callRemoveFollowers);   // Remove the followers
+    //callRemoveFollowing(callRemoveFollowers);   // Remove the followers
 
 
 
