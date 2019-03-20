@@ -22,10 +22,18 @@ class Post(models.Model):
     content = models.TextField(null=False,blank=False)
     image = models.URLField(null=True,blank=True)
     post_date = models.DateTimeField(auto_now_add=True)
-
+    #Types of visibility
+    visibilityChoices = (
+                        ( 'PUBLIC', 'Public'),
+                        ( 'FOAF', 'FOAF'),
+                        ( 'Private', 'Private'),
+                        ( 'SERVERONLY', 'SERVERONLY'),
+                        ( 'FRIENDS', 'FRIENDS'),
+    )
+    visibility = models.CharField(max_length=10, choices=visibilityChoices, default="PUBLIC")
     # which viewers are allowed to see it.
-    viewers = models.ManyToManyField(User)
-
+    visibleTo = models.ManyToManyField(User)
+    unlisted = models.BooleanField(default=False)
 
 
     def get_id(self):
