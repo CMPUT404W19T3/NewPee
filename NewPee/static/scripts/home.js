@@ -136,7 +136,7 @@ function getPosts() {
 
             if (posts[post].visibility === "PRIVATE"){
 
-                if(posts[post].visibleTo != user_author.id){
+                if(posts[post].visibleTo != user_author.id && page_author.id != user_author.id){
 
                     //delete temp_posts[post];
                     var postID = "posts/" + posts[post].id;
