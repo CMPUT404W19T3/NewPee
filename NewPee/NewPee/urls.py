@@ -49,15 +49,9 @@ urlpatterns = [
     # Search 
     path('search/', get_authors, name="search"),
 
-<<<<<<< HEAD
-    # Posts API
-    path('api/posts/', PostList.as_view()),
-    path('api/posts/<uuid:pk>', PostDetail.as_view(), ),
-=======
     # # Posts API
     # path('api/posts/', PostList.as_view()),
     # path('api/posts/<uuid:pk>', PostDetail.as_view()),
->>>>>>> origin/fixmodals
 
     # Author page
     path('authors/<uuid:pk>', AuthorDetail.as_view(), name="author_page"),
