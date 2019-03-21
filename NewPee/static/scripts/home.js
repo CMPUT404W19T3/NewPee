@@ -116,6 +116,47 @@ function getPosts() {
     .then(function(responseJSON) {
         console.log("This is the JSON: ", responseJSON);
         posts = responseJSON;
+
+        temp_posts = posts;
+
+        for (var post in posts){
+
+            if (posts[post].visibility === "FRIENDS") {
+
+                if (!page_author.friends.includes(user_author.id))
+                delete temp_posts[post];
+
+                delete temp_posts[post];
+                var postID = "posts/" + temp_posts[post].id;
+                document.getElementById(postID).style.visibility="hidden";
+                html_post.style.visibility = "hidden";
+
+                continue;
+            }
+
+            if (posts[post].visibility === "PRIVATE"){
+
+                if(posts[post].visibleTo != user_author.id){
+
+                    //delete temp_posts[post];
+                    var postID = "posts/" + posts[post].id;
+
+                    document.getElementById(postID).style.visibility="hidden"; 
+
+
+                    continue; 
+                }
+
+            }
+
+
+        }
+        
+        posts= temp_posts;
+        console.log(posts)
+
+
+
     })
     
 }
@@ -283,11 +324,13 @@ function updateFriends(enumType) {
 
 }
 
+grabAuthor();
+grabUser();
+
 let posts = getPosts();
 
 // In The future, we should keep these, then every ajax call just updates them depending.
-grabAuthor();
-grabUser();
+
 
 
 
