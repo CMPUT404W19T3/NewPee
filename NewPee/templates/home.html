@@ -80,13 +80,26 @@
                     <textarea class="form-control mb-2" rows="2" id="post-comment-description" placeholder="Write your description here."></textarea>
                     <textarea class="form-control mb-2" rows="4" id="post-comment-content" placeholder="Write your content here."></textarea>  
 
+
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="friends-radio-option" id="PrivatePrivacy" value="private">
-                        <label class="form-check-label" for="private-radio-option">Private</label>
+                            <input class="form-check-input" checked="checked" type="radio" name="friends-radio-option" id="PublicPrivacy" value="1">
+                            <label class="form-check-label" for="private-radio-option">Public</label>
+                        </div>
+                    <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="friends-radio-option" id="FOAFPrivacy" value="2">
+                            <label class="form-check-label" for="private-radio-option">FOAF</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="friends-radio-option" id="FriendsPrivay" value="friends">
-                        <label class="form-check-label" for="friends-radio-option">Friends</label>
+                        <input class="form-check-input" type="radio" name="friends-radio-option" id="FriendsPrivacy" value="3">
+                        <label class="form-check-label" for="private-radio-option">Friends</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="friends-radio-option" id="PrivatePrivacy" value="4">
+                            <label class="form-check-label" for="private-radio-option">Private</label>
+                        </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="friends-radio-option" id="ServerPrivay" value="5">
+                        <label class="form-check-label" for="friends-radio-option">Server Only</label>
                     </div>
                         
                     

@@ -669,16 +669,36 @@ elementMakePost.addEventListener('submit', event => {
             radio_value = radioButtons[i].value;
         }
     }
+    
+    var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY"})
 
-    var data = JSON.stringify({ 
+    var visibleTo;
+
+ 
+
+
+
+    var data = { 
         title : post_title,
         author : author_uuid,
         content : post_content,
         description : post_description,
         csrfmidddlewaretoken: csrftoken,
-        privacy : radio_value,
+        visibility : VisiblityEnum[radio_value],
+        visibleTo : visibleTo,
+    };
 
-    });
+    console.log(user_id);
+
+    if (radio_value==4){
+        data["visibleTo"] = [user_id];
+    } 
+    
+    data= JSON.stringify(data);
+
+
+
+
 
     console.log(data, "OUR DATA FOR POST");
 
@@ -724,6 +744,7 @@ elementUpdateProfile.addEventListener('submit', event => {
     if (newGitHubURL){
         data["github_url"] = newGitHubURL;
     }
+    
 
     
 

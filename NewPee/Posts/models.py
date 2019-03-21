@@ -4,7 +4,7 @@ import datetime
 import uuid
 from django.contrib.auth.models import User
 from django.db.models.fields.files import ImageField
-
+from Authors.models import Author
 
 # Post model represents post,
 # stores an unique id, author which is a user model, title, body, image and a timestamp
@@ -24,15 +24,15 @@ class Post(models.Model):
     post_date = models.DateTimeField(auto_now_add=True)
     #Types of visibility
     visibilityChoices = (
-                        ( 'PUBLIC', 'Public'),
+                        ( 'PUBLIC', 'PUBLIC'),
                         ( 'FOAF', 'FOAF'),
-                        ( 'Private', 'Private'),
+                        ( 'PRIVATE', 'PRIVATE'),
                         ( 'SERVERONLY', 'SERVERONLY'),
                         ( 'FRIENDS', 'FRIENDS'),
     )
     visibility = models.CharField(max_length=10, choices=visibilityChoices, default="PUBLIC")
     # which viewers are allowed to see it.
-    visibleTo = models.ManyToManyField(User)
+    visibleTo = models.ManyToManyField(Author, blank=True)
     unlisted = models.BooleanField(default=False)
 
 
