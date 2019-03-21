@@ -1,21 +1,23 @@
-{% extends 'header.html' %}
+{% extends 'base.html' %}
 {% load rest_framework %}
 {% load static %}
 
 
-{% block head %}
+{% block baseHead %}
 <link rel="stylesheet" type="text/css" href="{% static 'styles/search.css' %}" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <script src="{% static 'scripts/search.js' %}"></script>
-
-
 {% endblock %}
 
-{% block content %}
-<p>Greetings</p>
+{% block rightColumn %}
+<div class="col-9 mx-auto">
+ 
+    <p>Greetings</p>
+    {{ authors }}
 
-{{ authors }}
+</div>
+
 
 {% endblock %}
