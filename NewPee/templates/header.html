@@ -9,6 +9,9 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="{% static 'scripts/header.js' %}"></script>
+
         {% block head %}{% endblock %}
     </head>
     <body>
@@ -28,7 +31,18 @@
 
         <div class="newPeeHeaderIcons ml-auto">
           <div class="dropdown">
-            <i class="fas fa-bell"></i>
+
+            <div class="icon wrapper" >
+               
+
+            <i class="fas fa-bell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" >You have a friend request.</a>
+            </div>
+
+              <span id="badge_number" class="badge">0</span>
+            </div>
+
             <i class="fas fa-caret-down"  id="logout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>

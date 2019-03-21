@@ -86,3 +86,15 @@ html, body{
 .ml-auto{
   margin-right: 3%;
 }
+
+.icon-wrapper{
+  position:relative;
+  float:left;
+}
+.badge{
+  background: rgba(0,0,0,0.5);
+  width: auto;
+  height: auto;
+  position:absolute;
+  left:-8px;
+}
