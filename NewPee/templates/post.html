@@ -1,0 +1,21 @@
+
+{% extends 'base.html' %}
+
+
+
+{% block rightColumn %}
+<div class="col-9 mx-auto">
+ <div class="card" style="margin:0" data-toggle="modal" id="posts/{{ post.id }}">
+    <div class="card-header">
+        {{ post.title }}
+    </div>
+        <div class="card-body" style="margin:0">
+        <h6 class="card-subtitle mb-2 text-muted">{{ post.author}}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">{{ post.post_date}}</h6>
+        <p class="card-text">{{post.description}}</p>
+    </div>
+  </div>
+  {% include "comment.html" %}
+</div> 
+
+{% endblock %}
