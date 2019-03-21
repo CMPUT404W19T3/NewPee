@@ -14,9 +14,28 @@
 {% block rightColumn %}
 <div class="col-9 mx-auto">
  
-    <p>Greetings</p>
-    {{ authors }}
-
+    <h1 class="authorList">
+    Authors
+</h1>
+{% if authors %}
+{% for author in authors %}
+<div class="authorPost">
+    <hr>
+    <h2 class="authorDisplayName">
+        {{ author.displayName }}
+    </h2>
+    <p class="authorName">
+        {{ author.user.first_name }} {{ author.user.last_name }}
+    </p>
+</div>
+{% endfor %}
+{% else %}
+<div class="foundNoAuthors">
+    <hr>
+    <h2 class="displayNothing">No Authors were found with that search term!</h2>
+</div>
+{% endif %}
+<br>
 </div>
 
 
