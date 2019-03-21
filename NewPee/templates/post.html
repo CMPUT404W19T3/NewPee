@@ -21,10 +21,14 @@
 
     </div>
         <div class="card-body" style="margin:0">
-        <h6 class="card-subtitle mb-2 text-muted">{{ posts.author}}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">{{ logged_in_author.displayName }}</h6>
         <h6 class="card-subtitle mb-2 text-muted">{{ posts.post_date}}</h6>
-        <p class="card-text">{{posts.description}}</p>
-        <p class="card-text">{{posts.content}}</p>
+        <p class="card-text">
+        <p class="card-subtitle mb-2 text-muted">Description: </p>
+        {{posts.description}}</p>
+        <p class="card-text">
+        <p class="card-subtitle mb-2 text-muted">content: </p>
+        {{posts.content}}</p>
     </div>
   </div>
   {% include "comment.html" %}
