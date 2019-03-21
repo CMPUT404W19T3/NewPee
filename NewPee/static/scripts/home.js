@@ -611,18 +611,13 @@ $(input).keyup(function() {
     }, 1000);
 });
 
-$('a[data-toggle="modal"]').click(function(){
-    window.location.hash ="khkhajge";
+$(document).ready(function(){
+    $(".card").click(function(evt){
+        console.log($(this).attr("id"));  
+        location.pathname =  $(this).attr("id");    
+    });
 });
 
-function revertToOriginalURL() {
-    var original = window.location.href.substr(0, window.location.href.indexOf('#'))
-    history.replaceState({}, document.title, original);
-}
-
-$('.modal').on('hidden.bs.modal', function () {
-    revertToOriginalURL();
-});
 
 
 // Functions for adding 

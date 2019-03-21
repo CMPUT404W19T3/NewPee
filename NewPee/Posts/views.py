@@ -1,3 +1,5 @@
+from Authors.models import Author
+from Authors.serializers import AuthorSerializer
 from Posts.models import Post, Comment
 from Posts.serializers import PostSerializer, CommentSerializer
 from views.forms import SearchForm, CommentForm
@@ -45,6 +47,11 @@ class PostDetail(APIView):
             post = self.get_object(pk)
             post_serializer = PostSerializer(post)
 
+            author = Author.objects.get(id=post.author)
+            author_serializer = AuthorSerializer(author)
+            print(author_serializer.data)
+
+
             form = SearchForm()
 
             comment_form = CommentForm()
@@ -52,6 +59,6 @@ class PostDetail(APIView):
             try:
                 comments = Comment.objects.filter(parent=pk)
                 comment_serializer = CommentSerializer(comments, many=True)
-                return Response({'posts': post_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
+                return Response({'author': author_serializer.data, 'posts': post_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
             except Comment.DoesNotExist:
-                return Response({'posts': post_serializer.data, 'form': form, 'comment_form': comment_form})
+                return Response({'author': author_serializer.data, 'posts': post_serializer.data, 'form': form, 'comment_form': comment_form})
