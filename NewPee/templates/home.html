@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 
-
+{% block baseHead %}
+<script src="{% static 'scripts/home.js' %}"></script>
+{% endblock %}
 {% block rightColumn %}
 <div class="col-9 mx-auto">
     <div class="posting-outter">
