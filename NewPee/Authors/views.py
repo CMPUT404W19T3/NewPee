@@ -8,7 +8,7 @@ from rest_framework import status
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.views.decorators.csrf import csrf_exempt
 
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, redirect 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
@@ -57,7 +57,50 @@ class AuthorDetail(APIView):
 
             except Post.DoesNotExist:
                 return Response({'author': author_serializer.data, 'form': form})
+
+    # Clean Up After
+    def post(self, request, pk, *args, **kwargs):
+        if request.method == 'POST' and request.FILES['myfile']:
+
+            author = self.get_object(pk)
+            author_serializer = AuthorSerializer(author)
+            logged_in_author = Author.objects.get(user = request.user)
+            logged_in_author_serializer = AuthorSerializer(logged_in_author)
+
             
+            form = SearchForm()
+            search = request.GET.get('search')
+
+            myfile = request.FILES['myfile']
+
+            # Future TODO: Possibly add it to the DB, but don't have too. 
+            try:
+                Photo.objects.create(myfile)
+            
+            except:
+                print("Not an image!")
+
+            print(myfile)
+            
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+
+            #return redirect('/authors',  uploaded_file_url= uploaded_file_url)
+
+            try:
+                posts = Post.objects.filter(author=pk)
+                post_serializer = PostSerializer(posts, many=True)
+
+                return render(request, 'home.html', {
+                'uploaded_file_url': uploaded_file_url, \
+                'author': author_serializer.data, 'posts': post_serializer.data, \
+                'form': form, 'logged_in_author':logged_in_author_serializer.data })
+            except:
+                 return render(request, 'home.html', {
+                'uploaded_file_url': uploaded_file_url, \
+                'author': author_serializer.data,  \
+                'form': form, 'logged_in_author':logged_in_author_serializer.data })
 
 class AuthorList(APIView):
     """
@@ -85,27 +128,27 @@ class AuthorList(APIView):
     def post(self, request, format=None):
 
 
-        # # we are posting with an image, store it usign FileSystemStorage in our media folder.
-        # if request.method == 'POST' and request.FILES['myfile']:
+        # we are posting with an image, store it usign FileSystemStorage in our media folder.
+        if request.method == 'POST' and request.FILES['myfile']:
 
 
-        #     myfile = request.FILES['myfile']
+            myfile = request.FILES['myfile']
 
-        #     # Future TODO: Possibly add it to the DB, but don't have too. 
-        #     try:
-        #         Photo.objects.create(myfile)
+            # Future TODO: Possibly add it to the DB, but don't have too. 
+            try:
+                Photo.objects.create(myfile)
             
-        #     except:
-        #         print("Not an image!")
+            except:
+                print("Not an image!")
 
-        #     print(myfile)
+            print(myfile)
             
-        #     fs = FileSystemStorage()
-        #     filename = fs.save(myfile.name, myfile)
-        #     uploaded_file_url = fs.url(filename)
-        #     return render(request, 'homepage.html', {
-        #     'uploaded_file_url': uploaded_file_url
-        #     })
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            return render(request, 'homepage.html', {
+            'uploaded_file_url': uploaded_file_url
+            })
             
 
 

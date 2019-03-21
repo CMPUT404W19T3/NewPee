@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
-    'django_markwhat',
+    #'django_markwhat',
 
     # My Apps
     'NewPee.apps.NewPeeConfig',

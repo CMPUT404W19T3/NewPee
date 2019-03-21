@@ -54,7 +54,7 @@ urlpatterns = [
     path('api/posts/<uuid:pk>', PostDetail.as_view()),
 
     # Author page
-    path('authors/<uuid:pk>', AuthorDetail.as_view()),
+    path('authors/<uuid:pk>', AuthorDetail.as_view(), name="author_page"),
 
     # Post Modal View
     path('posts/<uuid:pk>', PostDetail.as_view()),
