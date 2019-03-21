@@ -1,0 +1,73 @@
+# A GET to http://api/posts/
+# returns a list of all available posts on the server, 
+
+# example json output 
+{
+    "query": "posts",
+
+    "posts": [
+        {
+            "id": "7a207985-4fef-4eaa-9de8-ffdea5a7e086",
+	    "author": "256bffd2-bbd9-4b89-b8e6-aff111bdfbcc",
+            "title": "Title",
+            "source": "",
+            "origin": "",
+            "description": "This is my description",
+            "content": "This is my content",
+            "image": null,
+            "post_date": "2019-03-21T06:22:32.253834Z",
+            "visibility": "PRIVATE",
+            "visibleTo": [],
+        }
+}
+
+# A POST to http://api/posts/ will POST the content to the server
+# A GET to http://posts/<postid>/ will return the post with the provided post id
+# A DELETE to http://api/posts/<postid> will delete the post provided
+
+# A GET to http://api/authors/
+# returns a list of all available authors on the server, 
+# example json output
+ {
+        "id": "50d01d59-1ce1-4ee3-88b2-01abae1b91f3",
+        "user": {
+            "username": "jwidney",
+            "first_name": "justin",
+            "last_name": "widney",
+            "email": "jwidney@ualberta.ca"
+        },
+        "displayName": "jwidney",
+        "bio": "",
+        "posts_created": 2,
+        "picture": "",
+        "github_url": "",
+        "friends": [],
+        "following": [
+            "256bffd2-bbd9-4b89-b8e6-aff111bdfbcc",
+            "cf82d993-dc70-4b46-9555-6010b6f8bb26"
+        ],
+        "followers": [
+            "65b7a0ff-0d5f-428f-8c23-2e3e11592250"
+        ]
+    },
+
+# A POST to http://api/authors/ will POST the content to the server
+# a GET to http://api/authors/<pk> will return the the author.
+# A PATCH to http://api/authors/<pk> will update the authors information.
+
+# A GET to http://api/comments/
+# returns a list of all available comments on the server, 
+# example json output
+
+    {
+        "id": "69ba4b15-c074-47af-b0b2-4f1d39e15502",
+        "parent": "7a207985-4fef-4eaa-9de8-ffdea5a7e086",
+        "author": "256bffd2-bbd9-4b89-b8e6-aff111bdfbcc",
+        "content": "yes",
+        "post_date": "2019-03-21T22:35:37.209768Z"
+    },
+
+# A POST to http://api/comments/ will POST the content to the server
+
+
+
