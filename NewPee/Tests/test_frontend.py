@@ -7,7 +7,7 @@ from Posts.serializers import PostSerializer
 from django.urls import reverse
 from django.test import Client
 from Posts.models import Post, Comment
-
+from rest_framework import status
 
 import json 
 
@@ -41,6 +41,26 @@ class FrontEndTests(TestCase):
         self.assertNotEqual(old_display_Name, new_Display_name)
 
 
+
+    def test_author_sign_in(self):
+        author = self.helper_functions.create_author()
+        
+        self.client.login(username=author.user.username, password=author.user.password)
+
+        #self.client.login(username=author.user.username, password=author.user.password)
+
+        url = "/login/"
+
+        data = {username:author.user.username, password:author.user.password}
+
+        response = self.client.post(url, data=data)
+
+        response = self.client.get("/authors/")
+
+        print(response.status_code)
+        self.assertEqual(1,1)
+
+
     def test_author_create_post(self):
 
         author = self.helper_functions.create_author()
@@ -52,10 +72,13 @@ class FrontEndTests(TestCase):
 
 
         post = self.helper_functions.create_post("Post1", author.id)
+
+        post_id = post.id
         post_serializer = PostSerializer(post)
 
         response = self.client.post(url, data=post_serializer.data, content_type='application/json')
-        
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
 
-
+        created_post = Post.objects.get(id= post_id)
+        self.assertEqual(created_post, post)
