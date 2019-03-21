@@ -17,10 +17,41 @@ function getCookie(name) {
 
 var csrftoken = getCookie('csrftoken');
 
+var post_url = location.pathname;
+var post_uuid = post_url.split("/")[2];
+
+console.log(post_uuid)
+
+
 $(document).ready(function(){
     
     const elementMakeComment = document.getElementById("comment_creation_submit");
     const authorUUID = document.getElementById("userID").value;
+
+    const deletePostButton = document.querySelector("#remove_post_submit");
+
+    deletePostButton.addEventListener('submit', event =>{
+
+        console.log("DELETING");
+     
+        $.ajax({
+            type: "DElETE",
+            async: false,
+            url: "/api/posts/"+post_uuid,
+            contentType: 'application/json',
+            headers:{"X-CSRFToken": csrftoken},
+            success : function(json) {
+                $("#request-access").hide();
+                console.log("requested access complete");
+            },
+            error: function (e) {       
+                console.log("ERROR: ", e);
+            }
+        });
+
+
+    });
+
 
     elementMakeComment.addEventListener('submit', event => {
         

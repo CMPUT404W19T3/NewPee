@@ -11,8 +11,14 @@
 {% block rightColumn %}
 <div class="col-9 mx-auto">
  <div class="card" style="margin:0" data-toggle="modal" id="posts/{{ post.id }}">
+
+
     <div class="card-header">
         {{ posts.title }}
+        <form  id="remove_post_submit">
+        <button  type="submit" class="close"> Delete</button>
+        </form>
+
     </div>
         <div class="card-body" style="margin:0">
         <h6 class="card-subtitle mb-2 text-muted">{{ posts.author}}</h6>
