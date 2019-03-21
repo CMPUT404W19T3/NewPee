@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import include, url
 from django.urls import path
-from views.author_views import log_in, sign_up, logout_view, get_author, get_authors    
+from views.author_views import log_in, sign_up, logout_view, get_author, get_authors,redirect   
 from views import api_views
 from Authors.views import AuthorList, AuthorDetail
 from Posts.views import PostList, PostDetail
@@ -32,6 +32,7 @@ urlpatterns = [
     url( r'^login/$', log_in, name="login"),
     path('signup/', sign_up),
 
+    path('', redirect),
     # Admin
     path('admin/', admin.site.urls),
 

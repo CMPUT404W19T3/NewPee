@@ -62,6 +62,15 @@ def log_in(request, format=None):
             return render(request, 'registration/login.html', {'form': form})
 
 
+
+def redirect(request, format=None):
+
+    if (not request.user.is_anonymous):
+        return HttpResponseRedirect("/authors/")
+    else:
+        return HttpResponseRedirect("/login/")
+
+
 def get_author(request, format=None):
 
 
