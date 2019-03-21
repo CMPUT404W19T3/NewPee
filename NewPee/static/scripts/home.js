@@ -6,6 +6,7 @@ $(document).ready(function(){
 
 var FriendsEnum = Object.freeze({"Add":1, "Subtract":2, });
 const follow_submit_form = document.querySelector("#follow_user_submit");
+
 const follow_submit_button = document.querySelector("#follow_user_submit_button");
 
 var page_author;
@@ -649,7 +650,7 @@ function callRemoveFollowing(callback){
 }
 
 
-
+try {
 follow_submit_form.addEventListener('submit', event =>{
 
     event.preventDefault();
@@ -686,6 +687,10 @@ follow_submit_form.addEventListener('submit', event =>{
     //alert("button clicked");
 
 });
+}
+catch{
+    
+}
 
 
 

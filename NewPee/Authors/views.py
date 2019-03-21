@@ -40,7 +40,7 @@ class AuthorDetail(APIView):
             logged_in_author_serializer = AuthorSerializer(logged_in_author)
 
             form = SearchForm()
-            print("\n\nSEARCH:", request.GET.get('search'))
+            #print("\n\nSEARCH:", request.GET.get('search'))
             search = request.GET.get('search')
             
             if search:
@@ -60,6 +60,9 @@ class AuthorDetail(APIView):
 
     # Clean Up After
     def post(self, request, pk, *args, **kwargs):
+
+
+        print(">")
         if request.method == 'POST' and request.FILES['myfile']:
 
             author = self.get_object(pk)
@@ -102,6 +105,9 @@ class AuthorDetail(APIView):
                 'author': author_serializer.data,  \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data })
 
+
+
+
 class AuthorList(APIView):
     """
     List all Authors, or create a new Author.
@@ -129,26 +135,26 @@ class AuthorList(APIView):
 
 
         # we are posting with an image, store it usign FileSystemStorage in our media folder.
-        if request.method == 'POST' and request.FILES['myfile']:
+        # if request.method == 'POST' and request.FILES['myfile']:
 
 
-            myfile = request.FILES['myfile']
+        #     myfile = request.FILES['myfile']
 
-            # Future TODO: Possibly add it to the DB, but don't have too. 
-            try:
-                Photo.objects.create(myfile)
+        #     # Future TODO: Possibly add it to the DB, but don't have too. 
+        #     try:
+        #         Photo.objects.create(myfile)
             
-            except:
-                print("Not an image!")
+        #     except:
+        #         print("Not an image!")
 
-            print(myfile)
+        #     print(myfile)
             
-            fs = FileSystemStorage()
-            filename = fs.save(myfile.name, myfile)
-            uploaded_file_url = fs.url(filename)
-            return render(request, 'homepage.html', {
-            'uploaded_file_url': uploaded_file_url
-            })
+        #     fs = FileSystemStorage()
+        #     filename = fs.save(myfile.name, myfile)
+        #     uploaded_file_url = fs.url(filename)
+        #     return render(request, 'homepage.html', {
+        #     'uploaded_file_url': uploaded_file_url
+        #     })
             
 
 
