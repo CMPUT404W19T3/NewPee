@@ -1,4 +1,4 @@
- <div class="card" data-toggle="modal" id="posts/{{ post.id }}" data-target="#{{post.id}}">
+ <div class="card" data-toggle="modal" id="posts/{{ post.id }}">
     <div class="card-header">
         {{ post.title }}
     </div>  
@@ -12,5 +12,3 @@
   </div>
    
 </div>
-
-{% include "./post_modal.html" with post=post %}

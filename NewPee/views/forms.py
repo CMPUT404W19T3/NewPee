@@ -50,3 +50,7 @@ class SearchForm(forms.Form):
 
 class passwordLoginForm(forms.Form):
     password = forms.CharField(label="username", max_length=100)
+
+class CommentForm(forms.Form):
+    comment = forms.CharField(label="comment", max_length=100,
+                    widget=forms.TextInput(attrs={'placeholder': 'What\'s on your mind?', 'id':'comment', 'class': 'form-control'}))

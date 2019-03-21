@@ -1,11 +1,80 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>NewPee</title>
-    </head>
-    <body>
-        <span> you are logged in as {{ user.username }} </span>
-        {% block content %}
+{% extends 'header.html' %}
+{% load rest_framework %}
+{% load static %}
+
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/home.css' %}" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+{% block baseHead%} {% endblock %}
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <input type="hidden" id="userID" value={{ logged_in_author.id }}>
+
+
+    <div class="col-11 row m-4">
+
+        <!--left column-->
+        <div class="col-3 mx-auto">
+            <div class="profile-pic">
+                {% if user.picture %}
+                    <img src="{{user.picture}}" alt="profile picture">
+                {% else %}
+                    <img src="{% static 'imgs/logo.png' %}" alt="profile picture">
+                {% endif %}
+            </div>
+            <div class="username">
+                <p>{{author.displayName}}</p>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <p>{{author.posts_created}}</p>
+                    <p>posts</p>
+                </div>
+                <div class="stat">
+                    <p>{{author.following|length}}</p>
+                    <p>followers</p>
+                </div>
+                <div class="stat">
+                    <p>{{author.following|length}}</p>
+                    <p>following</p>
+                </div>
+                
+            </div>
+            <div class="other-info">
+                {% if author.bio %}
+                    <p>{{author.bio}}</p>
+                {% endif %}
+                {% if author.github_url %}
+                    <a href="{{author.github_url}}">{{author.github_url}}</a>
+                {% endif %}
+                <hr>
+
+
+                {% if author.user.username == user.username %}
+                <button type="button" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
+                {% else %}
+                <form id="follow_user_submit" method="Post">
+
+                    <button type="submit" id="follow_user_submit_button" class="btn btn-primary col-12">Follow</button>
+                {% endif %}
+
+                </form>
+                {% include "./edit_profile_modal.html" %}
+            </div>
+        </div> 
+
+        <!--right column-->
+        {% block rightColumn %}
         {% endblock %}
-    </body>
-</html>
+    
+    </div>
+</div>
+
+{% endblock %}

@@ -49,15 +49,24 @@ urlpatterns = [
     # Search 
     path('search/', get_authors, name="search"),
 
+<<<<<<< HEAD
     # Posts API
     path('api/posts/', PostList.as_view()),
     path('api/posts/<uuid:pk>', PostDetail.as_view(), ),
+=======
+    # # Posts API
+    # path('api/posts/', PostList.as_view()),
+    # path('api/posts/<uuid:pk>', PostDetail.as_view()),
+>>>>>>> origin/fixmodals
 
     # Author page
     path('authors/<uuid:pk>', AuthorDetail.as_view(), name="author_page"),
 
     # Post Modal View
-    path('posts/<uuid:pk>', PostDetail.as_view()),
+    path('posts/<uuid:pk>', PostDetail.as_view(), name="post_page"),
+
+    # Comment API
+    path('api/comments/', api_views.comment_list),
 
     # Home
     path('home/', AuthorList.as_view(), name="home"),
