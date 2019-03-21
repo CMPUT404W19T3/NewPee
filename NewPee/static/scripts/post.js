@@ -18,17 +18,21 @@ function getCookie(name) {
 var csrftoken = getCookie('csrftoken');
 
 $(document).ready(function(){
+    
     const elementMakeComment = document.getElementById("comment_creation_submit");
+    const authorUUID = document.getElementById("userID").value;
 
     elementMakeComment.addEventListener('submit', event => {
         
         event.preventDefault();
         // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
         
+        var postID = location.pathname.split("/")[2];
+
         var comment = document.querySelector("#comment").value;
         var data = JSON.stringify({
-            parent: post_id,
-            author : author_uuid,
+            parent: postID,
+            author : authorUUID,
             content: comment,
             csrfmidddlewaretoken: csrftoken,
         });

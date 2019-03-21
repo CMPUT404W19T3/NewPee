@@ -59,6 +59,9 @@ urlpatterns = [
     # Post Modal View
     path('posts/<uuid:pk>', PostDetail.as_view(), name="post_page"),
 
+    # Comment API
+    path('api/comments/', api_views.comment_list),
+
     # Home
     path('home/', AuthorList.as_view(), name="home"),
     path('logout/', logout_view, name="logout"),

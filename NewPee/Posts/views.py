@@ -1,7 +1,9 @@
 from Authors.models import Author
 from Authors.serializers import AuthorSerializer
 from Posts.models import Post, Comment
+from Authors.models import Author
 from Posts.serializers import PostSerializer, CommentSerializer
+from Authors.serializers import AuthorSerializer
 from views.forms import SearchForm, CommentForm
 from django.http import Http404
 from rest_framework.views import APIView
@@ -47,10 +49,8 @@ class PostDetail(APIView):
             post = self.get_object(pk)
             post_serializer = PostSerializer(post)
 
-            author = Author.objects.get(id=post.author)
-            author_serializer = AuthorSerializer(author)
-            print(author_serializer.data)
-
+            logged_in_author = Author.objects.get(user = request.user)
+            logged_in_author_serializer = AuthorSerializer(logged_in_author)
 
             form = SearchForm()
 
@@ -59,6 +59,6 @@ class PostDetail(APIView):
             try:
                 comments = Comment.objects.filter(parent=pk)
                 comment_serializer = CommentSerializer(comments, many=True)
-                return Response({'author': author_serializer.data, 'posts': post_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
+                return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
             except Comment.DoesNotExist:
-                return Response({'author': author_serializer.data, 'posts': post_serializer.data, 'form': form, 'comment_form': comment_form})
+                return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'form': form, 'comment_form': comment_form})
