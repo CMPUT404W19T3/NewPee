@@ -48,10 +48,14 @@ class AuthorModelTests(TestCase):
 
     def test_check_if_friend(self):
         pass
-        # original_user = Author()
-        # friend = Author()
+        #original_user = self.helper_functions.create_author()
+        #friend = self.helper_functions.create_author(username="temp_user2")
+
+        #original_user.follow(friend)
+        #friend.follow(original_user)
+
         # original_user.respond_to_friend_request(friend.get_author_id(), "accept")
-        # self.assertIn(friend.id, original_user.friends)
+        #friends = original_user.get_friends()
 
     def test_check_if_not_friend(self):
         pass
