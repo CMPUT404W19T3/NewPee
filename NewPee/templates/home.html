@@ -1,135 +1,67 @@
-{% extends 'header.html' %}
-{% load rest_framework %}
+{% extends 'base.html' %}
 {% load static %}
 
+{% block baseHead %}
 
-{% block head %}
-<link rel="stylesheet" type="text/css" href="{% static 'styles/home.css' %}" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <script src="{% static 'scripts/home.js' %}"></script>
-<script src="{% static 'scripts/home.js' %}"></script>
-
 {% endblock %}
-
-{% block content %}
-
-
-<div class="container">
-
-    <input type="hidden" id="userID" value= {{ logged_in_author.id }}>
-
-
-    <div class="col-11 row m-4">
-
-        <!--left column-->
-        <div class="col-3 mx-auto">
-            <div class="profile-pic">
-                {% if user.picture %}
-                    <img src="{{user.picture}}" alt="profile picture">
-                {% else %}
-                    <img src="{% static 'imgs/logo.png' %}" alt="profile picture">
-                {% endif %}
-            </div>
-            <div class="username">
-                <p>{{author.displayName}}</p>
-            </div>
-            <div class="stats">
-                <div class="stat">
-                    <p>{{author.posts_created}}</p>
-                    <p>posts</p>
-                </div>
-                <div class="stat">
-                    <p>{{author.following|length}}</p>
-                    <p>followers</p>
-                </div>
-                <div class="stat">
-                    <p>{{author.following|length}}</p>
-                    <p>following</p>
-                </div>
-                
-            </div>
-            <div class="other-info">
-                {% if author.bio %}
-                    <p>{{author.bio}}</p>
-                {% endif %}
-                {% if author.github_url %}
-                    <a href="{{author.github_url}}">{{author.github_url}}</a>
-                {% endif %}
-                <hr>
-
-
-                {% if author.user.username == user.username %}
-                <button type="button" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
-                {% else %}
-                <form id="follow_user_submit" method="Post">
-
-                    <button type="submit" id="follow_user_submit_button" class="btn btn-primary col-12">Follow</button>
-                {% endif %}
-
-                </form>
-                {% include "./edit_profile_modal.html" %}
-            </div>
-        </div> 
-
-        <!--right column-->
-        <div class="col-9 mx-auto">
-            <div class="posting-outter">
-                <div class="posting">
+{% block rightColumn %}
+<div class="col-9 mx-auto">
+    <div class="posting-outter">
+        <div class="posting">
                    
-                    <input type="text" id="post-title" class="form-control mb-2" placeholder="Title">
-                    <textarea class="form-control mb-2" rows="2" id="post-comment-description" placeholder="Write your description here."></textarea>
-                    <textarea class="form-control mb-2" rows="4" id="post-comment-content" placeholder="Write your content here."></textarea>  
+            <input type="text" id="post-title" class="form-control mb-2" placeholder="Title">
+            <textarea class="form-control mb-2" rows="2" id="post-comment-description" placeholder="Write your description here."></textarea>
+            <textarea class="form-control mb-2" rows="4" id="post-comment-content" placeholder="Write your content here."></textarea>  
 
 
-                    <div class="form-check form-check-inline">
-                            <input class="form-check-input" checked="checked" type="radio" name="friends-radio-option" id="PublicPrivacy" value="1">
-                            <label class="form-check-label" for="private-radio-option">Public</label>
-                        </div>
-                    <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="friends-radio-option" id="FOAFPrivacy" value="2">
-                            <label class="form-check-label" for="private-radio-option">FOAF</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="friends-radio-option" id="FriendsPrivacy" value="3">
-                        <label class="form-check-label" for="private-radio-option">Friends</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="friends-radio-option" id="PrivatePrivacy" value="4">
-                            <label class="form-check-label" for="private-radio-option">Private</label>
-                        </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="friends-radio-option" id="ServerPrivay" value="5">
-                        <label class="form-check-label" for="friends-radio-option">Server Only</label>
-                    </div>
+            <div class="form-check form-check-inline">
+                    <input class="form-check-input" checked="checked" type="radio" name="friends-radio-option" id="PublicPrivacy" value="1">
+                    <label class="form-check-label" for="private-radio-option">Public</label>
+                </div>
+            <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="friends-radio-option" id="FOAFPrivacy" value="2">
+                    <label class="form-check-label" for="private-radio-option">FOAF</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="friends-radio-option" id="FriendsPrivacy" value="3">
+                <label class="form-check-label" for="private-radio-option">Friends</label>
+            </div>
+            <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="friends-radio-option" id="PrivatePrivacy" value="4">
+                    <label class="form-check-label" for="private-radio-option">Private</label>
+                </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="friends-radio-option" id="ServerPrivay" value="5">
+                <label class="form-check-label" for="friends-radio-option">Server Only</label>
+            </div>
                         
                     
-                    <div class="file_upload">
-                        <form method="post" enctype="multipart/form-data" data-ajax="false">
-                          {% csrf_token %}
-                          <input type="file" name="myfile" onchange="getFileData(this)">
-                          <button type="submit" id = "btnfileupload" class="btn btn-primary">upload file</button>
+            <div class="file_upload">
+                <form method="post" enctype="multipart/form-data" data-ajax="false">
+                    {% csrf_token %}
+                    <input type="file" name="myfile" onchange="getFileData(this)">
+                    <button type="submit" id = "btnfileupload" class="btn btn-primary">upload file</button>
                             
-                        </form>
-                    </div>
-                      
-                    {% if uploaded_file_url %}
-                        <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
-                    {% endif %}
-
-                    <br>
-                    <br>
-
-                    <!-- home.js handles form submission-->
-                    <form id="post_creation_submit">
-                    <button type="submit" class ="btn btn-primary">Post</button>
-                    </form>
-
-
-
-                </div>
+                </form>
             </div>
+                      
+            {% if uploaded_file_url %}
+                <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+            {% endif %}
+
+            <br>
+            <br>
+
+            <!-- home.js handles form submission-->
+            <form id="post_creation_submit">
+                <button type="submit" class ="btn btn-primary">Post</button>
+            </form>
+
+
+
+        </div>
+    </div>
 
 
             {% if posts %}
@@ -138,14 +70,7 @@
                 
             {% endfor %}
             {% endif %}
-             
-
-
-            
-        </div>
-
-    
-    </div>
+      
 </div>
 
 {% endblock %}

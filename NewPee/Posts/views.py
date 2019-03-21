@@ -1,5 +1,10 @@
+from Authors.models import Author
+from Authors.serializers import AuthorSerializer
 from Posts.models import Post, Comment
+from Authors.models import Author
 from Posts.serializers import PostSerializer, CommentSerializer
+from Authors.serializers import AuthorSerializer
+from views.forms import SearchForm, CommentForm
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -30,6 +35,8 @@ class PostDetail(APIView):
     """
     Retrieve, update or delete a Post.
     """
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'post.html'
 
     def get_object(self, pk):
         try:
@@ -42,9 +49,16 @@ class PostDetail(APIView):
             post = self.get_object(pk)
             post_serializer = PostSerializer(post)
 
+            logged_in_author = Author.objects.get(user = request.user)
+            logged_in_author_serializer = AuthorSerializer(logged_in_author)
+
+            form = SearchForm()
+
+            comment_form = CommentForm()
+
             try:
-                comments = Comment.objects.get(parent=pk)
+                comments = Comment.objects.filter(parent=pk)
                 comment_serializer = CommentSerializer(comments, many=True)
-                return Response({'posts': post_serializer.data, 'comments': comment_serializer.data})
+                return Response({'posts': post_serializer.data, 'author':logged_in_author_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
             except Comment.DoesNotExist:
-                return Response({'posts': post_serializer.data})
+                return Response({'posts': post_serializer.data, 'author':logged_in_author_serializer.data, 'form': form, 'comment_form': comment_form})

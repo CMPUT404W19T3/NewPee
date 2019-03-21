@@ -1,4 +1,4 @@
- <div class="card" data-toggle="modal" id="posts/{{ post.id }}" data-target="#{{post.id}}">
+ <div class="card" data-toggle="modal" id="posts/{{ post.id }}">
     <div class="card-header">
         {{ post.title }}
     </div>  
@@ -6,11 +6,9 @@
 
         <div class="card-body">
 
-        <h6 class="card-subtitle mb-2 text-muted">{{ post.author}}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">{{ logged_in_author.displayName}}</h6>
         <h6 class="card-subtitle mb-2 text-muted">{{ post.post_date}}</h6>
-        <p class="card-text">{{post.description}}</p>
+        <p class="card-text">description: <br>{{post.description}}</p>
   </div>
    
 </div>
-
-{% include "./post_modal.html" with post=post %}
