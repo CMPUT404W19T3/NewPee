@@ -30,6 +30,8 @@ class PostDetail(APIView):
     """
     Retrieve, update or delete a Post.
     """
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'post.html'
 
     def get_object(self, pk):
         try:
