@@ -42,7 +42,7 @@ urlpatterns = [
 
     # Post API
     path('api/posts/', api_views.post_list),
-    path('api/posts/<uuid:pk>', api_views.post_detail),
+    path('api/posts/<uuid:pk>', api_views.post_detail, name="edit_author"),
 
     path('friends/<uuid:pk>', AuthorDetail.as_view()),
 
@@ -51,7 +51,7 @@ urlpatterns = [
 
     # Posts API
     path('api/posts/', PostList.as_view()),
-    path('api/posts/<uuid:pk>', PostDetail.as_view()),
+    path('api/posts/<uuid:pk>', PostDetail.as_view(), ),
 
     # Author page
     path('authors/<uuid:pk>', AuthorDetail.as_view(), name="author_page"),
