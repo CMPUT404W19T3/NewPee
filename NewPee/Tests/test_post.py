@@ -37,7 +37,9 @@ class PostModelTests(TestCase):
         pass
 
     def test_make_private_to_author(self):
-        pass
+        test_post = Post(author="Garfield", visibility="PRIVATE")
+        self.assertEqual(test_post.visibility, "PRIVATE")
+        
 
     def test_make_private_to_friends(self):
         pass
@@ -49,7 +51,8 @@ class PostModelTests(TestCase):
         pass
 
     def test_make_public(self):
-        pass
+        test_post = Post(author="Garfield")
+        self.assertEqual(test_post.visibility, "PUBLIC")
 
     def test_body_plaintext(self):
         pass
