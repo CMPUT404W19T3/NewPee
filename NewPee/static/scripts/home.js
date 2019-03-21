@@ -339,7 +339,7 @@ function updatefollowingPOST(following,enumType){
             $("#request-access").hide();
 
             // The author is following us
-            if (page_author.followers.includes(user_id)){
+            if (page_author.following.includes(user_id)){
                 console.log("Updating Friends");
 
                 // Add friends to both Accounts.
@@ -347,12 +347,24 @@ function updatefollowingPOST(following,enumType){
                     console.log(" updating friends with enum ADD");
                     updateFriends(FriendsEnum.Add);
                 }
-                // Subtract friends from both Accounts.
-                if (enumType === FriendsEnum.Subtract){
+
+                  // Subtract friends from both Accounts.
+                  if (enumType === FriendsEnum.Subtract){
+                    console.log("updating friends with enum Subtract");
+                    updateFriends(FriendsEnum.Subtract);
+                }
+              
+            }
+            else{
+                  // Subtract friends from both Accounts.
+                  if (enumType === FriendsEnum.Subtract){
                     console.log("updating friends with enum Subtract");
                     updateFriends(FriendsEnum.Subtract);
                 }
             }
+
+
+
 
         },
         error: function (e) {      
