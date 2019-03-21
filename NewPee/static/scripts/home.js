@@ -654,7 +654,7 @@ try {
 follow_submit_form.addEventListener('submit', event =>{
 
     event.preventDefault();
-
+    event.stopImmediatePropagation();
     var follow_unfollow_text = follow_submit_button.textContent || follow_submit_button.innerText;
 
 
@@ -664,22 +664,21 @@ follow_submit_form.addEventListener('submit', event =>{
 
     console.log(follow_unfollow_text);
 
-    callFollowing(callFollowers);      // Add to your following list, add to their followers
+    //callFollowing(callFollowers);      // Add to your following list, add to their followers
 
     //callRemoveFollowing(callRemoveFollowers);   // Remove the followers
 
 
 
-    // Both of these are called on a single submit.
- /*    if(follow_unfollow_text === "Follow"){
+    //Both of these are called on a single submit.
+    if(follow_unfollow_text === "Follow"){
 
     callFollowing(callFollowers);   
     }
 
     else{
     callRemoveFollowing(callRemoveFollowers);   
-    }   */
-
+    }   
 
 
 
@@ -689,7 +688,7 @@ follow_submit_form.addEventListener('submit', event =>{
 });
 }
 catch{
-    
+
 }
 
 
@@ -698,7 +697,10 @@ catch{
 const elementMakePost = document.querySelector("#post_creation_submit");
 
 elementMakePost.addEventListener('submit', event => {
-  event.preventDefault();
+  
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     console.log("button clicked");
     var request_data = "Data"; // TODO: include all post data
@@ -708,7 +710,6 @@ elementMakePost.addEventListener('submit', event => {
     var post_description = document.querySelector("#post-comment-description").value;
     var radioButtons = document.getElementsByName("friends-radio-option");
     console.log(radio_value);
-
 
     var radio_value;
 
@@ -772,11 +773,15 @@ elementMakePost.addEventListener('submit', event => {
         }
         
     });
+
+    return false;
+    
 });
 
 const elementUpdateProfile = document.querySelector("#edit_profile_submit");
 elementUpdateProfile.addEventListener('submit', event => {
     event.preventDefault();
+    event.stopImmediatePropagation();
     $('#edit_profile_modal').modal('hide');
     var newDisplayName = document.querySelector("#author-display-name").value;
     var newBio = document.querySelector("#author-bio").value;
