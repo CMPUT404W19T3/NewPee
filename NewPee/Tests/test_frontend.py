@@ -58,7 +58,6 @@ class FrontEndTests(TestCase):
 
 
     def test_author_sign_in_fail(self):
-        pass
         url = "/login/"
         data = urlencode({"username": "fake_user", "password":"not_a_real_password"})
         response = self.client.post(url, data , content_type="application/x-www-form-urlencoded")
