@@ -776,7 +776,7 @@ elementMakePost.addEventListener('submit', event => {
 const elementUpdateProfile = document.querySelector("#edit_profile_submit");
 elementUpdateProfile.addEventListener('submit', event => {
     event.preventDefault();
-    eventgit.stopImmediatePropagation();
+    event.stopImmediatePropagation();
     $('#edit_profile_modal').modal('hide');
     var newDisplayName = document.querySelector("#author-display-name").value;
     var newBio = document.querySelector("#author-bio").value;
