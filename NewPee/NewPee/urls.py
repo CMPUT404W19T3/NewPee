@@ -21,6 +21,7 @@ from views import api_views
 from Authors.views import AuthorList, AuthorDetail
 from Posts.views import PostList, PostDetail
 from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework.documentation import include_docs_urls
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import views as auth_views
@@ -68,7 +69,7 @@ urlpatterns = [
 
     path('authors/', get_author),
 
-
+    path('docs/', include_docs_urls(title='Documentation')),
 
 ]
 
