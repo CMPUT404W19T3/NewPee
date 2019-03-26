@@ -1,4 +1,3 @@
-//https:docs.djangoproject.com/en/dev/ref/csrf/#ajax
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -14,7 +13,6 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-
 var csrftoken = getCookie('csrftoken');
 
 var post_url = location.pathname;
