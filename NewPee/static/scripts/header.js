@@ -1,5 +1,18 @@
-import { getCookie } from 'cookie'; 
-
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
 $(document).ready(function(){
 
@@ -19,20 +32,13 @@ function grabUser(){
         success : function(json) {
             user = json;
             console.log(user);
-
             var notifications = 0;
-
             for (var authors in user.followers){
                 if( !user.friends.includes( user.followers[authors])){
                         notifications++;
-
                     }
                 }
-
-
-
             badge_number.innerHTML = notifications;
-
             $("#request-access").hide();
         },
         error: function (e) {      
@@ -41,23 +47,11 @@ function grabUser(){
     });
 }
 
-
 var author_url = location.pathname;
-var author_uuid = author_url.split("/")[2];
-var author_api_url = "/api" + author_url;
-
 const badge_number = document.querySelector("#badge_number");
-
 var csrftoken = getCookie('csrftoken');
 
-
-
-
-
-
-
 grabUser();
-
 
 });  
 
