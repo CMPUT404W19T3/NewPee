@@ -69,7 +69,7 @@ urlpatterns = [
 
     path('authors/', get_author),
 
-    path('docs/', include_docs_urls(title='Documentation')),
+    path('docs/', include_docs_urls(title='Documentation'))
 
 ]
 
