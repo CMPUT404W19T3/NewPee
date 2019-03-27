@@ -19,7 +19,10 @@ class Author(models.Model):
     friends = models.ManyToManyField("self", related_name="_friends", blank=True)
     following = models.ManyToManyField("self", related_name="_following", symmetrical=False, blank=True)
     followers = models.ManyToManyField("self", related_name="_followers", symmetrical=False, blank=True)
-    
+    friend_requests = models.ManyToManyField("self", related_name="_friend_requests", symmetrical=False, blank=True)
+
+
+
 
     # This return is inherited from Django's built-in User
     def __str__(self):
@@ -67,6 +70,11 @@ class Author(models.Model):
         self.following.add(author)
         self.save()
 
+
+    def followed(self,author):
+        self.followers.add(author)
+        self.save()
+
     def unfollow(self, author):
         """
         Unfollow local author.
@@ -82,11 +90,29 @@ class Author(models.Model):
 
     # Return all pending friend requests
     def get_friend_request(self):
-        pass
+        return self.friend_requests.all()
+        
 
+    def send_friend_request(self, author):
+
+        self.followed(author)
+        self.friend_requests.add(author)
+        self.save()
+
+
+    
     # Accept or Decline friend request based on choice
-    def respond_to_friend_request(self, author_id, choice):
-        pass
+    def respond_to_friend_request(self, author, choice):
+
+        self.friend_requests.remove(author) # no longer in our friend requests either way.
+            
+        if( choice == "accept"):
+            self.friends.add(author)
+            self.follow(author)
+
+        self.save()
+
+        
 
     # Remove an existing friend
     def remove_friend(self, author_id):

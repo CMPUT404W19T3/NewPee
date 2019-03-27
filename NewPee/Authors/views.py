@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponseRedirect
 from views.forms import SearchForm
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.views.decorators.csrf import csrf_exempt
 
@@ -19,6 +19,9 @@ from Posts.serializers import PostSerializer
 
 from rest_framework.generics import ListAPIView
 from collections import OrderedDict
+
+from rest_framework.decorators import action
+from django.views.generic import RedirectView
 
 class AuthorDetail(APIView):
     """
@@ -321,3 +324,40 @@ class AuthorFriendRequestsView(APIView):
 
 
         return Response( response_data ) 
+
+# https://docs.djangoproject.com/en/2.1/ref/class-based-views/base/#redirectview
+
+class AuthorFriendRequestActionsView( RedirectView):
+
+
+
+    def get_redirect_url(self, *args, **kwargs):    
+
+
+        
+        target_pk = kwargs.get('pk')
+        method = kwargs.get('method')
+        sender = self.request.user
+
+
+        target_author = get_object_or_404(models.Author, pk= target_pk)
+        sender_author = get_object_or_404(models.Author, user=user)
+
+
+        # Author accepts friend request
+
+        if method == "accept":
+            target_author.respond_to_friend_request(sender_author, "accept")
+
+
+
+        if method == "decline":
+            target_author.respond_to_friend_request(sender_author, "decline")
+
+        
+        if method == "send-request":
+            pass
+
+
+        if method == "unfriend":
+            pass

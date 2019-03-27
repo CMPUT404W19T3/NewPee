@@ -19,7 +19,7 @@ from django.urls import path
 from views.author_views import log_in, sign_up, logout_view, get_author, get_authors,redirect   
 from views import api_views
 
-from Authors.views import AuthorList, AuthorDetail, AuthorfriendsView, AuthorIsfriendsView, AuthorFriendRequestsView
+from Authors.views import AuthorList, AuthorDetail, AuthorfriendsView, AuthorIsfriendsView, AuthorFriendRequestsView, AuthorFriendRequestActionsView
 #import Author.views
 from Posts.views import PostList, PostDetail
 
@@ -28,6 +28,12 @@ from rest_framework.documentation import include_docs_urls
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import views as auth_views
+
+
+from rest_framework import routers
+
+
+
 
 urlpatterns = [
     # Login, Signup and Logout
@@ -86,10 +92,16 @@ urlpatterns = [
     path('api/author/<uuid:pk>/friends/<uuid:pk2>', AuthorIsfriendsView.as_view(), name="api-checkfriends"), # returns a boolean if they are friends
     path('api/author/<uuid:pk>/friendrequest' , AuthorFriendRequestsView.as_view(), name="api-friendrequests"),
 
+
+    # 
+    path('api/author/<uuid:pk>/accept-friend-request/', AuthorFriendRequestActionsView.as_view(), {'method': "accept"}, name="accept-friend", ),
+    path('api/author/<uuid:pk>/decline-friend-request/', AuthorFriendRequestActionsView.as_view(),{'method': "decline"}, name="decline-friend", ),
+    path('api/author/<uuid:pk>/send-friend-request/', AuthorFriendRequestActionsView.as_view(), {'method': "send-request"}, name="send-request", ),
+    path('api/author/<uuid:pk/unfriend/', AuthorFriendRequestActionsView.as_view(),{'method': "unfriend"}, name="unfriend",  ),
  
 
 
-    path('docs/', include_docs_urls(title='Documentation'))
+    path('docs/', include_docs_urls(title='Documentation')),
 
 ]
 
