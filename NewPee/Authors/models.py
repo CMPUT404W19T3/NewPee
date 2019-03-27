@@ -17,7 +17,7 @@ class Author(models.Model):
     friends = models.ManyToManyField("self", related_name="_friends", blank=True)
     following = models.ManyToManyField("self", related_name="_following", symmetrical=False, blank=True)
     followers = models.ManyToManyField("self", related_name="_followers", symmetrical=False, blank=True)
-
+    
 
     # This return is inherited from Django's built-in User
     def __str__(self):
@@ -35,7 +35,19 @@ class Author(models.Model):
         """
         Check if an author is a friend.
         """
-        return self.friends.filter(uuid=author_id).exists()
+
+
+        friends_ids = self.friends.all().values('id')
+
+        try:
+            if(friends_ids.get(id=author_id)):
+                return True
+        except:
+            return False
+
+
+
+        #return self.friends.filter(uuid=author_id).exists()
 
     def get_friend_models(self):
         return self.friends

@@ -18,8 +18,11 @@ from django.conf.urls import include, url
 from django.urls import path
 from views.author_views import log_in, sign_up, logout_view, get_author, get_authors,redirect   
 from views import api_views
-from Authors.views import AuthorList, AuthorDetail
+
+from Authors.views import AuthorList, AuthorDetail, AuthorfriendsView, AuthorIsfriendsView, AuthorFriendRequestsView
+#import Author.views
 from Posts.views import PostList, PostDetail
+
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.conf.urls.static import static
 from django.conf import settings
@@ -43,6 +46,14 @@ urlpatterns = [
     # Post API
     path('api/posts/', api_views.post_list),
     path('api/posts/<uuid:pk>', api_views.post_detail, name="edit_author"),
+
+    #TODO
+    # http://service/author/{AUTHOR_ID}/posts (all posts made by {AUTHOR_ID} visible to the currently authenticated user)
+
+
+    #TODO 
+    # http://service/posts/{post_id}/comments access to the comments in a post
+
 
     path('friends/<uuid:pk>', AuthorDetail.as_view()),
 
@@ -69,14 +80,23 @@ urlpatterns = [
     path('authors/', get_author),
 
 
+    # FRIENDS
+    path('api/author/<uuid:pk>/friends/', AuthorfriendsView.as_view(), name="api-friendlist"),      # GET Return query of friends, # POST a list of authors, returns 
+    path('api/author/<uuid:pk>/friends/<uuid:pk2>', AuthorIsfriendsView.as_view(), name="api-checkfriends"), # returns a boolean if they are friends
+    path('api/author/<uuid:pk>/friendrequest' , AuthorFriendRequestsView.as_view(), name="api-friendrequests"),
+
+ 
+
+
 
 ]
+
 
 # https://docs.djangoproject.com/en/2.1/topics/http/urls/
 # https://www.django-rest-framework.org/api-guide/format-suffixes/
 
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+#urlpatterns = format_suffix_patterns(urlpatterns)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
