@@ -14,7 +14,7 @@ class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # have to change to a user model
-    author = models.ForeignKey('Post', on_delete=models.CASCADE , null=False, blank=False)
+    author = models.ForeignKey('Authors.Author', on_delete=models.CASCADE , null=False, blank=False, related_name="author")
     #author = models.CharField(max_length=140, null=False,blank=False)
     # author = models.ForeignKey(User)
 
@@ -30,16 +30,16 @@ class Post(models.Model):
     # picture = models.ImageField(upload_to = 'media/', default = 'media/None/no-img.jpg')
     post_date = models.DateTimeField(auto_now_add=True)
     #Types of visibility
-    visibilityChoices = (
+    visibility_choices = (
                         ( 'PUBLIC', 'PUBLIC'),
                         ( 'FOAF', 'FOAF'),
                         ( 'PRIVATE', 'PRIVATE'),
                         ( 'SERVERONLY', 'SERVERONLY'),
                         ( 'FRIENDS', 'FRIENDS'),
     )
-    visibility = models.CharField(max_length=10, choices=visibilityChoices, default="PUBLIC")
+    visibility = models.CharField(max_length=10, choices=visibility_choices, default="PUBLIC")
     # which viewers are allowed to see it.
-    visibleTo = models.ManyToManyField(Author, blank=True)
+    visible_to = models.ManyToManyField('Authors.Author', blank=True, related_name='visible_to')
     unlisted = models.BooleanField(default=False)
 
 

@@ -9,7 +9,7 @@ from Posts.models import Post, Comment
 class GeneralBuilding:
 
 
-    def create_author(self, username="temp_user", displayName = "temp_name", email="temp@gmail.com", password="TestPass1", ):
+    def create_author(self, username="temp_user", displayName = "temp_name", email="temp@gmail.com", password="TestPass1"):
 
 
         user = User.objects.create(username=username, email=email, password=password)
@@ -30,8 +30,8 @@ class GeneralBuilding:
 
     def create_post(self,title,author):
 
-
-        post = Post.objects.create(title=title, author=author, content="body" )
+        author = self.create_author()
+        post = Post.objects.create(title=title, author=author, content="body")
         post.save()
 
         return post
