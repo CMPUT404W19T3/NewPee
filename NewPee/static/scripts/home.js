@@ -1,20 +1,3 @@
-
-
-
-$(document).ready(function(){
-
-
-var FriendsEnum = Object.freeze({"Add":1, "Subtract":2, });
-const follow_submit_form = document.querySelector("#follow_user_submit");
-
-const follow_submit_button = document.querySelector("#follow_user_submit_button");
-
-var page_author;
-var user_author;
-
-
-
-//https:docs.djangoproject.com/en/dev/ref/csrf/#ajax
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -30,7 +13,17 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+$(document).ready(function(){
 
+var author_url = location.pathname;
+var author_uuid = author_url.split("/")[2];
+var author_api_url = "/api" + author_url;
+
+var FriendsEnum = Object.freeze({"Add":1, "Subtract":2, });
+const follow_submit_form = document.querySelector("#follow_user_submit");
+const follow_submit_button = document.querySelector("#follow_user_submit_button");
+var page_author;
+var user_author;
 
 function getFileData(myFile){
     var file = myFile.files[0];  
@@ -38,28 +31,18 @@ function getFileData(myFile){
     console.log(filename);
  }
 
- var csrftoken = getCookie('csrftoken');
-
-
-
- var author_url = location.pathname;
- var author_uuid = author_url.split("/")[2];
- var author_api_url = "/api" + author_url;
+var csrftoken = getCookie('csrftoken');
+var author_url = location.pathname;
+var author_uuid = author_url.split("/")[2];
+var author_api_url = "/api" + author_url;
+var user_id = document.getElementById("userID").value; // grabbing from hidden value through django context
+var user_api_url = "/api/authors/" + user_id;
  
-
- var user_id = document.getElementById("userID").value; // grabbing from hidden value through django context
- 
- 
- 
- var user_api_url = "/api/authors/" + user_id;
- 
- console.log(user_api_url)
-
+console.log(user_api_url)
 
 function grabUser(){
     $.ajax({
         type: "GET",
-        async:false,    // wait till we have the author.
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -78,7 +61,7 @@ function grabUser(){
  function grabAuthor(){
     $.ajax({
         type: "GET",
-        async:false,    // wait till we have the author.
+        //async:false,    // wait till we have the author.
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -190,7 +173,7 @@ function subtractUserFriends(){
 
     $.ajax({
         type: "PATCH",
-        async: false,
+        //async: false,
         url: user_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -224,7 +207,7 @@ function subtractAuthorFriends(){
 
     $.ajax({
         type: "PATCH",
-        async: false,
+        //async: false,
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -260,7 +243,7 @@ function addUserFriends(){
         }
     $.ajax({
         type: "PATCH",
-        async: false,
+        //async: false,
         url: user_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -279,8 +262,7 @@ function addUserFriends(){
 function addAuthorFriends(){
     data ={};
     data["friends"] = [user_id];
-    if(page_author.friends.length != 0){
-            
+    if(page_author.friends.length != 0){   
         for (var authors in page_author.friends){
             if(page_author.friends[authors] != user_id && page_author.friends[authors] != 0){
                 data["friends"].push(page_author.friends[authors]);
@@ -289,7 +271,7 @@ function addAuthorFriends(){
         }
     $.ajax({
         type: "PATCH",
-        async: false,
+        //async: false,
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -305,8 +287,6 @@ function addAuthorFriends(){
     });
 
 }
-
-
 
 function updateFriends(enumType) {
 
@@ -332,11 +312,7 @@ let posts = getPosts();
 
 // In The future, we should keep these, then every ajax call just updates them depending.
 
-
-
-
 console.log(csrftoken);
-
 
 // Update page author profile.
 // adding the current logged in user to current authors page followers
@@ -344,7 +320,7 @@ function updatefollowersPOST(follower, enumType){
     console.log(follower);
     $.ajax({
         type: "PATCH",
-        async: false,
+        //async: false,
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -373,7 +349,7 @@ function updatefollowingPOST(following,enumType){
     console.log(following);
     $.ajax({
         type: "PATCH",
-        async: false,
+        //async: false,
         url: user_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -391,13 +367,11 @@ function updatefollowingPOST(following,enumType){
                     console.log(" updating friends with enum ADD");
                     updateFriends(FriendsEnum.Add);
                 }
-
                   // Subtract friends from both Accounts.
                   if (enumType === FriendsEnum.Subtract){
                     console.log("updating friends with enum Subtract");
                     updateFriends(FriendsEnum.Subtract);
                 }
-              
             }
             else{
                   // Subtract friends from both Accounts.
@@ -406,10 +380,6 @@ function updatefollowingPOST(following,enumType){
                     updateFriends(FriendsEnum.Subtract);
                 }
             }
-
-
-
-
         },
         error: function (e) {      
             console.log("ERROR: ", e);
@@ -423,14 +393,13 @@ function updatefollowingPOST(following,enumType){
 function updatefollowingGet(enumType){
     $.ajax({
         type: "GET",
-        async: false,
+        //async: false,
         url: user_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
         success : function(json) {
             author = json;
             var data = {};   
-
             // Either Adding to following list or removing from following list.
             if (enumType === FriendsEnum.Add){
                 data["following"] = [author_uuid];
@@ -438,24 +407,19 @@ function updatefollowingGet(enumType){
             else{
                 data["following"] = [0];
             }
-
             // Only add followers if they have some     
             if(author.following.length != 0){
             
             for (var authors in author.following){
                 if(author.following[authors] != author_uuid && author.following[authors] != 0){
                     data["following"].push(author.following[authors]);
-
                     }  
                 }
             }
-
             // Remove the [0] from start of list.
             if (enumType === FriendsEnum.Subtract){
             data["following"].shift();
             }
-
-
             updatefollowingPOST(JSON.stringify(data),enumType); // update the follower list
             $("#request-access").hide();
         },
@@ -467,14 +431,12 @@ function updatefollowingGet(enumType){
 
 
 
-
-
 // Get the current followers of the Profile.
 // Add 
 function updatefollowersGet(enumType){
     $.ajax({
         type: "GET",
-        async: false,
+        //async: false,
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -482,11 +444,9 @@ function updatefollowersGet(enumType){
             author = json;
             //console.log(author);
             var data = {};
-
             // Adding the 0 to be able to push the rest onto the array
             if (enumType === FriendsEnum.Add){
                 data["followers"] = [user_id];
-
                 page_author = author;
                 page_author.followers.push([user_id]);
 
@@ -495,31 +455,25 @@ function updatefollowersGet(enumType){
                 data["followers"] = [0];
             }
 
-
-
             // Only add followers if they have some     
             if(author.followers.length != 0){
-            
             // Add back all the previous followers
-            for (var authors in author.followers){
-                if(author.followers[authors] != user_id && author.followers[authors] != 0){
-                    data["followers"].push(author.followers[authors]);
+                for (var authors in author.followers){
+                    if(author.followers[authors] != user_id && author.followers[authors] != 0){
+                        data["followers"].push(author.followers[authors]);
                     }  
                 }
             }
 
             // Remove the 0 as we no longer need it
             if (enumType === FriendsEnum.Subtract){
-
-            data["followers"].shift();
+                data["followers"].shift();
             }
 
             //update our global 
             page_author = author;
             page_author.followers.push()
-
             updatefollowersPOST(JSON.stringify(data),enumType); // update the follower list
-
             $("#request-access").hide();
         },
         error: function (e) {      
@@ -527,9 +481,6 @@ function updatefollowersGet(enumType){
         }
     });
 };
-
-
-
 
 
 function updateNumPostGet(){
@@ -558,7 +509,7 @@ function updateNumPostPut(numOfPost){
     console.log(numOfPost);
     $.ajax({
         type: "PATCH",
-        async: false,
+        //async: false,
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -574,10 +525,7 @@ function updateNumPostPut(numOfPost){
 };
     
 
-
-
 // https://blog.teamtreehouse.com/creating-autocomplete-dropdowns-datalist-element
-
 // Get the <datalist> and <input> elements.
 var dataList = document.getElementById('ajax_authors');
 var input = document.getElementById('ajax');
@@ -619,21 +567,17 @@ $(document).ready(function(){
 });
 
 
-
 // Functions for adding 
 function callFollowers(){
     console.log("Second")
     updatefollowingGet(FriendsEnum.Add);
-
-
 }
+
 function callFollowing(callback){
     console.log("first");
     updatefollowersGet(FriendsEnum.Add);    // Call second, friends piggybacks off Followers
-
     callback();
 }
-
 
 // Functions for Subtracting
 function callRemoveFollowers(){
@@ -651,42 +595,25 @@ follow_submit_form.addEventListener('submit', event =>{
     event.preventDefault();
     event.stopImmediatePropagation();
     var follow_unfollow_text = follow_submit_button.textContent || follow_submit_button.innerText;
-
-
     //updatefollowersGet();
     //updatefollowingGet();
-
 
     console.log(follow_unfollow_text);
 
     //callFollowing(callFollowers);      // Add to your following list, add to their followers
-
     //callRemoveFollowing(callRemoveFollowers);   // Remove the followers
-
-
-
     //Both of these are called on a single submit.
     if(follow_unfollow_text === "Follow"){
-
-    callFollowing(callFollowers);   
+        callFollowing(callFollowers);   
     }
-
     else{
     callRemoveFollowing(callRemoveFollowers);   
     }   
-
-
-
-
-    //alert("button clicked");
-
 });
 }
 catch{
 
 }
-
-
 
 
 const elementMakePost = document.querySelector("#post_creation_submit");
@@ -715,13 +642,7 @@ elementMakePost.addEventListener('submit', event => {
     }
     
     var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY"})
-
     var visibleTo;
-
- 
-
-
-
     var data = { 
         title : post_title,
         author : author_uuid,
@@ -739,11 +660,6 @@ elementMakePost.addEventListener('submit', event => {
     } 
     
     data= JSON.stringify(data);
-
-
-
-
-
     console.log(data, "OUR DATA FOR POST");
 
     // Goes to post_created
@@ -751,7 +667,7 @@ elementMakePost.addEventListener('submit', event => {
 
     $.ajax({
         type: "POST",
-        async: false,
+        //async: false,
         url: "/api/posts/",
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -776,7 +692,7 @@ elementMakePost.addEventListener('submit', event => {
 const elementUpdateProfile = document.querySelector("#edit_profile_submit");
 elementUpdateProfile.addEventListener('submit', event => {
     event.preventDefault();
-    eventgit.stopImmediatePropagation();
+    event.stopImmediatePropagation();
     $('#edit_profile_modal').modal('hide');
     var newDisplayName = document.querySelector("#author-display-name").value;
     var newBio = document.querySelector("#author-bio").value;
@@ -793,11 +709,7 @@ elementUpdateProfile.addEventListener('submit', event => {
         data["github_url"] = newGitHubURL;
     }
     
-
-    
-
     console.log(JSON.stringify(data));
-
 
     $.ajax({
         type: "PATCH",

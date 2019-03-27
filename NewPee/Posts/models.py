@@ -14,11 +14,17 @@ class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # have to change to a user model
-    author = models.CharField(max_length=140, null=False,blank=False)
+    author = models.ForeignKey('Post', on_delete=models.CASCADE , null=False, blank=False)
+    #author = models.CharField(max_length=140, null=False,blank=False)
     # author = models.ForeignKey(User)
 
     title = models.CharField(max_length=30, null=False, blank=False)
+    #source = lastplaceigotthisfrom, origin = whereitcamefrom
+    source = models.URLField(null=True,blank=True)
+    origin = models.URLField(null=True,blank=True)
     description = models.CharField(max_length=150, default="No Description", null=False, blank=False)
+    #text/markdown, text/plain, (application/base64, image/png;base64, image/jpeg;base64)???
+    content_type = models.TextField(null=False,blank=False, default="text/plain")
     content = models.TextField(null=False,blank=False)
     image = models.URLField(null=True,blank=True)
     post_date = models.DateTimeField(auto_now_add=True)
@@ -34,6 +40,7 @@ class Post(models.Model):
     # which viewers are allowed to see it.
     visibleTo = models.ManyToManyField(Author, blank=True)
     unlisted = models.BooleanField(default=False)
+
 
 
     def get_id(self):
