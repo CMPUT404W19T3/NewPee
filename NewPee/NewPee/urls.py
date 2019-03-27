@@ -32,13 +32,10 @@ from rest_framework_swagger.views import get_swagger_view
 
 API_TITLE = "API Documentation"
 API_DESCRIPTION = 'Built-in interactive API documentation for NewPee.'
+
 schema_view = get_swagger_view(title='Documentation')
 
-
 from rest_framework import routers
-
-
-
 
 urlpatterns = [
     # Login, Signup and Logout
@@ -72,7 +69,7 @@ urlpatterns = [
     # Search 
     path('search/', get_authors, name="search"),
 
-    # # Posts API
+    # Posts API
     # path('api/posts/', PostList.as_view()),
     # path('api/posts/<uuid:pk>', PostDetail.as_view()),
 
@@ -91,28 +88,23 @@ urlpatterns = [
 
     path('authors/', get_author),
 
-
     # FRIENDS
     path('api/author/<uuid:pk>/friends/', AuthorfriendsView.as_view(), name="api-friendlist"),      # GET Return query of friends, # POST a list of authors, returns 
     path('api/author/<uuid:pk>/friends/<uuid:pk2>', AuthorIsfriendsView.as_view(), name="api-checkfriends"), # returns a boolean if they are friends
     path('api/author/<uuid:pk>/friendrequest' , AuthorFriendRequestsView.as_view(), name="api-friendrequests"),
-
 
     # Friend actions
     path('api/author/<uuid:pk>/accept-friend-request/', AuthorFriendRequestActionsView.as_view(), {'method': "accept"}, name="accept-friend", ),
     path('api/author/<uuid:pk>/decline-friend-request/', AuthorFriendRequestActionsView.as_view(),{'method': "decline"}, name="decline-friend", ),
     path('api/author/<uuid:pk>/send-friend-request/', AuthorFriendRequestActionsView.as_view(), {'method': "send-request"}, name="send-request", ),
     path('api/author/<uuid:pk/unfriend/', AuthorFriendRequestActionsView.as_view(),{'method': "unfriend"}, name="unfriend",  ),
- 
 
     url(r'^docs/', schema_view)
-
 ]
 
 # https://www.django-rest-framework.org/topics/documenting-your-api/
 # https://docs.djangoproject.com/en/2.1/topics/http/urls/
 # https://www.django-rest-framework.org/api-guide/format-suffixes/
-
 
 #urlpatterns = format_suffix_patterns(urlpatterns)
 

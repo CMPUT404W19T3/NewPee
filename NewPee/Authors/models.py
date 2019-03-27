@@ -21,9 +21,6 @@ class Author(models.Model):
     followers = models.ManyToManyField("self", related_name="_followers", symmetrical=False, blank=True)
     friend_requests = models.ManyToManyField("self", related_name="_friend_requests", symmetrical=False, blank=True)
 
-
-
-
     # This return is inherited from Django's built-in User
     def __str__(self):
         return self.user.get_username()
@@ -41,7 +38,6 @@ class Author(models.Model):
         Check if an author is a friend.
         """
 
-
         friends_ids = self.friends.all().values('id')
 
         try:
@@ -49,8 +45,6 @@ class Author(models.Model):
                 return True
         except:
             return False
-
-
 
         #return self.friends.filter(uuid=author_id).exists()
 
@@ -69,7 +63,6 @@ class Author(models.Model):
         """
         self.following.add(author)
         self.save()
-
 
     def followed(self,author):
         self.followers.add(author)
@@ -92,7 +85,6 @@ class Author(models.Model):
     def get_friend_request(self):
         return self.friend_requests.all()
 
-
     # we have recieved a friend request from the author
     def send_friend_request(self, author):
 
@@ -107,8 +99,6 @@ class Author(models.Model):
             self.friend_requests.remove(author)
 
         self.save()
-
-
     
     # Accept or Decline friend request based on choice
     def respond_to_friend_request(self, author, choice):
@@ -119,11 +109,7 @@ class Author(models.Model):
             self.friends.add(author)
             self.follow(author)
             
-
-
         self.save()
-
-        
 
     # Remove an existing friend
     def remove_friend(self):

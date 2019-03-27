@@ -73,7 +73,6 @@ class AuthorDetail(APIView):
     # Clean Up After
     def post(self, request, pk, *args, **kwargs):
 
-
         print(">")
         if request.method == 'POST' and request.FILES['myfile']:
 
@@ -81,7 +80,6 @@ class AuthorDetail(APIView):
             author_serializer = AuthorSerializer(author)
             logged_in_author = Author.objects.get(user = request.user)
             logged_in_author_serializer = AuthorSerializer(logged_in_author)
-
             
             form = SearchForm()
             search = request.GET.get('search')
@@ -117,9 +115,6 @@ class AuthorDetail(APIView):
                 'author': author_serializer.data,  \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data })
 
-
-
-
 class AuthorList(APIView):
     """
     List all Authors, or create a new Author.
@@ -141,7 +136,6 @@ class AuthorList(APIView):
                 'authors': author_serializer.data,
                 'posts': post_serializer.data,
             })
-
 
     def post(self, request, format=None):
 
@@ -168,8 +162,6 @@ class AuthorList(APIView):
         #     'uploaded_file_url': uploaded_file_url
         #     })
             
-
-
         print("Posting the authors post")
 
         serializer = AuthorSerializer(data=request.data)
@@ -177,11 +169,6 @@ class AuthorList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
 
 '''
 a reponse if friends or not
@@ -223,7 +210,6 @@ responds with:
   	]
 }
 
-
 '''
 
 class AuthorfriendsView(APIView):
@@ -243,9 +229,7 @@ class AuthorfriendsView(APIView):
     def post(self, request, pk, *args, **kwargs):
 
             author = get_object_or_404(models.Author, id= pk)
- 
-
-            
+             
             try:
                 authors = request.data["authors"]
 
@@ -264,32 +248,25 @@ class AuthorfriendsView(APIView):
                     except:
                         pass
 
-
                 response_data = OrderedDict()
                 response_data['query'] = 'friends'
                 response_data['author'] = author.id
                 response_data['authors'] = friends
 
-
                 return Response(response_data)
-
 
             except:
 
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
 # Return a boolean for if two authors are friends
 class AuthorIsfriendsView(APIView):
-
 
     @csrf_exempt
     def get(self, request, pk, pk2, *args, **kwargs):
 
-
         author = get_object_or_404(models.Author, id= pk)
         author2 = get_object_or_404(models.Author, id= pk2)
-
 
         print(AuthorSerializer(author).data)
 
@@ -301,11 +278,9 @@ class AuthorIsfriendsView(APIView):
         # TODO : 	    "http://127.0.0.1:5454/author/de305d54-75b4-431b-adb2-eb6b9e546013",
         # ADD link instead
 
-
         friends = []
         friends.append(author.id)
         friends.append(author2.id)
-
 
         response_data = OrderedDict()
         response_data['query'] = 'friends'
@@ -313,7 +288,6 @@ class AuthorIsfriendsView(APIView):
         response_data['friends'] = friends_bool
 
         return Response(response_data)
-
 
 # Return current friend_requests
 
@@ -329,38 +303,29 @@ class AuthorFriendRequestsView(APIView):
         response_data['author'] = author.id
         response_data['friend_requests'] = author_serializer.data["followers"]
 
-
         return Response( response_data ) 
 
 # https://docs.djangoproject.com/en/2.1/ref/class-based-views/base/#redirectview
 
 class AuthorFriendRequestActionsView( RedirectView):
 
-
-
     def get_redirect_url(self, *args, **kwargs):    
-
-
         
         target_pk = kwargs.get('pk')
         method = kwargs.get('method')
         sender = self.request.user
 
-
         target_author = get_object_or_404(models.Author, pk= target_pk)
         sender_author = get_object_or_404(models.Author, user=user)
-
 
         # Our sender is accepting the target author requests
 
         if method == "accept":
            sender_author.respond_to_friend_request(target_author, "accept")
 
-
         if method == "decline":
             sender_author.respond_to_friend_request(target_author, "decline")
 
-        
         if method == "send-request":
             
             sender.send_friend_request(target_author)   # target is sending request to the sender. 
