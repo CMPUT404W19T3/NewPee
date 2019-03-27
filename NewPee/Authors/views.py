@@ -31,12 +31,19 @@ class AuthorDetail(APIView):
     template_name = 'home.html'
 
     def get_object(self, pk):
+
         try:
             return Author.objects.get(pk=pk)
         except Author.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, *args, **kwargs):
+
+        """
+        title:
+        Return the current author.
+        """
+
         if request.method == "GET":
             author = self.get_object(pk)
             author_serializer = AuthorSerializer(author)

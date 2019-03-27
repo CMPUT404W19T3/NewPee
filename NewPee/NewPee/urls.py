@@ -28,6 +28,11 @@ from rest_framework.documentation import include_docs_urls
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import views as auth_views
+from rest_framework_swagger.views import get_swagger_view
+
+API_TITLE = "API Documentation"
+API_DESCRIPTION = 'Built-in interactive API documentation for NewPee.'
+schema_view = get_swagger_view(title='Documentation')
 
 
 from rest_framework import routers
@@ -102,6 +107,7 @@ urlpatterns = [
 
 
     path('docs/', include_docs_urls(title='Documentation')),
+    url(r'^docs/', schema_view)
 
 ]
 
@@ -113,4 +119,4 @@ urlpatterns = [
 #urlpatterns = format_suffix_patterns(urlpatterns)
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
