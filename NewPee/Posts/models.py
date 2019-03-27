@@ -5,6 +5,7 @@ import uuid
 from django.contrib.auth.models import User
 from django.db.models.fields.files import ImageField
 from Authors.models import Author
+from NewPee import settings
 
 # Post model represents post,
 # stores an unique id, author which is a user model, title, body, image and a timestamp
@@ -26,7 +27,8 @@ class Post(models.Model):
     #text/markdown, text/plain, (application/base64, image/png;base64, image/jpeg;base64)???
     content_type = models.TextField(null=False,blank=False, default="text/plain")
     content = models.TextField(null=False,blank=False)
-    image = models.URLField(null=True,blank=True)
+    # image = models.URLField(null=True,blank=True)
+    # image = models.ImageField(upload_to = images)
     # picture = models.ImageField(upload_to = 'media/', default = 'media/None/no-img.jpg')
     post_date = models.DateTimeField(auto_now_add=True)
     #Types of visibility
@@ -41,8 +43,6 @@ class Post(models.Model):
     # which viewers are allowed to see it.
     visible_to = models.ManyToManyField('Authors.Author', blank=True, related_name='visible_to')
     unlisted = models.BooleanField(default=False)
-
-
 
     def get_id(self):
         return self.id
@@ -90,7 +90,6 @@ class Comment(models.Model):
 
     def get_post_date(self):
         return self.post_date
-
 
 '''
 Possible future addon 
