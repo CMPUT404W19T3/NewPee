@@ -91,12 +91,21 @@ class Author(models.Model):
     # Return all pending friend requests
     def get_friend_request(self):
         return self.friend_requests.all()
-        
 
+
+    # we have recieved a friend request from the author
     def send_friend_request(self, author):
 
-        self.followed(author)
+        self.followers.add(author)
         self.friend_requests.add(author)
+
+
+        # if we are following the author add him to our friends.
+        if (author in self.following.all()):
+
+            self.friends.add(author)
+            self.friend_requests.remove(author)
+
         self.save()
 
 
@@ -109,11 +118,13 @@ class Author(models.Model):
         if( choice == "accept"):
             self.friends.add(author)
             self.follow(author)
+            
+
 
         self.save()
 
         
 
     # Remove an existing friend
-    def remove_friend(self, author_id):
-        pass
+    def remove_friend(self):
+        self.friends.remove(author)

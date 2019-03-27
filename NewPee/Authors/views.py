@@ -351,20 +351,19 @@ class AuthorFriendRequestActionsView( RedirectView):
         sender_author = get_object_or_404(models.Author, user=user)
 
 
-        # Author accepts friend request
+        # Our sender is accepting the target author requests
 
         if method == "accept":
-            target_author.respond_to_friend_request(sender_author, "accept")
-
+           sender_author.respond_to_friend_request(target_author, "accept")
 
 
         if method == "decline":
-            target_author.respond_to_friend_request(sender_author, "decline")
+            sender_author.respond_to_friend_request(target_author, "decline")
 
         
         if method == "send-request":
-            pass
-
+            
+            sender.send_friend_request(target_author)   # target is sending request to the sender. 
 
         if method == "unfriend":
-            pass
+            sender_author.remove(target_author)

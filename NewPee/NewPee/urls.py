@@ -98,15 +98,13 @@ urlpatterns = [
     path('api/author/<uuid:pk>/friendrequest' , AuthorFriendRequestsView.as_view(), name="api-friendrequests"),
 
 
-    # 
+    # Friend actions
     path('api/author/<uuid:pk>/accept-friend-request/', AuthorFriendRequestActionsView.as_view(), {'method': "accept"}, name="accept-friend", ),
     path('api/author/<uuid:pk>/decline-friend-request/', AuthorFriendRequestActionsView.as_view(),{'method': "decline"}, name="decline-friend", ),
     path('api/author/<uuid:pk>/send-friend-request/', AuthorFriendRequestActionsView.as_view(), {'method': "send-request"}, name="send-request", ),
     path('api/author/<uuid:pk/unfriend/', AuthorFriendRequestActionsView.as_view(),{'method': "unfriend"}, name="unfriend",  ),
  
 
-
-    path('docs/', include_docs_urls(title='Documentation')),
     url(r'^docs/', schema_view)
 
 ]
