@@ -27,6 +27,7 @@ class Post(models.Model):
     content_type = models.TextField(null=False,blank=False, default="text/plain")
     content = models.TextField(null=False,blank=False)
     image = models.URLField(null=True,blank=True)
+    # picture = models.ImageField(upload_to = 'media/', default = 'media/None/no-img.jpg')
     post_date = models.DateTimeField(auto_now_add=True)
     #Types of visibility
     visibilityChoices = (
@@ -101,3 +102,6 @@ class Photo(models.Model):
     #
     viewers = models.ManyToManyField(User)
     photo = models.ImageField(upload_to='media/')
+
+# class ImageModel(models.Model):
+#     model_img = models.ImageField(upload_to = 'media/', default = 'media/None/no-img.jpg')

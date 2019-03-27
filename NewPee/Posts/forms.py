@@ -20,3 +20,7 @@ class PostForm(forms.ModelForm):
         content = self.cleaned_data.get("body")
         # Define more validation
         return content
+
+# class ImageUploadForm (forms.Form):
+#     title = forms.CharField(max_length=50)
+#     file = forms.ImageField()

@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.renderers import TemplateHTMLRenderer
 
+# from Posts.forms import ImageUploadForm
+
 # https://www.django-rest-framework.org/tutorial/3-class-based-views/
 
 class PostList(APIView):
@@ -62,3 +64,14 @@ class PostDetail(APIView):
                 return Response({'posts': post_serializer.data, 'author':logged_in_author_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
             except Comment.DoesNotExist:
                 return Response({'posts': post_serializer.data, 'author':logged_in_author_serializer.data, 'form': form, 'comment_form': comment_form})
+
+    # For Image Uploading
+    # def upload_image(self, request):
+    #     if request.method == "POST":
+    #         form = ImageUploadForm(request.POST, request.FILES)
+    #         if form.is_valid():
+    #             form.save()
+    #             return HttpResponse('/success/url/')
+    #         else:
+    #             form = ImageUploadForm
+    #             return render(request, 'home.html', {'form': form})
