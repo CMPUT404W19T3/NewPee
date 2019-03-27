@@ -137,7 +137,7 @@ function getPosts() {
 
             if (posts[post].visibility === "PRIVATE"){
 
-                if(posts[post].visibleTo != user_author.id && page_author.id != user_author.id){
+                if(posts[post].visible_to != user_author.id && page_author.id != user_author.id){
 
                     //delete temp_posts[post];
                     var postID = "posts/" + posts[post].id;
@@ -716,7 +716,7 @@ elementMakePost.addEventListener('submit', event => {
     
     var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY"})
 
-    var visibleTo;
+    var visible_to;
 
  
 
@@ -729,13 +729,13 @@ elementMakePost.addEventListener('submit', event => {
         description : post_description,
         csrfmidddlewaretoken: csrftoken,
         visibility : VisiblityEnum[radio_value],
-        visibleTo : visibleTo,
+        visible_to : visible_to,
     };
 
     console.log(user_id);
 
     if (radio_value==4){
-        data["visibleTo"] = [user_id];
+        data["visible_to"] = [user_id];
     } 
     
     data= JSON.stringify(data);

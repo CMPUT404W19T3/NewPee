@@ -28,9 +28,8 @@ class GeneralBuilding:
             GeneralBuilding.create_author(username=username, email= email, displayName = displayName)
 
 
-    def create_post(self,title,author):
+    def create_post(self, title, author):
 
-        author = self.create_author()
         post = Post.objects.create(title=title, author=author, content="body")
         post.save()
 
