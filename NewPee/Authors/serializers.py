@@ -25,9 +25,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     following = models.ManyToManyField("self", symmetrical=False, blank=True)
     '''
 
-
     class Meta:
         model = Author
         fields = ('id', 'user', 'displayName', 'bio', 'posts_created', 'picture', 'github_url', 'friends', 'following', 'followers')
         lookup_field = 'id'
-

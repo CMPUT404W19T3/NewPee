@@ -25,7 +25,6 @@ class PostList(APIView):
         serializer = PostSerializer(posts, many=True)
         return Response({'posts': serializer.data})
 
-
     def post(self, request, format=None):
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
