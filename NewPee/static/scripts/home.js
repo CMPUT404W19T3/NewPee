@@ -37,8 +37,8 @@ var author_uuid = author_url.split("/")[2];
 var author_api_url = "/api" + author_url;
 var user_id = document.getElementById("userID").value; // grabbing from hidden value through django context
 var user_api_url = "/api/authors/" + user_id;
- 
-console.log(user_api_url)
+console.log(user_id);
+console.log(user_api_url);
 
 function grabUser(){
     $.ajax({
@@ -626,8 +626,6 @@ github_api = function() {
 const elementMakePost = document.querySelector("#post_creation_submit");
 
 elementMakePost.addEventListener('submit', event => {
-  
-    event.preventDefault();
     event.stopImmediatePropagation();
 
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax

@@ -60,17 +60,6 @@ class PostDetail(APIView):
             try:
                 comments = Comment.objects.filter(parent=pk)
                 comment_serializer = CommentSerializer(comments, many=True)
-                return Response({'posts': post_serializer.data, 'author':logged_in_author_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
+                return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
             except Comment.DoesNotExist:
-                return Response({'posts': post_serializer.data, 'author':logged_in_author_serializer.data, 'form': form, 'comment_form': comment_form})
-
-    # For Image Uploading
-    # def upload_image(self, request):
-    #     if request.method == "POST":
-    #         form = ImageUploadForm(request.POST, request.FILES)
-    #         if form.is_valid():
-    #             form.save()
-    #             return HttpResponse('/success/url/')
-    #         else:
-    #             form = ImageUploadForm
-    #             return render(request, 'home.html', {'form': form})
+                return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'form': form, 'comment_form': comment_form})
