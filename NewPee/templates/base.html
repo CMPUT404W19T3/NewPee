@@ -30,19 +30,35 @@
                 {% endif %}
             </div>
             <div class="username">
-                <p>{{author.displayName}}</p>
+                {% if author %}
+                    <p>{{author.displayName}}</p>  
+                {% else %}
+                    <p>{{logged_in_author.displayName}}</p>
+                {% endif %}
             </div>
             <div class="stats">
                 <div class="stat">
-                    <p>{{author.posts_created}}</p>
+                    {% if author %}
+                        <p>{{author.posts_created}}</p>
+                    {% else %}
+                        <p>{{logged_in_author.posts_created}}</p>
+                    {% endif %}
                     <p>posts</p>
                 </div>
                 <div class="stat">
-                    <p>{{author.following|length}}</p>
+                    {% if author %}
+                        <p>{{author.followers|length}}</p>
+                    {% else %}
+                        <p>{{logged_in_author.followers|length}}</p>
+                    {% endif %}
                     <p>followers</p>
                 </div>
                 <div class="stat">
-                    <p>{{author.following|length}}</p>
+                    {% if author %}
+                        <p>{{author.following|length}}</p>
+                    {% else %}
+                        <p>{{logged_in_author.following|length}}</p>
+                    {% endif %}
                     <p>following</p>
                 </div>
                 

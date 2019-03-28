@@ -33,12 +33,12 @@ class AuthorModelTests(TestCase):
         self.assertIsNotNone(has_friend.get_friends())
 
     def test_is_friend(self):
-        pass
-        # friend_1 = Author()
-        # friend_2 = Author()
-        # friend_1.friends.add(friend_2)
-        # friend_2.friends.add(friend_1)
-        # self.assertTrue(friend_1.is_friend(friend_2.get_author_id()))
+        friend_1 = self.helper_functions.create_author()
+        friend_2 = self.helper_functions.create_author(username="temp_user2")
+        friend_1.friends.add(friend_2)
+        friend_2.friends.add(friend_1)
+        self.assertTrue(friend_1.is_friend(friend_2.get_author_id()))
+        self.assertTrue(friend_2.is_friend(friend_1.get_author_id()))
 
     def test_follow(self):
         person_to_follow = Author()
@@ -47,22 +47,20 @@ class AuthorModelTests(TestCase):
         self.assertIsNotNone(person_following.get_following())
 
     def test_check_if_friend(self):
-        pass
-        #original_user = self.helper_functions.create_author()
-        #friend = self.helper_functions.create_author(username="temp_user2")
+        original_user = self.helper_functions.create_author()
+        friend = self.helper_functions.create_author(username="temp_user2")
 
-        #original_user.follow(friend)
-        #friend.follow(original_user)
+        original_user.follow(friend)
+        friend.follow(original_user)
 
-        # original_user.respond_to_friend_request(friend.get_author_id(), "accept")
-        #friends = original_user.get_friends()
+        original_user.respond_to_friend_request(friend.get_author_id(), "accept")
+        friends = original_user.get_friends()
 
     def test_check_if_not_friend(self):
-        pass
-        # original_user = Author()
-        # not_friend = Author()
-        # original_user.respond_to_friend_request(not_friend.get_author_id(), "reject")
-        # self.assertNotIn(not_friend.id, original_user.friends)
+        original_user = self.helper_functions.create_author()
+        not_friend = self.helper_functions.create_author(username="temp_user2")
+        original_user.respond_to_friend_request(not_friend.get_author_id(), "reject")
+        self.assertNotIn(not_friend.id, original_user.friends.all())
 
     def test_check_relationship_friend_following(self):
         pass

@@ -74,7 +74,7 @@ class FrontEndTests(TestCase):
         url = "/api/posts/"
 
 
-        post = self.helper_functions.create_post("Post1", author.id)
+        post = self.helper_functions.create_post("Post1", author)
 
         post_id = post.id
         post_serializer = PostSerializer(post)

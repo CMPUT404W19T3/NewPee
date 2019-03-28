@@ -74,6 +74,8 @@ def post_list(request):
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
+
+
     elif request.method == 'POST':
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
@@ -86,6 +88,11 @@ def post_detail(request, pk):
     """
     Retrieve, update or delete a Post.
     """
+
+    
+
+
+
     try:
         post = Post.objects.get(pk=pk)
     except Post.DoesNotExist:
@@ -93,6 +100,7 @@ def post_detail(request, pk):
 
     if request.method == 'GET':
         serializer = PostSerializer(post)
+
         return Response(serializer.data)
 
     elif request.method == 'PUT':

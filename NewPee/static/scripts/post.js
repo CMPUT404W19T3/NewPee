@@ -13,6 +13,7 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
 var csrftoken = getCookie('csrftoken');
 
 var post_url = location.pathname;
@@ -22,16 +23,60 @@ console.log(post_uuid)
 
 
 $(document).ready(function(){
+
+    
     
     const elementMakeComment = document.getElementById("comment_creation_submit");
-    const authorUUID = document.getElementById("userID").value;
-
+    var userID = document.getElementById("userID").value;
+    var user_api_url = "/api/authors/" + userID;
     const deletePostButton = document.querySelector("#remove_post_submit");
+    var author;
+    
 
     deletePostButton.addEventListener('submit', event =>{
+        event.preventDefault();
 
         console.log("DELETING");
-     
+
+        
+        $.ajax({
+            type: "GET",
+            url: user_api_url,
+            contentType: 'application/json',
+            headers:{"X-CSRFToken": csrftoken},
+            success : function(json) {
+                author = json;
+                console.log(author.posts_created);
+                var data = {};
+                data["posts_created"] = author.posts_created - 1;
+                console.log(JSON.stringify(data));
+
+
+                $.ajax({
+                    type: "PATCH",
+                    url: user_api_url,
+                    contentType: 'application/json',
+                    headers:{"X-CSRFToken": csrftoken},
+                    data: JSON.stringify(data), 
+                    success : function(json) {
+                        console.log(json);
+                        $("#request-access").hide();
+                    },
+                    error: function (e) {      
+                        console.log("ERROR: ", e);
+                    }
+                });
+                $("#request-access").hide();
+            },
+            error: function (e) {       
+                console.log("ERROR: ", e);
+            }
+        });
+
+    
+
+        
+
         $.ajax({
             type: "DElETE",
             async: false,
@@ -46,8 +91,9 @@ $(document).ready(function(){
                 console.log("ERROR: ", e);
             }
         });
+        
 
-
+        location.pathname = "/authors/" + userID;
     });
 
 
@@ -61,7 +107,7 @@ $(document).ready(function(){
         var comment = document.querySelector("#comment").value;
         var data = JSON.stringify({
             parent: postID,
-            author : authorUUID,
+            author : userID,
             content: comment,
             csrfmidddlewaretoken: csrftoken,
         });

@@ -91,7 +91,7 @@ urlpatterns = [
     # FRIENDS
     path('api/author/<uuid:pk>/friends/', AuthorfriendsView.as_view(), name="api-friendlist"),      # GET Return query of friends, # POST a list of authors, returns 
     path('api/author/<uuid:pk>/friends/<uuid:pk2>', AuthorIsfriendsView.as_view(), name="api-checkfriends"), # returns a boolean if they are friends
-    path('api/author/<uuid:pk>/friendrequest' , AuthorFriendRequestsView.as_view(), name="api-friendrequests"),
+    path('api/author/<uuid:pk>/friendrequest' , AuthorFriendRequestsView.as_view(), name="api-friendrequests"), # Returns all the authors current friend requests.
 
     # Friend actions
     path('api/author/<uuid:pk>/accept-friend-request/', AuthorFriendRequestActionsView.as_view(), {'method': "accept"}, name="accept-friend", ),

@@ -1,4 +1,5 @@
 from django.test import TestCase
+from Authors.models import Author
 from Posts.models import Post, Comment
 import datetime
 import time
@@ -13,9 +14,10 @@ class PostModelTests(TestCase):
         self.assertIsNotNone(test_id)
 
     def test_get_author(self):
-        test_post = Post(author="Garfield")
-        test_author = test_post.get_author()
-        self.assertEqual(test_author, "Garfield")
+        test_author = Author()
+        test_post = Post(author=test_author)
+        test_fetch_author = test_post.get_author()
+        self.assertEqual(test_author, test_fetch_author)
 
     def test_set_image(self):
         test_post = Post()
@@ -37,7 +39,8 @@ class PostModelTests(TestCase):
         pass
 
     def test_make_private_to_author(self):
-        test_post = Post(author="Garfield", visibility="PRIVATE")
+        test_author = Author()
+        test_post = Post(author=test_author, visibility="PRIVATE")
         self.assertEqual(test_post.visibility, "PRIVATE")
         
 
@@ -51,7 +54,8 @@ class PostModelTests(TestCase):
         pass
 
     def test_make_public(self):
-        test_post = Post(author="Garfield")
+        test_author = Author()
+        test_post = Post(author=test_author)
         self.assertEqual(test_post.visibility, "PUBLIC")
 
     def test_body_plaintext(self):

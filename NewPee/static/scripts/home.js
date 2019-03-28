@@ -37,8 +37,8 @@ var author_uuid = author_url.split("/")[2];
 var author_api_url = "/api" + author_url;
 var user_id = document.getElementById("userID").value; // grabbing from hidden value through django context
 var user_api_url = "/api/authors/" + user_id;
- 
-console.log(user_api_url)
+console.log(user_id);
+console.log(user_api_url);
 
 function grabUser(){
     $.ajax({
@@ -120,7 +120,7 @@ function getPosts() {
 
             if (posts[post].visibility === "PRIVATE"){
 
-                if(posts[post].visibleTo != user_author.id && page_author.id != user_author.id){
+                if(posts[post].visible_to != user_author.id && page_author.id != user_author.id){
 
                     //delete temp_posts[post];
                     var postID = "posts/" + posts[post].id;
@@ -615,12 +615,17 @@ catch{
 
 }
 
+github_api = function() {
+    grabAuthor();
+    console.log("This is it: ", page_author.github_url);
+    fetch(page_author.github_url, {mode: 'cors'}).then(response => {
+        console.log(response);
+    });
+}
 
 const elementMakePost = document.querySelector("#post_creation_submit");
 
 elementMakePost.addEventListener('submit', event => {
-  
-    event.preventDefault();
     event.stopImmediatePropagation();
 
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
@@ -642,7 +647,7 @@ elementMakePost.addEventListener('submit', event => {
     }
     
     var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY"})
-    var visibleTo;
+    var visible_to;
     var data = { 
         title : post_title,
         author : author_uuid,
@@ -650,13 +655,13 @@ elementMakePost.addEventListener('submit', event => {
         description : post_description,
         csrfmidddlewaretoken: csrftoken,
         visibility : VisiblityEnum[radio_value],
-        visibleTo : visibleTo,
+        visible_to : visible_to,
     };
 
     console.log(user_id);
 
     if (radio_value==4){
-        data["visibleTo"] = [user_id];
+        data["visible_to"] = [user_id];
     } 
     
     data= JSON.stringify(data);
