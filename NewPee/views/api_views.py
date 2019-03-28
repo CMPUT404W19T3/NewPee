@@ -17,12 +17,13 @@ from rest_framework import permissions
 
 from rest_framework.permissions import IsAuthenticated
 from Posts.permissions import IsOwnerOrReadOnly
+from Authors.permissions import IsOwnerOrReadOnlyAuthor
+
 
 
 #https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
 
 
-@login_required(login_url='/login')
 @api_view(['GET', 'POST'])
 def Author_list(request, format=None):
     """
@@ -45,8 +46,8 @@ def Author_list(request, format=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@login_required(login_url='/login')
 @api_view(['GET', 'PUT', 'DELETE','PATCH'])
+@permission_classes((IsAuthenticated,IsOwnerOrReadOnlyAuthor, ))
 def Author_detail(request, pk, format= None):
     """
     Retrieve, update or delete an Author.
