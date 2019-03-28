@@ -615,6 +615,13 @@ catch{
 
 }
 
+github_api = function() {
+    grabAuthor();
+    console.log("This is it: ", page_author.github_url);
+    fetch(page_author.github_url, {mode: 'cors'}).then(response => {
+        console.log(response);
+    });
+}
 
 const elementMakePost = document.querySelector("#post_creation_submit");
 
