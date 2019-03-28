@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     #'django_markwhat',
     'rest_framework_swagger',
+    'django_q',
 
     # My Apps
     'NewPee.apps.NewPeeConfig',

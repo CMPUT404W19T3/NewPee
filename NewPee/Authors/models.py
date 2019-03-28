@@ -21,6 +21,10 @@ class Author(models.Model):
     followers = models.ManyToManyField("self", related_name="_followers", symmetrical=False, blank=True)
     friend_requests = models.ManyToManyField("self", related_name="_friend_requests", symmetrical=False, blank=True)
 
+
+    # Only Admin can Change.
+    isAuthorized = models.BooleanField(default=True)
+
     # This return is inherited from Django's built-in User
     def __str__(self):
         return self.user.get_username()
