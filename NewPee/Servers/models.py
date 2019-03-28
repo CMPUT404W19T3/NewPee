@@ -42,7 +42,7 @@ class Server(models.Model):
         location = self.name
 
         PARAMS = {
-            'username': 'username'
+            'username': 'username',
             'password' : 'password'
         }
 
@@ -94,12 +94,12 @@ class Server(models.Model):
 
     def retrievePosts():
 
-         URL = self.posts_endpoint
+        URL = self.posts_endpoint
 
         location = self.name
 
         PARAMS = {
-            'username': 'username'
+            'username': 'username',
             'password' : 'password'
         }
 
