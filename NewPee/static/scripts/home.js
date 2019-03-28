@@ -615,11 +615,15 @@ catch{
 
 }
 
+// Determine which data we would like to display.
 github_api = function() {
     grabAuthor();
     console.log("This is it: ", page_author.github_url);
-    fetch(page_author.github_url, {mode: 'cors'}).then(response => {
-        console.log(response);
+    let github_user = page_author.github_url.split('/').pop();
+    fetch('https://api.github.com/users/' + github_user + '/events').then(response => {
+        return response.json();
+    }).then(JSONresponse => {
+        console.log(JSONresponse);
     });
 }
 
