@@ -59,6 +59,6 @@ class PostDetail(APIView):
             try:
                 comments = Comment.objects.filter(parent=pk)
                 comment_serializer = CommentSerializer(comments, many=True)
-                return Response({'posts': post_serializer.data, 'author':logged_in_author_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
+                return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
             except Comment.DoesNotExist:
-                return Response({'posts': post_serializer.data, 'author':logged_in_author_serializer.data, 'form': form, 'comment_form': comment_form})
+                return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'form': form, 'comment_form': comment_form})
