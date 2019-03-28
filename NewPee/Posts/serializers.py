@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from Posts.models import Post, Comment
+from Authors.models import Author, User 
+from Authors.serializers import AuthorSerializer, UserSerializer
 
 class PostSerializer(serializers.ModelSerializer):
     """
@@ -25,10 +27,18 @@ class PostSerializer(serializers.ModelSerializer):
     unlisted = models.BooleanField(default=False)
     """
 
+    author = AuthorSerializer(many=False, read_only=True)
+    
     class Meta:
         model = Post
         fields = ('id', 'author', 'title', 'source', 'origin', 'description', 'content', 'content_type', 'post_date', 'visibility', 'visible_to', 'unlisted')
         lookup_field = 'id'
+
+
+
+
+
+    
 
 class CommentSerializer(serializers.ModelSerializer):
     """
