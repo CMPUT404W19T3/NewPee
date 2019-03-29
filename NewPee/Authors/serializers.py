@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class AuthorSerializer(serializers.ModelSerializer):
    
-    user = UserSerializer(required=True)
+    #user = UserSerializer(required=True)
   
     '''
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

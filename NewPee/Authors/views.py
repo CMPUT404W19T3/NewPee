@@ -63,8 +63,8 @@ class AuthorDetail(APIView):
 
             if search:
                 authors = Author.objects.filter(displayName__icontains = search)
-                print("This is the authors", authors)
-                return Response({'authors': authors, 'form': form, 'search': search}, template_name='search.html')
+                print("This is the authors", logged_in_author_serializer)
+                return Response({'logged_in_author':logged_in_author_serializer.data, 'authors': authors, 'form': form, 'search': search}, template_name='search.html')
 
             try:
                 posts = Post.objects.filter(author=pk)
