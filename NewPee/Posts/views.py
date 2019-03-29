@@ -48,10 +48,10 @@ class PostDetail(APIView):
     def get(self, request, pk, *args, **kwargs):
         if request.method == "GET":
             post = self.get_object(pk)
-            post_serializer = PostSerializer(post)
+            post_serializer = PostSerializer(post, context={'request': request})
 
             logged_in_author = Author.objects.get(user = request.user)
-            logged_in_author_serializer = AuthorSerializer(logged_in_author)
+            logged_in_author_serializer = AuthorSerializer(logged_in_author, context={'request': request})
 
             form = SearchForm()
 

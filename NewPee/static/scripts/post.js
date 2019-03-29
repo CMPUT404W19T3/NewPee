@@ -28,6 +28,7 @@ $(document).ready(function(){
     
     const elementMakeComment = document.getElementById("comment_creation_submit");
     var userID = document.getElementById("userID").value;
+    var userUUID = userID.split("/")[5];
     var user_api_url = "/api/authors/" + userID;
     const deletePostButton = document.querySelector("#remove_post_submit");
     var author;
@@ -35,13 +36,14 @@ $(document).ready(function(){
 
     deletePostButton.addEventListener('submit', event =>{
         event.preventDefault();
-
+        console.log(userUUID);
+        console.log(userID);
         console.log("DELETING");
 
         
         $.ajax({
             type: "GET",
-            url: user_api_url,
+            url: userID,
             contentType: 'application/json',
             headers:{"X-CSRFToken": csrftoken},
             success : function(json) {
@@ -54,7 +56,7 @@ $(document).ready(function(){
 
                 $.ajax({
                     type: "PATCH",
-                    url: user_api_url,
+                    url: userID,
                     contentType: 'application/json',
                     headers:{"X-CSRFToken": csrftoken},
                     data: JSON.stringify(data), 
@@ -93,7 +95,7 @@ $(document).ready(function(){
         });
         
 
-        location.pathname = "/authors/" + userID;
+        location.pathname = "/authors/" + userUUID;
     });
 
 
