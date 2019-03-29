@@ -48,9 +48,10 @@ class AuthorDetail(APIView):
 
         if request.method == "GET":
 
-            #servers = Server.objects.all()
-            #for x in servers:
-            #    x.updatePosts()
+            servers = Server.objects.all()
+            
+            for x in servers:
+                x.updateAuthors()
             
             author = self.get_object(pk)
             author_serializer = AuthorSerializer(author, context = {'request': request})

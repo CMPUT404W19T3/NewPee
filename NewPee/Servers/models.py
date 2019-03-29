@@ -3,6 +3,7 @@ import uuid
 from django_q.tasks import async_task, result
 import requests
 from Posts.models import Post, ForeignPost
+from Authors.models import Author, ForeignAuthor
 
 class Server(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -15,7 +16,7 @@ class Server(models.Model):
 
 
 
-    def createAuthors(task):
+    def createAuthors(self,data):
 
 
         for authors in task.result['authors']:
@@ -31,9 +32,9 @@ class Server(models.Model):
 
 
 
-    def retrieveAuthors():
+    def retrieveAuthors(self):
 
-        URL = self.authors_endpoint
+        URL = self.posts_endpoint
 
         location = self.name
 
@@ -45,15 +46,61 @@ class Server(models.Model):
         r = requests.get(url= URL, params = PARAMS)
         data = r.json()
 
-        #return data
+
+        ForeignPost = (data["posts"])
+
+        for post in ForeignPost:
+
+            foreign_author = post["author"]
+
+            request2 = requests.get(url = foreign_author["id"] )
+
+            data2 = request2.json()
+
+
+
+            try:
+
+                id = data2["id"].split("/")
+                id = id[4]
+                host = data2["host"]
+                url = data2["url"]
+                displayName = data2["displayName"]
+                friends = data2["friends"]
+
+                print(id,host,url,displayName,friends)
+
+                new_author = Author.objects.create(
+                    id = id,
+                    host = host,
+                    url = url,
+                    displayName = displayName,
+                )
+                for friend in friends:
+                    new_author.friends.add(friend)
+
+            #new_author
+
+            except:
+                # already created the author
+                print("failed.")
+
+            #    pass
+
+
+
+
+        return data
 
 
 
 
 
-    def updateAuthors():
+    def updateAuthors(self):
         
-        data
+        data = self.retrieveAuthors()
+
+
         #async_task(retrieveAuthors, hook = createAuthors)
 
 
