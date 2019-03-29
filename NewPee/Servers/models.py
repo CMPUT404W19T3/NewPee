@@ -1,7 +1,7 @@
 from django.db import models
 import uuid
 from django_q.tasks import async_task, result
-import requests 
+import requests
 from Posts.models import Post
 
 class Server(models.Model):
@@ -12,16 +12,12 @@ class Server(models.Model):
     posts_endpoint = models.URLField(max_length=200, unique=True)
 
 
-    def __str__(self):
-        return self.Server
-
-
 
 
 
     def createAuthors(task):
 
-        
+
         for authors in task.result['authors']:
 
             author_uuid = authors["id"]
@@ -62,7 +58,7 @@ class Server(models.Model):
 
 
 
-    def createPosts(task):
+    def createPosts(self,task):
 
 
 
@@ -92,24 +88,22 @@ class Server(models.Model):
 
 
 
-    def retrievePosts():
-
+    def retrievePosts(self):
         URL = self.posts_endpoint
-
         location = self.name
-
+        
         PARAMS = {
-            'username': 'username',
-            'password' : 'password'
+            'username': 'garyscary',
+            'password' : '12345'
         }
+        r = requests.get(url= URL)
 
-        r = requests.get(url= URL, params = PARAMS)
         data = r.json()
-
-        return data
-
+        print(data)
 
 
-    def updatePosts():
 
-        async_task(retrievePosts, hook = createPosts)
+    def updatePosts(self):
+        self.retrievePosts()
+
+        #async_task(self.retrievePosts, hook = self.createPosts)

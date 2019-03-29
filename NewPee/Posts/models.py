@@ -92,7 +92,7 @@ class Comment(models.Model):
         return self.post_date
 
 '''
-Possible future addon 
+Possible future addon
 https://stackoverflow.com/questions/18747730/storing-images-in-db-using-django-models
 
 '''

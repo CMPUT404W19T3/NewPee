@@ -12,7 +12,7 @@ from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
-from Posts.models import Photo  
+from Posts.models import Photo
 from Authors import models
 from Posts.models import Post
 from Posts.serializers import PostSerializer
@@ -22,6 +22,7 @@ from collections import OrderedDict
 
 from rest_framework.decorators import action
 from django.views.generic import RedirectView
+from Servers.models import Server
 
 class AuthorDetail(APIView):
     """
@@ -45,6 +46,12 @@ class AuthorDetail(APIView):
         """
 
         if request.method == "GET":
+
+            servers = Server.objects.all()
+            for x in servers:
+                x.updatePosts()
+
+
             author = self.get_object(pk)
             author_serializer = AuthorSerializer(author)
 
@@ -54,7 +61,7 @@ class AuthorDetail(APIView):
             form = SearchForm()
             #print("\n\nSEARCH:", request.GET.get('search'))
             search = request.GET.get('search')
-            
+
             if search:
                 authors = Author.objects.filter(displayName__icontains = search)
                 print("This is the authors", authors)
@@ -80,21 +87,21 @@ class AuthorDetail(APIView):
             author_serializer = AuthorSerializer(author)
             logged_in_author = Author.objects.get(user = request.user)
             logged_in_author_serializer = AuthorSerializer(logged_in_author)
-            
+
             form = SearchForm()
             search = request.GET.get('search')
 
             myfile = request.FILES['myfile']
 
-            # Future TODO: Possibly add it to the DB, but don't have too. 
+            # Future TODO: Possibly add it to the DB, but don't have too.
             try:
                 Photo.objects.create(myfile)
-            
+
             except:
                 print("Not an image!")
 
             print(myfile)
-            
+
             fs = FileSystemStorage()
             filename = fs.save(myfile.name, myfile)
             uploaded_file_url = fs.url(filename)
@@ -146,22 +153,22 @@ class AuthorList(APIView):
 
         #     myfile = request.FILES['myfile']
 
-        #     # Future TODO: Possibly add it to the DB, but don't have too. 
+        #     # Future TODO: Possibly add it to the DB, but don't have too.
         #     try:
         #         Photo.objects.create(myfile)
-            
+
         #     except:
         #         print("Not an image!")
 
         #     print(myfile)
-            
+
         #     fs = FileSystemStorage()
         #     filename = fs.save(myfile.name, myfile)
         #     uploaded_file_url = fs.url(filename)
         #     return render(request, 'homepage.html', {
         #     'uploaded_file_url': uploaded_file_url
         #     })
-            
+
         print("Posting the authors post")
 
         serializer = AuthorSerializer(data=request.data)
@@ -229,7 +236,7 @@ class AuthorfriendsView(APIView):
     def post(self, request, pk, *args, **kwargs):
 
             author = get_object_or_404(models.Author, id= pk)
-             
+
             try:
                 authors = request.data["authors"]
 
@@ -303,14 +310,14 @@ class AuthorFriendRequestsView(APIView):
         response_data['author'] = author.id
         response_data['friend_requests'] = author_serializer.data["followers"]
 
-        return Response( response_data ) 
+        return Response( response_data )
 
 # https://docs.djangoproject.com/en/2.1/ref/class-based-views/base/#redirectview
 
 class AuthorFriendRequestActionsView( RedirectView):
 
-    def get_redirect_url(self, *args, **kwargs):    
-        
+    def get_redirect_url(self, *args, **kwargs):
+
         target_pk = kwargs.get('pk')
         method = kwargs.get('method')
         sender = self.request.user
@@ -327,8 +334,8 @@ class AuthorFriendRequestActionsView( RedirectView):
             sender_author.respond_to_friend_request(target_author, "decline")
 
         if method == "send-request":
-            
-            sender.send_friend_request(target_author)   # target is sending request to the sender. 
+
+            sender.send_friend_request(target_author)   # target is sending request to the sender.
 
         if method == "unfriend":
             sender_author.remove(target_author)

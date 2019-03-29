@@ -91,7 +91,7 @@ def post_list(request):
     List all Posts, or create a new Post.
     """
 
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)   
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
 
 
     if request.method == 'GET':
@@ -103,6 +103,7 @@ def post_list(request):
     elif request.method == 'POST':
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
+            print(serializer)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -116,7 +117,7 @@ def post_detail(request, pk):
 
     """
     Retrieve, update or delete a Post.
-    
+
     """
 
 
@@ -158,6 +159,3 @@ def comment_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-

@@ -26,7 +26,7 @@ var page_author;
 var user_author;
 
 function getFileData(myFile){
-    var file = myFile.files[0];  
+    var file = myFile.files[0];
     var filename = file.name;
     console.log(filename);
  }
@@ -50,7 +50,7 @@ function grabUser(){
             user_author = json;
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -80,17 +80,17 @@ function grabUser(){
 
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
 
 
     }
-    
+
 
 //https://stackoverflow.com/questions/30211605/javascript-html-collection-showing-as-0-length
-    
+
 function getPosts() {
     fetch('../api/posts')
     .then(function(response) {
@@ -125,24 +125,24 @@ function getPosts() {
                     //delete temp_posts[post];
                     var postID = "posts/" + posts[post].id;
 
-                    document.getElementById(postID).style.visibility="hidden"; 
+                    document.getElementById(postID).style.visibility="hidden";
 
 
-                    continue; 
+                    continue;
                 }
 
             }
 
 
         }
-        
+
         posts= temp_posts;
         console.log(posts)
 
 
 
     })
-    
+
 }
 
 
@@ -157,13 +157,13 @@ function subtractUserFriends(){
     console.log(user_author.friends, "Current user friend list")
 
     //Add all friends back except the current Authors page.
-    if(user_author.friends.length != 0){    
+    if(user_author.friends.length != 0){
         for (var authors in user_author.friends){
             if(user_author.friends[authors] != author_uuid && user_author.friends[authors] != 0 && user_author.friends[authors] != user_id){
                 console.log(user_author.friends[authors], "pushing ___ user.");
                 data["friends"].push(user_author.friends[authors]);
 
-                }  
+                }
             }
         }
 
@@ -177,11 +177,11 @@ function subtractUserFriends(){
         url: user_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
-        data: JSON.stringify(data), 
+        data: JSON.stringify(data),
         success : function(json) {
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -196,12 +196,12 @@ function subtractAuthorFriends(){
         for (var authors in page_author.friends){
             if(page_author.friends[authors] != user_id && page_author.friends[authors] != 0 && user_author.friends[authors] != author_uuid){
                 data["friends"].push(page_author.friends[authors]);
-                }  
+                }
             }
         }
 
     data["friends"].shift();    // remove the [0]
-    
+
     console.log(data, "author-subtract");
 
 
@@ -211,12 +211,12 @@ function subtractAuthorFriends(){
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
-        data: JSON.stringify(data), 
+        data: JSON.stringify(data),
         success : function(json) {
             //console.log(json);
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -233,12 +233,12 @@ function addUserFriends(){
     data = {};
     data["friends"] = [author_uuid];
 
-    if(user_author.friends.length != 0){    
+    if(user_author.friends.length != 0){
         for (var authors in user_author.friends){
             if(user_author.friends[authors] != author_uuid && user_author.friends[authors] != 0){
                 data["friends"].push(user_author.friends[authors]);
 
-                }  
+                }
             }
         }
     $.ajax({
@@ -247,12 +247,12 @@ function addUserFriends(){
         url: user_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
-        data: JSON.stringify(data), 
+        data: JSON.stringify(data),
         success : function(json) {
             console.log("User friends added")
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -262,11 +262,11 @@ function addUserFriends(){
 function addAuthorFriends(){
     data ={};
     data["friends"] = [user_id];
-    if(page_author.friends.length != 0){   
+    if(page_author.friends.length != 0){
         for (var authors in page_author.friends){
             if(page_author.friends[authors] != user_id && page_author.friends[authors] != 0){
                 data["friends"].push(page_author.friends[authors]);
-                }  
+                }
             }
         }
     $.ajax({
@@ -275,13 +275,13 @@ function addAuthorFriends(){
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
-        data: JSON.stringify(data), 
+        data: JSON.stringify(data),
         success : function(json) {
             //console.log(json);
             console.log("Author friends added")
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -324,7 +324,7 @@ function updatefollowersPOST(follower, enumType){
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
-        data: (follower), 
+        data: (follower),
         success : function(json) {
             console.log(json);
             $("#request-access").hide();
@@ -337,7 +337,7 @@ function updatefollowersPOST(follower, enumType){
                 follow_submit_button.innerHTML = "Follow";
             }
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -353,7 +353,7 @@ function updatefollowingPOST(following,enumType){
         url: user_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
-        data: (following), 
+        data: (following),
         success : function(json) {
             console.log(json);
             $("#request-access").hide();
@@ -381,7 +381,7 @@ function updatefollowingPOST(following,enumType){
                 }
             }
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -399,7 +399,7 @@ function updatefollowingGet(enumType){
         headers:{"X-CSRFToken": csrftoken},
         success : function(json) {
             author = json;
-            var data = {};   
+            var data = {};
             // Either Adding to following list or removing from following list.
             if (enumType === FriendsEnum.Add){
                 data["following"] = [author_uuid];
@@ -407,13 +407,13 @@ function updatefollowingGet(enumType){
             else{
                 data["following"] = [0];
             }
-            // Only add followers if they have some     
+            // Only add followers if they have some
             if(author.following.length != 0){
-            
+
             for (var authors in author.following){
                 if(author.following[authors] != author_uuid && author.following[authors] != 0){
                     data["following"].push(author.following[authors]);
-                    }  
+                    }
                 }
             }
             // Remove the [0] from start of list.
@@ -423,7 +423,7 @@ function updatefollowingGet(enumType){
             updatefollowingPOST(JSON.stringify(data),enumType); // update the follower list
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -432,7 +432,7 @@ function updatefollowingGet(enumType){
 
 
 // Get the current followers of the Profile.
-// Add 
+// Add
 function updatefollowersGet(enumType){
     $.ajax({
         type: "GET",
@@ -455,13 +455,13 @@ function updatefollowersGet(enumType){
                 data["followers"] = [0];
             }
 
-            // Only add followers if they have some     
+            // Only add followers if they have some
             if(author.followers.length != 0){
             // Add back all the previous followers
                 for (var authors in author.followers){
                     if(author.followers[authors] != user_id && author.followers[authors] != 0){
                         data["followers"].push(author.followers[authors]);
-                    }  
+                    }
                 }
             }
 
@@ -470,13 +470,13 @@ function updatefollowersGet(enumType){
                 data["followers"].shift();
             }
 
-            //update our global 
+            //update our global
             page_author = author;
             page_author.followers.push()
             updatefollowersPOST(JSON.stringify(data),enumType); // update the follower list
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -496,10 +496,10 @@ function updateNumPostGet(){
             var numOfPost = {posts_created : author.posts_created.toString()};
             console.log(JSON.stringify(numOfPost));
             updateNumPostPut(JSON.stringify(numOfPost));
-            console.log(author);      
+            console.log(author);
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -513,17 +513,17 @@ function updateNumPostPut(numOfPost){
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
-        data: (numOfPost), 
+        data: (numOfPost),
         success : function(json) {
             console.log(json);
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
 };
-    
+
 
 // https://blog.teamtreehouse.com/creating-autocomplete-dropdowns-datalist-element
 // Get the <datalist> and <input> elements.
@@ -561,13 +561,13 @@ $(input).keyup(function() {
 
 $(document).ready(function(){
     $(".card").click(function(evt){
-        console.log($(this).attr("id"));  
-        location.pathname =  $(this).attr("id");    
+        console.log($(this).attr("id"));
+        location.pathname =  $(this).attr("id");
     });
 });
 
 
-// Functions for adding 
+// Functions for adding
 function callFollowers(){
     console.log("Second")
     updatefollowingGet(FriendsEnum.Add);
@@ -604,11 +604,11 @@ follow_submit_form.addEventListener('submit', event =>{
     //callRemoveFollowing(callRemoveFollowers);   // Remove the followers
     //Both of these are called on a single submit.
     if(follow_unfollow_text === "Follow"){
-        callFollowing(callFollowers);   
+        callFollowing(callFollowers);
     }
     else{
-    callRemoveFollowing(callRemoveFollowers);   
-    }   
+    callRemoveFollowing(callRemoveFollowers);
+    }
 });
 }
 catch{
@@ -631,6 +631,7 @@ const elementMakePost = document.querySelector("#post_creation_submit");
 
 elementMakePost.addEventListener('submit', event => {
     event.stopImmediatePropagation();
+    event.preventDefault();
 
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     console.log("button clicked");
@@ -649,12 +650,14 @@ elementMakePost.addEventListener('submit', event => {
             radio_value = radioButtons[i].value;
         }
     }
-    
+
+
+    console.log(page_author)
     var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY"})
     var visible_to;
-    var data = { 
+    var data = {
         title : post_title,
-        author : author_uuid,
+        author : page_author["id"],
         content : post_content,
         description : post_description,
         csrfmidddlewaretoken: csrftoken,
@@ -666,8 +669,8 @@ elementMakePost.addEventListener('submit', event => {
 
     if (radio_value==4){
         data["visible_to"] = [user_id];
-    } 
-    
+    }
+
     data= JSON.stringify(data);
     console.log(data, "OUR DATA FOR POST");
 
@@ -688,25 +691,25 @@ elementMakePost.addEventListener('submit', event => {
 
         },
         error: function (e) {
-                    
+
             console.log("ERROR: ", e);
         }
-        
+
     });
 
     return false;
-    
+
 });
 
 const elementUpdateProfile = document.querySelector("#edit_profile_submit");
 elementUpdateProfile.addEventListener('submit', event => {
-    event.preventDefault();
+    //event.preventDefault();
     event.stopImmediatePropagation();
     $('#edit_profile_modal').modal('hide');
     var newDisplayName = document.querySelector("#author-display-name").value;
     var newBio = document.querySelector("#author-bio").value;
     var newGitHubURL = document.querySelector("#author-github").value;
-    
+
     var data = {}
     if (newDisplayName){
         data["displayName"] = newDisplayName;
@@ -717,7 +720,7 @@ elementUpdateProfile.addEventListener('submit', event => {
     if (newGitHubURL){
         data["github_url"] = newGitHubURL;
     }
-    
+
     console.log(JSON.stringify(data));
 
     $.ajax({
@@ -725,15 +728,15 @@ elementUpdateProfile.addEventListener('submit', event => {
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
-        data: JSON.stringify(data), 
+        data: JSON.stringify(data),
         success : function(json) {
             console.log(json);
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
 
-});  
-});  
+});
+});
