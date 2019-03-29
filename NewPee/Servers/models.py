@@ -47,48 +47,45 @@ class Server(models.Model):
         data = r.json()
 
 
-        ForeignPost = (data["posts"])
+        foreign_post = (data["posts"])
 
-        for post in ForeignPost:
+        for post in foreign_post:
 
             foreign_author = post["author"]
 
-            request2 = requests.get(url = foreign_author["id"] )
-
-            data2 = request2.json()
-
-
+            foreign_author_uuid = foreign_author["id"].split("/")[-1]
 
             try:
+                Author.objects.get(id = foreign_author_uuid)
+                
+            except Author.DoesNotExist:
+                request2 = requests.get(url = foreign_author["id"])
 
-                id = data2["id"].split("/")
-                id = id[4]
-                host = data2["host"]
-                url = data2["url"]
-                displayName = data2["displayName"]
-                friends = data2["friends"]
+                data2 = request2.json()
 
-                print(id,host,url,displayName,friends)
+                try:
+                    print("sideways", data2["id"].split("/")[-1])
+                    new_id = uuid.UUID(data2["id"].split("/")[-1])
+                    Author.objects.get(id = uuid.UUID(data2["id"].split("/")[-1]))
 
-                new_author = Author.objects.create(
-                    id = id,
-                    host = host,
-                    url = url,
-                    displayName = displayName,
-                )
-                for friend in friends:
-                    new_author.friends.add(friend)
+                except Author.DoesNotExist:
 
-            #new_author
+                    id = data2["id"].split("/")[-1]
+                    host = data2["host"]
+                    url = data2["url"]
+                    displayName = data2["displayName"]
+                    friends = data2["friends"]
 
-            except:
-                # already created the author
-                print("failed.")
+                    #print(id,host,url,displayName,friends)
 
-            #    pass
-
-
-
+                    new_author = Author.objects.create(
+                        id = id,
+                        host = host,
+                        url = url,
+                        displayName = displayName,
+                    )
+                    for friend in friends:
+                        new_author.friends.add(friend)
 
         return data
 
@@ -165,10 +162,10 @@ class Server(models.Model):
             'username': 'garyscary',
             'password' : '12345'
         }
-        #r = requests.get(url= URL)
+        r = requests.get(url= URL)
 
-        #data = r.json()
-        #return data
+        data = r.json()
+        return data
 
 
     def updatePosts(self):
