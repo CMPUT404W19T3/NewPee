@@ -113,7 +113,7 @@ class ForeignPost(models.Model):
 
     # have to change to a user model
     #author = models.ForeignKey('Authors.Author', on_delete=models.CASCADE , null=False, blank=False, related_name="author")
-    author = models.URLField(null=False, blank=False)
+    author = models.URLField(max_length=1000, null=False, blank=False)
     # author = models.ForeignKey(User)
 
     title = models.CharField(max_length=30, null=False, blank=False)
