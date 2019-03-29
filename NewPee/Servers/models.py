@@ -48,9 +48,11 @@ class Server(models.Model):
 
         print(self.username, self.password, URL)
 
-        r = requests.get(url= URL, data = PARAMS)
+        session = requests.Session()
+        session.auth = (self.username, self.password)
 
-        print(r)
+        r = session.get(url= URL)
+
         data = r.json()
 
         print(data, "our data retrieved")
@@ -123,7 +125,6 @@ class Server(models.Model):
 
     def createPosts(self,data):
 
-        print(data['posts'])
         
         for post in data['posts']:
             try:
@@ -180,7 +181,13 @@ class Server(models.Model):
             'username': self.username,
             'password' : self.password
         }
-        r = requests.get(url= URL)
+
+        session = requests.Session()
+        session.auth = (self.username, self.password)
+
+        r = session.get(url= URL)
+
+        #r = requests.get(url= URL)
 
         data = r.json()
         return data
