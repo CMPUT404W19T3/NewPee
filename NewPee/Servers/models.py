@@ -76,7 +76,13 @@ class Server(models.Model):
                 Author.objects.get(id = foreign_author_uuid)
                 
             except Author.DoesNotExist:
-                request2 = requests.get(url = foreign_author["id"], data= PARAMS)
+
+
+
+                request2 = session.get(url = foreign_author["id"],)
+
+
+                #request2 = requests.get(url = foreign_author["id"], data= PARAMS)
 
 
                 print(foreign_author["id"])
