@@ -49,8 +49,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Author API
-    path('api/authors/', api_views.Author_list),
-    path('api/authors/<uuid:pk>', api_views.Author_detail),
+    path('api/authors/', api_views.Author_list, name="api-author"),
+    path('api/authors/<uuid:pk>', api_views.Author_detail, name="api-author"),
 
     # Post API
     path('api/posts/', api_views.post_list),

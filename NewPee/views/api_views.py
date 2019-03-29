@@ -20,7 +20,6 @@ from Posts.permissions import IsOwnerOrReadOnly
 from Authors.permissions import IsOwnerOrReadOnlyAuthor
 
 
-
 #https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
 
 
@@ -30,16 +29,17 @@ def Author_list(request, format=None):
     List all Authors, or create an Author
     """
 
-
+    #TODO: Update the context to be specific to server.
+    serializer_context = {'request': request}
 
 
     if request.method == 'GET':
         Authors = Author.objects.all()
-        serializer = AuthorSerializer(Authors, many=True)
+        serializer = AuthorSerializer(Authors, many=True, context=serializer_context)
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        serializer = AuthorSerializer(data=request.data)
+        serializer = AuthorSerializer(data=request.data,context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -54,7 +54,9 @@ def Author_detail(request, pk, format= None):
     """
 
 
+    #TODO: Update the context to be specific to server.
 
+    serializer_context = {'request': request}
 
     try:
         author = Author.objects.get(pk=pk)
@@ -62,18 +64,18 @@ def Author_detail(request, pk, format= None):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = AuthorSerializer(author)
+        serializer = AuthorSerializer(author, context=serializer_context)
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = AuthorSerializer(author, data=request.data)
+        serializer = AuthorSerializer(author, data=request.data,context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'PATCH':
-        serializer = AuthorSerializer(author, data=request.data, partial=True)
+        serializer = AuthorSerializer(author, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -96,14 +98,31 @@ def post_list(request):
 
     if request.method == 'GET':
         posts = Post.objects.all()
-        serializer = PostSerializer(posts, many=True)
+        serializer = PostSerializer(posts, many=True, context={'request': request})
         return Response(serializer.data)
 
 
     elif request.method == 'POST':
-        serializer = PostSerializer(data=request.data)
+
+
+        author_id = request.data["author"]
+
+        author = AuthorSerializer( Author.objects.get(id=author_id), context={'request': request})
+        
+        request.data["author"] = author.data
+
+
+
+        serializer = PostSerializer(data=request.data, context={'request': request})
+
+        #serializer.initial_data["author"] = author
+
         if serializer.is_valid():
-            print(serializer)
+
+            print(serializer.errors)
+
+            #print(serializer)
+
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -127,12 +146,12 @@ def post_detail(request, pk):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = PostSerializer(post)
+        serializer = PostSerializer(post, context={'request': request})
 
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = PostSerializer(post, data=request.data)
+        serializer = PostSerializer(post, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

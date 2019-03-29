@@ -47,7 +47,13 @@ function grabUser(){
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
         success : function(json) {
+
+          stripped_user_id=  json["id"].split("/")[5] ;
+
             user_author = json;
+            user_author["id"] = stripped_user_id;
+
+
             $("#request-access").hide();
         },
         error: function (e) {
@@ -67,6 +73,9 @@ function grabUser(){
         headers:{"X-CSRFToken": csrftoken},
         success : function(json) {
             page_author = json;
+
+            stripped_user_id=  json["id"].split("/")[5] ;
+            page_author["id"] = stripped_user_id;
             console.log(page_author, "This is the retrieved author.");
 
             if(page_author.followers.includes(user_id)){
@@ -652,9 +661,14 @@ elementMakePost.addEventListener('submit', event => {
     }
 
 
+
+    user_id=  user_id.split("/")[5] ;
+
+
     console.log(page_author)
     var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY"})
     var visible_to;
+    
     var data = {
         title : post_title,
         author : page_author["id"],

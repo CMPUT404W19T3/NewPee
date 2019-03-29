@@ -25,7 +25,10 @@ class AuthorSerializer(serializers.ModelSerializer):
     following = models.ManyToManyField("self", symmetrical=False, blank=True)
     '''
 
+    id = serializers.HyperlinkedIdentityField(view_name="api-author")
+    url = serializers.HyperlinkedIdentityField(view_name="api-author")
+
     class Meta:
         model = Author
-        fields = ('id', 'user', 'displayName', 'bio', 'posts_created', 'picture', 'github_url', 'friends', 'following', 'followers')
+        fields = ('id', 'url', 'user', 'displayName', 'bio', 'posts_created', 'picture', 'github_url', 'friends', 'following', 'followers')
         lookup_field = 'id'

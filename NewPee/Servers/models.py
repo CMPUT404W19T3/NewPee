@@ -45,15 +45,16 @@ class Server(models.Model):
         r = requests.get(url= URL, params = PARAMS)
         data = r.json()
 
-        return data
+        #return data
 
 
 
 
 
     def updateAuthors():
-
-        async_task(retrieveAuthors, hook = createAuthors)
+        
+        data
+        #async_task(retrieveAuthors, hook = createAuthors)
 
 
 
@@ -117,10 +118,10 @@ class Server(models.Model):
             'username': 'garyscary',
             'password' : '12345'
         }
-        r = requests.get(url= URL)
+        #r = requests.get(url= URL)
 
-        data = r.json()
-        return data
+        #data = r.json()
+        #return data
 
 
     def updatePosts(self):

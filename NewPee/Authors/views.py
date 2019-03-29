@@ -44,18 +44,19 @@ class AuthorDetail(APIView):
         title:
         Return the current author.
         """
+        serializer_context = {'request': request}
 
         if request.method == "GET":
 
-            servers = Server.objects.all()
-            for x in servers:
-                x.updatePosts()
+            #servers = Server.objects.all()
+            #for x in servers:
+            #    x.updatePosts()
             
             author = self.get_object(pk)
-            author_serializer = AuthorSerializer(author)
+            author_serializer = AuthorSerializer(author, context = {'request': request})
 
             logged_in_author = Author.objects.get(user = request.user)
-            logged_in_author_serializer = AuthorSerializer(logged_in_author)
+            logged_in_author_serializer = AuthorSerializer(logged_in_author, context= {'request': request})
 
             form = SearchForm()
             #print("\n\nSEARCH:", request.GET.get('search'))
@@ -68,7 +69,7 @@ class AuthorDetail(APIView):
 
             try:
                 posts = Post.objects.filter(author=pk)
-                post_serializer = PostSerializer(posts, many=True)
+                post_serializer = PostSerializer(posts, many=True,context={'request': request})
                 foreignposts = ForeignPost.objects.all()
                 foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True)
 
@@ -89,9 +90,9 @@ class AuthorDetail(APIView):
         if request.method == 'POST' and request.FILES['myfile']:
 
             author = self.get_object(pk)
-            author_serializer = AuthorSerializer(author)
+            author_serializer = AuthorSerializer(author,context={'request': request})
             logged_in_author = Author.objects.get(user = request.user)
-            logged_in_author_serializer = AuthorSerializer(logged_in_author)
+            logged_in_author_serializer = AuthorSerializer(logged_in_author,context={'request': request})
 
             form = SearchForm()
             search = request.GET.get('search')
@@ -138,7 +139,7 @@ class AuthorList(APIView):
             print("This is the request\n\n", request)
             authors = Author.objects.all()
             print(authors)
-            author_serializer = AuthorSerializer(authors, many=True)
+            author_serializer = AuthorSerializer(authors, many=True,context={'request': request})
             posts = Post.objects.all()
             post_serializer = PostSerializer(posts, many=True)
             # print("This is a serializer: ", serializer)
@@ -176,7 +177,7 @@ class AuthorList(APIView):
 
         print("Posting the authors post")
 
-        serializer = AuthorSerializer(data=request.data)
+        serializer = AuthorSerializer(data=request.data,context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -309,7 +310,7 @@ class AuthorFriendRequestsView(APIView):
 
         author = get_object_or_404(models.Author, id= pk)
 
-        author_serializer = AuthorSerializer(author)
+        author_serializer = AuthorSerializer(author,context={'request': request})
         response_data = OrderedDict()
         response_data['query'] = 'friends'
         response_data['author'] = author.id

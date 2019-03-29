@@ -15,7 +15,7 @@ class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # have to change to a user model
-    author = models.ForeignKey('Authors.Author', on_delete=models.CASCADE , null=False, blank=False, related_name="author")
+    author = models.ForeignKey('Authors.Author', on_delete=models.CASCADE , null=True, blank=False, related_name="author")
     #author = models.CharField(max_length=140, null=False,blank=False)
     # author = models.ForeignKey(User)
 
@@ -41,7 +41,7 @@ class Post(models.Model):
     )
     visibility = models.CharField(max_length=10, choices=visibility_choices, default="PUBLIC")
     # which viewers are allowed to see it.
-    visible_to = models.ManyToManyField('Authors.Author', blank=True, related_name='visible_to')
+    visible_to = models.ManyToManyField('Authors.Author',  blank=True, related_name='visible_to')
     unlisted = models.BooleanField(default=False)
 
     def get_id(self):
