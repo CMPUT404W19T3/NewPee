@@ -112,7 +112,7 @@ class ForeignPost(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     # have to change to a user model
-    # author = models.ForeignKey('Authors.Author', on_delete=models.CASCADE , null=False, blank=False, related_name="author")
+    #author = models.ForeignKey('Authors.Author', on_delete=models.CASCADE , null=False, blank=False, related_name="author")
     author = models.URLField(null=False, blank=False)
     # author = models.ForeignKey(User)
 
