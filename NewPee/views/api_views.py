@@ -19,10 +19,14 @@ from rest_framework.permissions import IsAuthenticated
 from Posts.permissions import IsOwnerOrReadOnly
 from Authors.permissions import IsOwnerOrReadOnlyAuthor
 
+from itertools import chain
+
+from django.core import serializers
+import json
 
 #https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
 
-
+@permission_classes((IsAuthenticated,IsOwnerOrReadOnlyAuthor, ))
 @api_view(['GET', 'POST'])
 def Author_list(request, format=None):
     """
@@ -85,7 +89,7 @@ def Author_detail(request, pk, format= None):
         author.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-@login_required(login_url='/login')
+@permission_classes((IsAuthenticated,IsOwnerOrReadOnlyAuthor, ))
 @api_view(['GET', 'POST'])
 
 def post_list(request):
@@ -98,8 +102,24 @@ def post_list(request):
 
     if request.method == 'GET':
         posts = Post.objects.all()
+        foreignposts = ForeignPost.objects.all()
+
+        foreignserializer = ForeignPostSerializer(foreignposts, many=True, context={'request': request})
+
         serializer = PostSerializer(posts, many=True, context={'request': request})
-        return Response(serializer.data)
+
+
+
+
+        combined = list(chain(foreignserializer.data, serializer.data))
+
+        combined2 = combined
+       
+
+
+        #json = serializers.serialize('json', combined)
+
+        return Response(combined)
 
 
     elif request.method == 'POST':
@@ -161,6 +181,7 @@ def post_detail(request, pk):
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+#@permission_classes((IsAuthenticated,IsOwnerOrReadOnlyAuthor, ))
 @api_view(['GET', 'POST'])
 def foreignpost_list(request):
 
@@ -179,7 +200,7 @@ def foreignpost_list(request):
 
 
 
-@login_required(login_url='/login')
+#@login_required(login_url='/login')
 @api_view(['GET', 'POST'])
 def comment_list(request):
     """

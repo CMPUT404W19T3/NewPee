@@ -11,10 +11,13 @@ class Server(models.Model):
     host = models.URLField(max_length=200, unique=True)
     author_endpoint = models.URLField(max_length=200, unique=True)
     posts_endpoint = models.URLField(max_length=200, unique=True)
+    username = models.CharField(max_length=140, null=False, blank=False, default="testuser")
+    password = models.CharField(max_length=140, null=False, blank=False, default="test_pass")
+    isActive = models.BooleanField(default=True)
 
 
-
-
+    def isServerActive(self):
+        return self.isActive
 
     def createAuthors(self,data):
 
@@ -39,12 +42,18 @@ class Server(models.Model):
         location = self.name
 
         PARAMS = {
-            'username': 'username',
-            'password' : 'password'
+            'username': self.username,
+            'password': self.password
         }
 
-        r = requests.get(url= URL, params = PARAMS)
+        print(self.username, self.password, URL)
+
+        r = requests.get(url= URL, data = PARAMS)
+
+        print(r)
         data = r.json()
+
+        print(data, "our data retrieved")
 
 
         foreign_post = (data["posts"])
@@ -55,18 +64,27 @@ class Server(models.Model):
 
             foreign_author_uuid = foreign_author["id"].split("/")[-1]
 
+            # only pavlov server works right now.
+
+            if(foreign_author["id"].split("/")[2] != "social.hydrated.app"):
+                continue
+
+
             try:
                 Author.objects.get(id = foreign_author_uuid)
                 
             except Author.DoesNotExist:
-                request2 = requests.get(url = foreign_author["id"])
+                request2 = requests.get(url = foreign_author["id"], data= PARAMS)
 
+
+                print(foreign_author["id"])
                 data2 = request2.json()
+                print(data2)
 
                 try:
                     print("sideways", data2["id"].split("/")[-1])
-                    new_id = uuid.UUID(data2["id"].split("/")[-1])
-                    Author.objects.get(id = uuid.UUID(data2["id"].split("/")[-1]))
+                    new_id = (data2["id"].split("/")[-1])
+                    Author.objects.get(id = (data2["id"].split("/")[-1]))
 
                 except Author.DoesNotExist:
 
@@ -159,8 +177,8 @@ class Server(models.Model):
         location = self.name
         
         PARAMS = {
-            'username': 'garyscary',
-            'password' : '12345'
+            'username': self.username,
+            'password' : self.password
         }
         r = requests.get(url= URL)
 
