@@ -14,8 +14,8 @@ from django.core.files.storage import FileSystemStorage
 
 from Posts.models import Photo
 from Authors import models
-from Posts.models import Post
-from Posts.serializers import PostSerializer
+from Posts.models import Post, ForeignPost
+from Posts.serializers import PostSerializer, ForeignPostSerializer
 
 from rest_framework.generics import ListAPIView
 from collections import OrderedDict
@@ -50,8 +50,7 @@ class AuthorDetail(APIView):
             servers = Server.objects.all()
             for x in servers:
                 x.updatePosts()
-
-
+            
             author = self.get_object(pk)
             author_serializer = AuthorSerializer(author)
 
@@ -70,12 +69,18 @@ class AuthorDetail(APIView):
             try:
                 posts = Post.objects.filter(author=pk)
                 post_serializer = PostSerializer(posts, many=True)
-                print("Hello", post_serializer.data)
+                foreignposts = ForeignPost.objects.all()
+                foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True)
+
                 return Response({'author': author_serializer.data, 'posts': post_serializer.data, \
-                'form': form, 'logged_in_author':logged_in_author_serializer.data})
+                'form': form, 'logged_in_author':logged_in_author_serializer.data, \
+                'foreignposts': foreignposts_serializer.data})
 
             except Post.DoesNotExist:
-                return Response({'author': author_serializer.data, 'form': form})
+                foreignposts = ForeignPost.objects.all()
+                foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True)
+                return Response({'author': author_serializer.data, 'form': form, \
+                    'foreignposts': foreignposts_serializer.data})
 
     # Clean Up After
     def post(self, request, pk, *args, **kwargs):

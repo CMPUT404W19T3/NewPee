@@ -55,6 +55,7 @@ urlpatterns = [
     # Post API
     path('api/posts/', api_views.post_list),
     path('api/posts/<uuid:pk>', api_views.post_detail, name="edit_author"),
+    path('api/foreignposts/', api_views.foreignpost_list),
 
     #TODO
     # http://service/author/{AUTHOR_ID}/posts (all posts made by {AUTHOR_ID} visible to the currently authenticated user)

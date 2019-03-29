@@ -2,7 +2,7 @@ from Authors.models import Author
 from Authors.serializers import AuthorSerializer
 from Posts.models import Post, Comment
 from Authors.models import Author
-from Posts.serializers import PostSerializer, CommentSerializer
+from Posts.serializers import PostSerializer, CommentSerializer, ForeignPostSerializer
 from Authors.serializers import AuthorSerializer
 from views.forms import SearchForm, CommentForm
 from django.http import Http404

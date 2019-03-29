@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Posts.models import Post, Comment
+from Posts.models import Post, Comment, ForeignPost
 from Authors.models import Author, User
 from Authors.serializers import AuthorSerializer, UserSerializer
 
@@ -51,4 +51,24 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('id', 'parent', 'author', 'content', 'post_date', )
+        fields = ('id', 'parent', 'author', 'content', 'post_date')
+
+
+
+class ForeignPostSerializer(serializers.ModelSerializer):
+    '''
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    author = models.URLField(null=False, blank=False)
+    title = models.CharField(max_length=30, null=False, blank=False)
+    source = models.URLField(null=True,blank=True)
+    origin = models.URLField(null=True,blank=True)
+    description = models.CharField(max_length=150, default="No Description", null=False, blank=False)
+    content = models.TextField(null=False,blank=False)
+    post_date = models.DateTimeField(auto_now_add=True)
+    visibility = models.CharField(max_length=10, choices=visibility_choices, default="PUBLIC")
+    unlisted = models.BooleanField(default=False)
+    '''
+
+    class Meta:
+        model = ForeignPost
+        fields = ('id', 'author', 'title', 'source', 'origin', 'description', 'content', 'post_date', 'visibility', 'unlisted')

@@ -2,7 +2,7 @@ from django.db import models
 import uuid
 from django_q.tasks import async_task, result
 import requests
-from Posts.models import Post
+from Posts.models import Post, ForeignPost
 
 class Server(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -58,31 +58,52 @@ class Server(models.Model):
 
 
 
-    def createPosts(self,task):
+    def createPosts(self,data):
 
+        print(data['posts'])
+        
+        for post in data['posts']:
+            try:
+                ForeignPost.objects.get(id = post['id'])
+            except ForeignPost.DoesNotExist:
+                ForeignPost.objects.create(
+                    id = post['id'],
+                    author=post["author"],
+                    title = post["title"],
+                    source = post["source"],
+                    origin = post["origin"],
+                    description = post["description"],
+                    visibility = post["visibility"],
+                    unlisted = post["unlisted"]
+                )
 
+        # for post in task.result['posts']:
 
+        #     # Post already exists
+        #     if Post.objects.filter(id=post["id"]):
+        #         continue
 
-
-        for post in task.result['posts']:
-
-            # Post already exists
-            if Post.objects.filer(id=post["id"]):
-                continue
-
-
-
-            newPost = Post(id = post["id"],
-                           author=post["author"],
-                           title = post["title"],
-                           source = post["source"],
-                           origin = post["origin"],
-                           description = post["description"],
-                           content_type = post["content_type"],
-                           visibility = post["visibility"],
-                           unlisted = post["unlisted"],
-            )
-            newPost.save()
+        #     Post.objects.create(id = post["id"],
+        #                    author=post["author"],
+        #                    title = post["title"],
+        #                    source = post["source"],
+        #                    origin = post["origin"],
+        #                    description = post["description"],
+        #                    content_type = post["content_type"],
+        #                    visibility = post["visibility"],
+        #                    unlisted = post["unlisted"],
+        #     )
+            # newPost = Post(id = post["id"],
+            #                author=post["author"],
+            #                title = post["title"],
+            #                source = post["source"],
+            #                origin = post["origin"],
+            #                description = post["description"],
+            #                content_type = post["content_type"],
+            #                visibility = post["visibility"],
+            #                unlisted = post["unlisted"],
+            # )
+            # newPost.save()
 
 
 
@@ -99,11 +120,11 @@ class Server(models.Model):
         r = requests.get(url= URL)
 
         data = r.json()
-        print(data)
-
+        return data
 
 
     def updatePosts(self):
-        self.retrievePosts()
-
+        data = self.retrievePosts()
+        self.createPosts(data)
+        #self.createPosts(data)
         #async_task(self.retrievePosts, hook = self.createPosts)
