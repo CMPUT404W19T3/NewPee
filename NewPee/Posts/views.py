@@ -49,7 +49,7 @@ class PostDetail(APIView):
         if request.method == "GET":
             post = self.get_object(pk)
             post_serializer = PostSerializer(post, context={'request': request})
-
+            print(post)
             logged_in_author = Author.objects.get(user = request.user)
             logged_in_author_serializer = AuthorSerializer(logged_in_author, context={'request': request})
 

@@ -24,6 +24,8 @@ from rest_framework.decorators import action
 from django.views.generic import RedirectView
 from Servers.models import Server
 
+from itertools import chain
+
 class AuthorDetail(APIView):
     """
     Retrieve, update or delete an Author.
@@ -75,17 +77,18 @@ class AuthorDetail(APIView):
                 posts = Post.objects.filter(author=pk)
                 post_serializer = PostSerializer(posts, many=True,context={'request': request})
                 foreignposts = ForeignPost.objects.all()
-                foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True)
+                foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True, context={'request': request})
 
+                allPosts = chain(post_serializer.data, foreignposts_serializer.data)
                 return Response({'author': author_serializer.data, 'posts': post_serializer.data, \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data, \
-                'foreignposts': foreignposts_serializer.data})
+                'foreignposts': foreignposts_serializer.data, 'allPosts': allPosts})
 
             except Post.DoesNotExist:
                 foreignposts = ForeignPost.objects.all()
                 foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True)
                 return Response({'author': author_serializer.data, 'form': form, \
-                    'foreignposts': foreignposts_serializer.data})
+                    'foreignposts': foreignposts_serializer.data, 'allPosts': allPosts})
 
     # Clean Up After
     def post(self, request, pk, *args, **kwargs):
