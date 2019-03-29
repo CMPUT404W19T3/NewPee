@@ -8,6 +8,12 @@ from rest_framework import status, viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.views.decorators.csrf import csrf_exempt
 
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.schemas import SchemaGenerator
+from rest_framework.views import APIView
+from rest_framework_swagger import renderers
+
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -19,16 +25,65 @@ from Posts.serializers import PostSerializer
 
 from rest_framework.generics import ListAPIView
 from collections import OrderedDict
+import yaml
 
 from rest_framework.decorators import action
 from django.views.generic import RedirectView
 
 class AuthorDetail(APIView):
+
+    fields = ('id', 'user', 'displayName', 'bio', 'posts_created', 'picture', 'github_url', 'friends', 'following', 'followers')
+
     """
     Retrieve, update or delete an Author.
+    ---
+    get_object:
+        parameters_strategy:
+            form: replace
+        parameters:
+            - id: uuid
+              user: name
+              displayName:
+              bio:
+              posts_created: number
+              github_url: string
+              friends: list
+              following: list
+              followers: list
+    get:
+        parameters_strategy:
+            form: replace
+        parameters:
+            - id: uuid
+              user: name
+              displayName:
+              bio:
+              posts_created: number
+              github_url: string
+              friends: list
+              following: list
+              followers: list
+    post:
+        parameters_strategy:
+            form: replace
+        parameters:
+            - id: uuid
+              user: name
+              displayName:
+              bio:
+              posts_created: number
+              github_url: string
+              friends: list
+              following: list
+              followers: list
     """
+
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'home.html'
+
+    serializer_class = AuthorSerializer
+    model = Author
+    queryset = Author.objects.all()
 
     def get_object(self, pk):
 
@@ -118,7 +173,38 @@ class AuthorDetail(APIView):
 class AuthorList(APIView):
     """
     List all Authors, or create a new Author.
+    ---
+    get:
+        parameters_strategy:
+            form: replace
+        parameters:
+            - id: uuid
+              user: name
+              displayName:
+              bio:
+              posts_created: number
+              github_url: string
+              friends: list
+              following: list
+              followers: list
+    post:
+        parameters_strategy:
+            form: replace
+        parameters:
+            - id: uuid
+              user: name
+              displayName:
+              bio:
+              posts_created: number
+              github_url: string
+              friends: list
+              following: list
+              followers: list
     """
+
+    serializer_class = AuthorSerializer
+    model = Author
+    queryset = Author.objects.all()
 
     @csrf_exempt
     def get(self, request, format=None):
@@ -138,7 +224,6 @@ class AuthorList(APIView):
             })
 
     def post(self, request, format=None):
-
 
         # we are posting with an image, store it usign FileSystemStorage in our media folder.
         # if request.method == 'POST' and request.FILES['myfile']:
@@ -214,6 +299,41 @@ responds with:
 
 class AuthorfriendsView(APIView):
 
+    """
+    List of Author's friends.
+    ---
+    get:
+        parameters_strategy:
+            form: replace
+        parameters:
+            - id: uuid
+              user: name
+              displayName:
+              bio:
+              posts_created: number
+              github_url: string
+              friends: list
+              following: list
+              followers: list
+    post:
+        parameters_strategy:
+            form: replace
+        parameters:
+            - id: uuid
+              user: name
+              displayName:
+              bio:
+              posts_created: number
+              github_url: string
+              friends: list
+              following: list
+              followers: list
+    """
+
+    serializer_class = AuthorSerializer
+    model = Author
+    queryset = Author.objects.all()
+
     @csrf_exempt
     def get(self, request, pk, *args, **kwargs):
 
@@ -262,6 +382,28 @@ class AuthorfriendsView(APIView):
 # Return a boolean for if two authors are friends
 class AuthorIsfriendsView(APIView):
 
+    """
+    List all Authors, or create a new Author.
+    ---
+    get:
+        parameters_strategy:
+            form: replace
+        parameters:
+            - id: uuid
+              user: name
+              displayName:
+              bio:
+              posts_created: number
+              github_url: string
+              friends: list
+              following: list
+              followers: list
+    """
+
+    serializer_class = AuthorSerializer
+    model = Author
+    queryset = Author.objects.all()
+
     @csrf_exempt
     def get(self, request, pk, pk2, *args, **kwargs):
 
@@ -293,6 +435,28 @@ class AuthorIsfriendsView(APIView):
 
 class AuthorFriendRequestsView(APIView):
 
+    """
+    List of Friend Requersts for Author.
+    ---
+    get:
+        parameters_strategy:
+            form: replace
+        parameters:
+            - id: uuid
+              user: name
+              displayName:
+              bio:
+              posts_created: number
+              github_url: string
+              friends: list
+              following: list
+              followers: list
+    """
+
+    serializer_class = AuthorSerializer
+    model = Author
+    queryset = Author.objects.all()
+
     def get(self, request, pk, *args, **kwargs):
 
         author = get_object_or_404(models.Author, id= pk)
@@ -308,6 +472,28 @@ class AuthorFriendRequestsView(APIView):
 # https://docs.djangoproject.com/en/2.1/ref/class-based-views/base/#redirectview
 
 class AuthorFriendRequestActionsView( RedirectView):
+
+    """
+    Reource for Friend Request Actions.
+    ---
+    get_redirect_url:
+        parameters_strategy:
+            form: replace
+        parameters:
+            - id: uuid
+              user: name
+              displayName:
+              bio:
+              posts_created: number
+              github_url: string
+              friends: list
+              following: list
+              followers: list
+    """
+
+    serializer_class = AuthorSerializer
+    model = Author
+    queryset = Author.objects.all()
 
     def get_redirect_url(self, *args, **kwargs):    
         

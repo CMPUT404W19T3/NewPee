@@ -4,6 +4,7 @@ from Authors.models import Author, User
 # https://medium.freecodecamp.org/nested-relationships-in-serializers-for-onetoone-fields-in-django-rest-framework-bdb4720d81e6
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email')

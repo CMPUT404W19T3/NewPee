@@ -74,7 +74,6 @@ def redirect(request, format=None):
 
 def get_author(request, format=None):
 
-
         print(request)
 
         pariedAuthor = Author.objects.get(user = request.user)

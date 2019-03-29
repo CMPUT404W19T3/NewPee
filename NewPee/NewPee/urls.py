@@ -29,13 +29,9 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from rest_framework_swagger.views import get_swagger_view
-
-API_TITLE = "API Documentation"
-API_DESCRIPTION = 'Built-in interactive API documentation for NewPee.'
-
-schema_view = get_swagger_view(title='Documentation')
-
 from rest_framework import routers
+
+schema_view = get_swagger_view(title='Demo NewPee API')
 
 urlpatterns = [
     # Login, Signup and Logout
@@ -78,6 +74,7 @@ urlpatterns = [
 
     # Post Modal View
     path('posts/<uuid:pk>', PostDetail.as_view(), name="post_page"),
+    path('posts/<uuid:pk>', PostList.as_view(), name="list_of_posts"),
 
     # Comment API
     path('api/comments/', api_views.comment_list),

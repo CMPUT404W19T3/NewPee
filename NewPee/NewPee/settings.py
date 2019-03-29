@@ -48,6 +48,17 @@ INSTALLED_APPS = [
     'NewPee.apps.NewPeeConfig',
 ]
 
+# Parser classes to help Django REST Swagger.
+# https://medium.com/@m_haziq/comprehensive-approach-to-django-rest-swagger-2-583e91a4c833
+REST_FRAMEWORK = {
+
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.JSONParser'
+    ],
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
