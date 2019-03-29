@@ -132,7 +132,7 @@ class Author(models.Model):
 class ForeignAuthor(models.Model):
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    url = models.URLField(null=True,blank=True)
+    url = models.URLField(max_length=1000, null=True,blank=True)
     host = models.URLField(default="newpee.herokuapp.com/")
 
     displayName = models.CharField(max_length=15)
