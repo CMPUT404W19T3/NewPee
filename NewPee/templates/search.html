@@ -13,6 +13,7 @@
 
 {% block rightColumn %}
 <div class="col-9 mx-auto">
+    <p>{{logged_in_author.username}}</p>
  
     <h1 class="authorList">
     Authors
@@ -24,9 +25,11 @@
     <h2 class="authorDisplayName">
         {{ author.displayName }}
     </h2>
-    <p class="authorName">
-        {{ author.user.first_name }} {{ author.user.last_name }}
-    </p>
+    
+    <a href="/authors/{{author.id}}"> 
+    {{ author.user.first_name }} {{ author.user.last_name }}
+    </a>
+        
 </div>
 {% endfor %}
 {% else %}
