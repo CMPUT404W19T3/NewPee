@@ -68,14 +68,12 @@
     </div>
 
 
-            {% if posts %}
-            {% for post in posts %}
+            {% if allPosts %}
+            {% for post in allPosts %}
                 {% include "./post_card_view.html" with post=post%}
                 
             {% endfor %}
             {% endif %}
-
-            {{ foreignposts }}
       
 </div>
 
