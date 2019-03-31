@@ -7,10 +7,10 @@ from Authors.models import Author, ForeignAuthor
 
 class Server(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=140, null=False, blank=False)
-    host = models.URLField(max_length=200, unique=True)
-    author_endpoint = models.URLField(max_length=200, unique=True)
-    posts_endpoint = models.URLField(max_length=200, unique=True)
+    name = models.CharField(max_length=1000, null=False, blank=False)
+    host = models.URLField(max_length=1000, unique=True)
+    author_endpoint = models.URLField(max_length=1000, unique=True)
+    posts_endpoint = models.URLField(max_length=1000, unique=True)
     username = models.CharField(max_length=140, null=False, blank=False, default="testuser")
     password = models.CharField(max_length=140, null=False, blank=False, default="test_pass")
     isActive = models.BooleanField(default=True)
