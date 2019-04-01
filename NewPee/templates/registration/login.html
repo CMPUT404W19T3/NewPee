@@ -33,6 +33,11 @@
 
     <!-- Card contains the header, body, and the login button -->
     <div class="card">
+    {% if messages %}
+      <script>
+        alert('Please wait for approval from admin');
+      </script>
+    {% endif %}
 
       <!-- The "Login" text you seeon screen -->
       <div class="card-header">

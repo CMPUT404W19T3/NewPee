@@ -6,6 +6,7 @@ from Authors.models import Author
 from django.contrib.auth.models import User
 from Posts.models import Post
 from django.contrib.auth import authenticate, login
+from django.contrib import messages
 import json
 
 from rest_framework import status
@@ -16,6 +17,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+
 
 # Create your views here.
 
@@ -43,8 +45,12 @@ def log_in(request, format=None):
                 user = authenticate(username=username, password=password)
 
                 if user is not None:
-                    login(request, user)
-                    return HttpResponseRedirect('../authors/', {'form': form})
+                    author = Author.objects.get(user=user)
+                    if (author.isAuthorized):
+                        login(request, user)
+                        return HttpResponseRedirect('../authors/', {'form': form})
+                    else:
+                        return render(request, 'registration/login.html',{'form': form, 'approved': author.isAuthorized})
                 
 
                 return render(request, 'registration/login.html', {'form': form}, status=401)
@@ -122,14 +128,13 @@ def sign_up(request, format=None):
 
                 temp_user = authenticate(username=username, password=raw_password)
 
-                login(request,temp_user)
 
                 temp_user.email = "fake@gmail.com"
                 new_user = Author.objects.create(user=temp_user, displayName=temp_user.username)
 
 
         
-                return HttpResponseRedirect("/",)
+                return HttpResponseRedirect("../login",)
 
         return render(request, 'signup.html', {'form': form})
 
