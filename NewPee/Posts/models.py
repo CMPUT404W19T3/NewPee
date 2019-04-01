@@ -99,11 +99,16 @@ class Post(models.Model):
         return False
 
     def ServerViewAcces(self,viewing_author):
-        return True
 
-    def unlistedViewAcces(self,viewing_author):
-        return True
-        
+        if (viewing_author.host != settings.HOSTNAME):
+            return False
+        else:
+            return True
+
+
+    def getUnlisted(self):
+
+        return self.unlisted    
 
 
     #def ServerViewAcces(self, viewing_author):

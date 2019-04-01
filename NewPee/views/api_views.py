@@ -30,15 +30,15 @@ import json
 
 
 
-def view_access(xpost, author):
+def view_access(post, author, unlisted=False):
 
 
 
         returnStatement = True
 
-        post = Post.objects.get(id=xpost["id"])
+        #post = Post.objects.get(id=xpost["id"])
 
-        if post.unlisted == True:
+        if unlisted == True:
             return False
 
         if post.visibility == "PUBLIC":
@@ -169,36 +169,20 @@ def post_list(request):
 
         non_visible_filtered_post = posts
 
-        newData = []
 
-        #print(posts)
-        #print(serializer.data)
 
         for post in serializer.data:
 
+            xpost = Post.objects.get(id=post["id"])
 
-            if( view_access(post, Author.objects.get(user=request.user))):
-                #print(post)
-                #newData.move_to_end(post)
-                #print(newData)
+            if( view_access(xpost, Author.objects.get(user=request.user), xpost.getUnlisted() )):
                 print("Can see", post)
 
 
             else:
                 print("Can't see", post)
-                #non_visible_filtered_post  = non_visible_filtered_post.filter(id=post["id"])
                 non_visible_filtered_post = posts.exclude(id = post["id"])
                 posts = posts & non_visible_filtered_post
-
-
-                #combined = list(chain(post, combined))
-
-        print(posts, "posts I see list")
-
-        #newData = set(posts).difference(set(non_visible_filtered_post))
-        #print(newData)
-
-        #newData = set(posts).difference(set(newData))
 
         serializer2 = PostSerializer(posts, many=True, context={'request': request})
 
@@ -253,10 +237,21 @@ def post_detail(request, pk):
     """
 
 
+
+        
+
+
     try:
         post = Post.objects.get(pk=pk)
     except Post.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+    if( view_access(post, Author.objects.get(user=request.user))):
+        pass
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
 
     if request.method == 'GET':
         serializer = PostSerializer(post, context={'request': request})
