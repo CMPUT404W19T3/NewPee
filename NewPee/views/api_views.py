@@ -21,10 +21,68 @@ from Authors.permissions import IsOwnerOrReadOnlyAuthor
 
 from itertools import chain
 
+import collections
+
 from django.core import serializers
 import json
 
 #https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
+
+
+
+def view_access(xpost, author):
+
+
+
+        returnStatement = True
+
+        post = Post.objects.get(id=xpost["id"])
+
+        if post.unlisted == True:
+            return False
+
+        if post.visibility == "PUBLIC":
+            returnStatement = True
+
+        elif post.visibility == "PRIVATE":
+            if post.privateViewAccess(author):
+                returnStatement = True
+            else:
+                returnStatement = False
+
+
+
+        elif post.visibility == "FRIENDS":
+            if post.friendViewAccess(author):
+                returnStatement = True
+            else:
+                returnStatement = False
+
+
+        elif post.visibility == "FOAF":
+            if post.FOAFViewAccess(author):
+                returnStatement = True
+            else:
+                returnStatement = False
+
+        elif post.visibility == "SERVER":
+            if post.ServerViewAcces(author):
+                returnStatement = True
+            else:
+                returnStatement = False
+
+
+
+
+        return returnStatement
+
+
+
+
+
+
+
+
 
 @permission_classes((IsAuthenticated,IsOwnerOrReadOnlyAuthor, ))
 @api_view(['GET', 'POST'])
@@ -94,7 +152,7 @@ def Author_detail(request, pk, format= None):
 
 def post_list(request):
     """
-    List all Posts, or create a new Post.
+    List all Posts, or create anew new Post.
     """
 
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
@@ -109,12 +167,47 @@ def post_list(request):
         serializer = PostSerializer(posts, many=True, context={'request': request})
 
 
+        non_visible_filtered_post = posts
+
+        newData = []
+
+        #print(posts)
+        #print(serializer.data)
+
+        for post in serializer.data:
 
 
-        combined = list(chain(foreignserializer.data, serializer.data))
+            if( view_access(post, Author.objects.get(user=request.user))):
+                #print(post)
+                #newData.move_to_end(post)
+                #print(newData)
+                print("Can see", post)
+
+
+            else:
+                print("Can't see", post)
+                #non_visible_filtered_post  = non_visible_filtered_post.filter(id=post["id"])
+                non_visible_filtered_post = posts.exclude(id = post["id"])
+                posts = posts & non_visible_filtered_post
+
+
+                #combined = list(chain(post, combined))
+
+        print(posts, "posts I see list")
+
+        #newData = set(posts).difference(set(non_visible_filtered_post))
+        #print(newData)
+
+        #newData = set(posts).difference(set(newData))
+
+        serializer2 = PostSerializer(posts, many=True, context={'request': request})
+
+
+
+        combined = list(chain(foreignserializer.data, serializer2.data))
 
         combined2 = combined
-       
+
 
 
         #json = serializers.serialize('json', combined)
@@ -128,7 +221,7 @@ def post_list(request):
         author_id = request.data["author"]
 
         author = AuthorSerializer( Author.objects.get(id=author_id), context={'request': request})
-        
+
         request.data["author"] = author.data
 
 
