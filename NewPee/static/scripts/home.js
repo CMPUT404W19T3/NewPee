@@ -632,7 +632,7 @@ github_api = function() {
     fetch('https://api.github.com/users/' + github_user + '/events').then(response => {
         return response.json();
     }).then(JSONresponse => {
-        console.log(JSONresponse);
+        return JSONresponse;
     });
 }
 
