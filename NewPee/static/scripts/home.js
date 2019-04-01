@@ -650,7 +650,7 @@ elementMakePost.addEventListener('submit', event => {
     var post_content = document.querySelector("#post-comment-content").value;
     var post_description = document.querySelector("#post-comment-description").value;
     var radioButtons = document.getElementsByName("friends-radio-option");
-    console.log(radio_value);
+    var postType = document.getElementById("markdown");
 
     var radio_value;
 
@@ -659,6 +659,11 @@ elementMakePost.addEventListener('submit', event => {
             radio_value = radioButtons[i].value;
         }
     }
+
+    console.log(radio_value);
+    if (postType.checked){
+
+    };
 
 
 
@@ -677,6 +682,7 @@ elementMakePost.addEventListener('submit', event => {
         csrfmidddlewaretoken: csrftoken,
         visibility : VisiblityEnum[radio_value],
         visible_to : visible_to,
+        content_type : "text/plain"
     };
 
     console.log(user_id);
@@ -684,6 +690,10 @@ elementMakePost.addEventListener('submit', event => {
     if (radio_value==4){
         data["visible_to"] = [user_id];
     }
+
+    if (postType.checked){
+        data["content_type"] = postType.value;
+    };
 
     data= JSON.stringify(data);
     console.log(data, "OUR DATA FOR POST");

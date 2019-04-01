@@ -1,6 +1,7 @@
 
 {% extends 'base.html' %}
 {% load static %}
+{% load markup_tags %}
 
 {% block baseHead %}
 <script src="{% static 'scripts/post.js' %}"></script>
@@ -28,7 +29,11 @@
         {{posts.description}}</p>
         <p class="card-text">
         <p class="card-subtitle mb-2 text-muted">content: </p>
-        {{posts.content}}</p>
+        {% if posts.content_type == "text/markdown"%}
+          {{ posts.content |apply_markup:"markdown"  }}
+        {% else %}
+          {{posts.content}}</p>
+        {% endif %}
     </div>
   </div>
   {% include "comment.html" %}

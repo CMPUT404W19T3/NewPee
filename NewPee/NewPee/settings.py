@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
-    #'django_markwhat',
+    'django_markup',
     'rest_framework_swagger',
     'django_q',
 
