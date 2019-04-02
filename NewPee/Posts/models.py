@@ -19,7 +19,7 @@ class Post(models.Model):
     #author = models.CharField(max_length=140, null=False,blank=False)
     # author = models.ForeignKey(User)
 
-    title = models.CharField(max_length=30, null=False, blank=False)
+    title = models.CharField(max_length=100, null=False, blank=False)
     #source = lastplaceigotthisfrom, origin = whereitcamefrom
     source = models.URLField(null=True,blank=True)
     origin = models.URLField(null=True,blank=True)

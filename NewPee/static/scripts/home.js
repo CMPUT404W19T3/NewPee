@@ -770,12 +770,23 @@ elementPullGithub.addEventListener('submit', async event => {
     console.log("This is the data", github_data);
 
     // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
-    var post_title = github_data[0].actor.display_login + github_data[0].type;
-    var post_content = github_data[0].repo.name;
-    var post_description = github_data[0].repo.name;
+    var post_title;
+    if (github_data[0].type === "PushEvent") {
+        post_title = github_data[0].actor.display_login + " Pushed to " + github_data[0].repo.name;
+    }
+    if (github_data[0].type === "DeleteEvent") {
+        post_title = github_data[0].actor.display_login + " Deleted " + github_data[0].repo.name;
+    }
+
+    var post_content = '<ul>';
+    for (let index of github_data[0].payload.commits) {
+        post_content += '<li>' + index.message + '</li>';
+    }
+    post_content += '</ul>'
+    
+    var post_description = "Github Activity";
     var github_id = github_data[0].id;
     var radioButtons = document.getElementsByName("friends-radio-option");
-
     var radio_value;
 
     for (var i = 0; i < radioButtons.length; i++) {
@@ -807,7 +818,7 @@ elementPullGithub.addEventListener('submit', async event => {
         csrfmidddlewaretoken: csrftoken,
         visibility : VisiblityEnum[radio_value],
         visible_to : visible_to,
-        content_type : "text/plain"
+        content_type : "text/markdown"
     };
 
     console.log(user_id);
