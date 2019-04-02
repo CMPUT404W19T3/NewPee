@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block baseHead %}
+
+<script src="{% static 'scripts/home.js' %}"></script>
+{% endblock %}
+{% block rightColumn %}
+<div class="col-9 mx-auto">
+    
+
+
+            
+            {% for post in posts %}
+                {% include "./post_card_view.html" with post=post%}
+                
+            {% endfor %}
+      
+      
+</div>
+
+{% endblock %}

@@ -66,6 +66,8 @@ class Post(models.Model):
     def get_post_date(self):
         return self.post_date
 
+    def set_visible_to(self,visible_to):
+        self.visible_to.add(visible_to)
 
 
     def privateViewAccess(self, viewing_author):

@@ -5,9 +5,12 @@ from .forms import UserNameForm, UserLoginForm, postTitleForm, postInfoForm, pas
 from Authors.models import Author
 from django.contrib.auth.models import User
 from Posts.models import Post
+from Posts.serializers import PostSerializer
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 import json
+
+from .api_views import post_list
 
 from rest_framework import status
 #from rest_framework import api_view
@@ -75,6 +78,17 @@ def redirect(request, format=None):
             return HttpResponseRedirect("/login/")
     except:
         return HttpResponseRedirect("/login/")
+
+
+def feed(request, format=None):
+
+    response = post_list(request)
+
+    print(response.data)
+    #serializer = PostSerializer(response.data,many=True,context={'request': request})
+
+    return render(request, 'feed.html', {'posts':response.data})
+
 
 
 
