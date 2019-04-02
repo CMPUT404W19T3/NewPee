@@ -36,6 +36,36 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ('id', 'author', 'title', 'source', 'origin', 'description', 'content', 'content_type', 'post_date', 'visibility', 'visible_to', 'unlisted')
         lookup_field = 'id'
 
+
+
+
+    # custom save method to work with visible_To
+    '''
+    def save(self,visible_to):
+
+
+        print(self.validated_data)
+
+        try:
+            id =  self.validated_data['id']
+            author =  self.validated_data['author']
+            title =  self.validated_data['title']
+            source =  self.validated_data ['source']
+            origin =  self.validated_data ['origin']
+            description =  self.validated_data ['description']
+            content =  self.validated_data ['content']
+            content_type =  self.validated_data['content_type'] 
+            post_date =  self.validated_data ['post_date']
+            visibility =  self.validated_data ['visibility']
+            #visible_to.set(visible_to)
+            unlisted =  self.validated_data ['unlisted']
+        except:
+            pass
+    '''
+        
+
+
+
     def create(self, validated_data):
 
         #print(self.validated_data)
@@ -52,15 +82,14 @@ class PostSerializer(serializers.ModelSerializer):
         internal_value = super(PostSerializer, self).to_internal_value(data)
         author = data.get("author")
         stripped_id = author["id"].split("/",5)
-        print(stripped_id[5])
         author_object = Author.objects.get( id= stripped_id[5])
 
-        print(author_object, "???")
 
         internal_value.update({"author":author_object})
+
         #my_non_model_field_value = ConvertRawValueInSomeCleverWay(my_non_model_field_raw_value)
         #internal_value.update({"my_non_model_field": my_non_model_field_value})
-        print("finished")
+        print("Post serializer finished")
         return internal_value
 
 

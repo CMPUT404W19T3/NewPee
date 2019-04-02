@@ -671,7 +671,7 @@ function makePost(post_title,post_content, post_description){
 
      //update friends stuff here 
     if (radio_value==4){
-        data["visible_to"] =  page_author["id"];
+        data["visible_to"] =  [page_author["id"]];
     }
 
     if (postType.checked){

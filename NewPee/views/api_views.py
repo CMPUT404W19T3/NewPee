@@ -208,7 +208,11 @@ def post_list(request):
 
         request.data["author"] = author.data
 
+        # clean the visible to field
+        visible_to = request.data["visible_to"]
+        del request.data["visible_to"]
 
+        print("\n\n\n", request.data, "\n\n\n")
 
         serializer = PostSerializer(data=request.data, context={'request': request})
 
@@ -218,9 +222,12 @@ def post_list(request):
 
             print(serializer.errors)
 
-            #print(serializer)
+
 
             serializer.save()
+
+            Post.objects.get(id=serializer.data["id"]).set_visible_to(visible_to[0])
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
