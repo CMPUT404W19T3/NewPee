@@ -8,7 +8,7 @@
         <div class="card-body">
 
         <h6 class="card-subtitle mb-2 text-muted">{{ post.author.displayName }}</h6>
-        <h6 class="card-subtitle mb-2 text-muted">{{ post.post_date|parse_iso|date:'Y-m-d H:i' }}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">{{ post.post_date|parse_iso }}</h6>
         <p class="card-text">description: <br>{{post.description}}</p>
   </div>
    

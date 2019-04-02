@@ -22,7 +22,7 @@
 
     </div>
         <div class="card-body" style="margin:0">
-        <h6 class="card-subtitle mb-2 text-muted">Posted by {{ posts.author.displayName }} from {{ posts.author.host }} at {{ posts.post_date|parse_iso|date:'Y-m-d H:i' }}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Posted by {{ posts.author.displayName }} from {{ posts.author.host }} at {{ posts.post_date|parse_iso }}</h6>
         <p class="card-text">
         <p class="card-subtitle mb-2 text-muted">Description: </p>
         {{posts.description}}</p>
