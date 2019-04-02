@@ -66,6 +66,60 @@ class Post(models.Model):
     def get_post_date(self):
         return self.post_date
 
+
+
+    def privateViewAccess(self, viewing_author):
+
+        print(viewing_author)
+        print(self.visible_to.all())
+        print("\n\n")
+
+        if(viewing_author in self.visible_to.all()):
+            return True
+        else:
+
+            return False
+
+
+    def friendViewAccess(self,viewing_author):
+
+        if (viewing_author in self.author.friends.all()):
+            return True
+        else:
+            return False
+
+    def FOAFViewAccess(self, viewing_author):
+
+        for friend in self.author.friends.all():
+            for FofFriend in friend.friends.all():
+
+                if(viewing_author == FofFriend):
+                    return True
+
+        return False
+
+    def ServerViewAcces(self,viewing_author):
+
+        if (viewing_author.host != settings.HOSTNAME):
+            return False
+        else:
+            return True
+
+
+    def getUnlisted(self):
+
+        return self.unlisted    
+
+
+    #def ServerViewAcces(self, viewing_author):
+
+
+
+
+
+
+
+
 #Comment class represents comment,
 #stores an unique id, a parent post, author and body
 class Comment(models.Model):
