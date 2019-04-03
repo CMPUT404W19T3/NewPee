@@ -689,6 +689,8 @@ function makePost(post_title,post_content, post_description){
             $("#request-access").hide();
             console.log("requested access complete");
             updateNumPostGet();
+            location.reload();
+
         },
         error: function (e) {
             console.log("ERROR: ", e);

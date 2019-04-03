@@ -324,27 +324,53 @@ class AuthorUpdateFriendRequestsView(APIView):
     def get(self, request):
         return Response(status.HTTP_200_OK)
 
-    def post(self, request, pk, *args, **kwargs):
-        recieving_author = request.data["author"]
-        friend = request.data["friend"]
+    def post(self, request, *args, **kwargs):
+
+
+        recieving_author = request.data["author"]   # author recieving request
+        friend = request.data["friend"]             # friend being added to author.
+        print(friend)
+        print(recieving_author)
+        friend_uuid = friend["id"].split("/")[-1]
+        recieving_author_uuid = recieving_author["id"].split("/")[-1]
+
+        print(friend_uuid, "\n\n\n")
+
+        friend_uuid = friend_uuid.strip(" ")
+        author = get_object_or_404(models.Author, id =  recieving_author_uuid)
+
+
+
 
         try:
-            author = get_object_or_404(models.Author, id =  recieving_author["id"])
-            my_current_followers =  recieving_author.get_followers()
+            # a local author we can just add them.
+            friend = get_object_or_404(models.Author, id = friend_uuid)
+            author.add_friend(friend)
 
-            # add the author since we now track them
-            foreign_author = Author.objects.create(
-                                    id=request.data["id"],
-                                    host=request.data["host"],
-                                    displayName = request.data["displayName"],
-                                    url = request.data["url"]                 
-            )
 
-            # add the friend
-            recieving_author.add_friend(foreign_author)
-             
+            return Response(status=status.HTTP_201_CREATED)
+
+            
         except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            
+            print("friend didn't exist")
+            try:
+
+                my_current_followers =  author.get_followers()
+
+                # add the author since we now track them
+                foreign_author = Author.objects.create(
+                                        id=friend["id"],
+                                        host=friend["host"],
+                                        displayName = friend["displayName"],
+                                        url = friend["url"]                 
+                )
+
+                # add the friend
+                author.add_friend(foreign_author)
+                    
+            except:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 

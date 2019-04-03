@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 import requests
-
+import NewPee.settings
 import Servers.models
 
 #from Servers.models import Server
@@ -106,30 +106,41 @@ class Author(models.Model):
         followers = self.followers.all()
         friends = self.friends.all()
 
+        
+        #print(friends, "my friends")
+        #print(followers, "my followers")
+
         friend_requests = followers
 
         for follower in followers:
 
-            if (follower not in friends):   
-                friend_requests.filter(id=follower.id)
+            if (follower in friends):   
+                friend_requests= friend_requests.filter(id=follower.id)
 
         return friend_requests
 
 
-
+    
 
 
     # add a friend
     def add_friend(self, author):
 
-        self.followers.add(author)  # send a friend request hes our author
+        self.following.add(author)
+
+        if(author not in self.followers.all()):
+            self.followers.add(author)  # he is our follower.
 
         # we are already following the user.
         if (author in self.following.all()):
 
             # add author locally and then send a request to their server
             self.friends.add(author)
-            self.send_foreign_request(author)
+            author.add_friend(self)
+
+            # we are adding an author from a different server.
+            if(author.host != HOSTNAME):
+                self.send_foreign_request(author)
 
 
     # send a friend request to foreign server    
