@@ -725,12 +725,16 @@ elementUpdateProfilePic.addEventListener('submit', event => {
 
     var newProfilePic = document.getElementById("select-profile-pic").value;
 
+    var data = {
+        "image": newProfilePic
+    }
+
     $.ajax({
         type: "PUT",
-        url: profile_image,
-        contentType: "multipart/form-data",
-        // headers:{"X-CSRFToken": csrftoken},
-        data: newProfilePic,
+        url: author_api_url,
+        contentType: "application/json",
+        headers:{"X-CSRFToken": csrftoken},
+        data: data,
         success : function(json) {
             console.log(json);
             $("#request-access").hide();
