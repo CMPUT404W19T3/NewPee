@@ -2,8 +2,8 @@ from django.db import models
 import uuid
 from django_q.tasks import async_task, result
 import requests
-from Posts.models import Post, ForeignPost
-from Authors.models import Author, ForeignAuthor
+import Posts.models #import Post, ForeignPost
+import Authors.models #import Author, ForeignAuthor
 
 class Server(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -11,11 +11,17 @@ class Server(models.Model):
     host = models.URLField(max_length=1000, unique=True)
     author_endpoint = models.URLField(max_length=1000, unique=True)
     posts_endpoint = models.URLField(max_length=1000, unique=True)
+    friend_endpoint = models.URLField(max_length=1000, unique=True, default="api/friends")
     username = models.CharField(max_length=140, null=False, blank=False, default="testuser")
     password = models.CharField(max_length=140, null=False, blank=False, default="test_pass")
     isActive = models.BooleanField(default=True)
 
 
+
+    def getUsername(self):
+        return self.username
+    def getPassword(self):
+        return self.password
     def isServerActive(self):
         return self.isActive
 

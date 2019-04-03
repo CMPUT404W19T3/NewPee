@@ -19,7 +19,7 @@ from django.urls import path
 from views.author_views import log_in, sign_up, logout_view, get_author, get_authors,redirect, feed
 from views import api_views
 
-from Authors.views import AuthorList, AuthorDetail, AuthorfriendsView, AuthorIsfriendsView, AuthorFriendRequestsView, AuthorFriendRequestActionsView
+from Authors.views import AuthorList, AuthorDetail, AuthorfriendsView, AuthorIsfriendsView, AuthorFriendRequestsView, AuthorFriendRequestActionsView, AuthorUpdateFriendRequestsView
 #import Author.views
 from Posts.views import PostList, PostDetail
 
@@ -76,6 +76,10 @@ urlpatterns = [
 
     # Author page
     path('authors/<uuid:pk>', AuthorDetail.as_view(), name="author_page"),
+    
+    path('authors/friends>', AuthorDetail.as_view(), name="friends"), #TODO: Update
+
+
 
     # Post Modal View
     path('posts/<uuid:pk>', PostDetail.as_view(), name="post_page"),
@@ -87,18 +91,23 @@ urlpatterns = [
     path('home/', AuthorList.as_view(), name="home"),
     path('logout/', logout_view, name="logout"),
 
+
     path('authors/', get_author),
+
+    # Friend Request
+    path('api/friendrequest', AuthorUpdateFriendRequestsView.as_view(), name = "api-friendrequest"),
+
 
     # FRIENDS
     path('api/author/<uuid:pk>/friends/', AuthorfriendsView.as_view(), name="api-friendlist"),      # GET Return query of friends, # POST a list of authors, returns 
     path('api/author/<uuid:pk>/friends/<uuid:pk2>', AuthorIsfriendsView.as_view(), name="api-checkfriends"), # returns a boolean if they are friends
-    path('api/author/<uuid:pk>/friendrequest' , AuthorFriendRequestsView.as_view(), name="api-friendrequests"), # Returns all the authors current friend requests.
+    path('api/author/<uuid:pk>/friendrequest' , AuthorFriendRequestsView.as_view(), name="api-returnfriendrequests"), # Returns all the authors current friend requests.
 
     # Friend actions
     path('api/author/<uuid:pk>/accept-friend-request/', AuthorFriendRequestActionsView.as_view(), {'method': "accept"}, name="accept-friend", ),
     path('api/author/<uuid:pk>/decline-friend-request/', AuthorFriendRequestActionsView.as_view(),{'method': "decline"}, name="decline-friend", ),
     path('api/author/<uuid:pk>/send-friend-request/', AuthorFriendRequestActionsView.as_view(), {'method': "send-request"}, name="send-request", ),
-    path('api/author/<uuid:pk/unfriend/', AuthorFriendRequestActionsView.as_view(),{'method': "unfriend"}, name="unfriend",  ),
+    path('api/author/<uuid:pk>/unfriend/', AuthorFriendRequestActionsView.as_view(),{'method': "unfriend"}, name="unfriend",  ),
 
     url(r'^docs/', schema_view)
 ]

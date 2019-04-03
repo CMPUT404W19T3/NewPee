@@ -20,6 +20,31 @@ $(document).ready(function(){
 
 var user_id = document.getElementById("userID").value; // grabbing from hidden value through django context
 var user_api_url = "/api/authors/" + user_id;
+var friend_api_url = "api/author/" + user_id + "/friendrequest"
+
+
+function grabFriendRequest(){
+
+
+    $.ajax({
+        type: "GET",
+        url: friend_api_url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        success : function(json) {
+            data = json;
+            
+            print(data, "our friend data")
+                
+            badge_number.innerHTML = data["size"];
+            $("#request-access").hide();
+        },
+        error: function (e) {      
+            console.log("ERROR: ", e);
+        }
+    });
+
+}
 
 
 function grabUser(){
@@ -52,6 +77,10 @@ const badge_number = document.querySelector("#badge_number");
 var csrftoken = getCookie('csrftoken');
 
 grabUser();
+grabFriendRequest();
+
+console.log("AAAAAAAAAAAAA");
+
 
 });  
 

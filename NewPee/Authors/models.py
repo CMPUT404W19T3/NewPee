@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+import requests
+
+import Servers.models
+
+#from Servers.models import Server
 
 # Author represents a user that creates posts
 class Author(models.Model):
@@ -66,6 +71,9 @@ class Author(models.Model):
         """
         return self.friends.all()
 
+    def get_followers(self):
+        return self.followers.all()
+
     def follow(self, author):
         """
         Follow local author.
@@ -90,9 +98,57 @@ class Author(models.Model):
         """
         return self.following.all()
 
-    # Return all pending friend requests
-    def get_friend_request(self):
-        return self.friend_requests.all()
+   
+    def get_friend_requests(self):
+
+
+
+        followers = self.followers.all()
+        friends = self.friends.all()
+
+        friend_requests = followers
+
+        for follower in followers:
+
+            if (follower not in friends):   
+                friend_requests.filter(id=follower.id)
+
+        return friend_requests
+
+
+
+
+
+    # add a friend
+    def add_friend(self, author):
+
+        self.followers.add(author)  # send a friend request hes our author
+
+        # we are already following the user.
+        if (author in self.following.all()):
+
+            # add author locally and then send a request to their server
+            self.friends.add(author)
+            self.send_foreign_request(author)
+
+
+    # send a friend request to foreign server    
+    def send_foreign_request(self, author ):
+
+        foreignServer = Server.objects.get(host=author["host"])
+        self_author = Author.objects.get(id=self.id)        # Is there a better way?
+
+        PARAMS = {
+            'query' : "friendrequest",
+            'author': author,
+            'friend': self_author
+        }
+
+        # send a request to foreign server
+        session = requests.Session()
+        session.auth = (foreignServer.getUsername, foreignServer.getPassword)
+        r = session.post(url= foreignServer.getfriendURL, data = PARAMS)
+
 
     # we have recieved a friend request from the author
     def send_friend_request(self, author):

@@ -191,48 +191,10 @@ class AuthorList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-'''
-a reponse if friends or not
-ask a service GET http://service/author/<authorid>/friends/
-responds with:
-{
-	"query":"friends",
-	# Array of Author UUIDs
-	"authors":[
-		"http://host3/author/de305d54-75b4-431b-adb2-eb6b9e546013",
-		"http://host2/author/ae345d54-75b4-431b-adb2-fb6b9e547891"
-	]
-}
+#a reponse if friends or not
+#ask a service GET http://service/author/<authorid>/friends/
 
-# ask a service if anyone in the list is a friend
-# POST to http://service/author/<authorid>/friends
-{
-	"query":"friends",
-	"author":"<authorid>",
-	# Array of Author ids
-	"authors": [
-	    "http://127.0.0.1:5454/author/de305d54-75b4-431b-adb2-eb6b9e546013",
-		"http://127.0.0.1:5454/author/ae345d54-75b4-431b-adb2-fb6b9e547891",
-		"...",
-		"...",
-		"..."
-  	]
-}
-
-# reponds with
-{
-	"query":"friends",
- 	"author":"<authorid>", # where <authorid> is the full URL of the author in question
- 	# Array of Author ids who are friends
-	"authors": [
-	    "http://127.0.0.1:5454/author/de305d54-75b4-431b-adb2-eb6b9e546013",
-		"http://127.0.0.1:5454/author/ae345d54-75b4-431b-adb2-fb6b9e547891",
-		"..."
-  	]
-}
-
-'''
-
+# WORKS
 class AuthorfriendsView(APIView):
 
     @csrf_exempt
@@ -246,11 +208,16 @@ class AuthorfriendsView(APIView):
 
             return Response(response_data)
 
+# ask a service if anyone in the list is a friend
+# POST to http://service/author/<authorid>/friends
+
     @csrf_exempt
     def post(self, request, pk, *args, **kwargs):
 
             author = get_object_or_404(models.Author, id= pk)
 
+
+            # good request with array of authors
             try:
                 authors = request.data["authors"]
 
@@ -258,13 +225,18 @@ class AuthorfriendsView(APIView):
 
                 for request_author in authors:
 
-                    print(request_author)
                     our_friends = author.get_friends().values('id')
-                    print(our_friends)
+                    #print(our_friends, "page friends")
 
+                    
+
+                    #print(our_friends.get(id=request_author["id"]), "IS A FRIEND")
+
+                    # Check they are friend
                     try:
-                        if our_friends.get(id=request_author):
-                            print("appending author")
+                        
+                        if our_friends.get(id=request_author["id"]):
+                            #print("appending author")
                             friends.append(request_author)
                     except:
                         pass
@@ -281,6 +253,7 @@ class AuthorfriendsView(APIView):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
 # Return a boolean for if two authors are friends
+# WORKS
 class AuthorIsfriendsView(APIView):
 
     @csrf_exempt
@@ -289,7 +262,8 @@ class AuthorIsfriendsView(APIView):
         author = get_object_or_404(models.Author, id= pk)
         author2 = get_object_or_404(models.Author, id= pk2)
 
-        print(AuthorSerializer(author).data)
+        ser1 = AuthorSerializer(author, context={'request': request})
+        ser2 = AuthorSerializer(author2, context={'request': request})
 
         friends_bool = False
 
@@ -300,8 +274,11 @@ class AuthorIsfriendsView(APIView):
         # ADD link instead
 
         friends = []
-        friends.append(author.id)
-        friends.append(author2.id)
+
+        
+
+        friends.append(ser1.data["id"])
+        friends.append(ser2.data["id"])
 
         response_data = OrderedDict()
         response_data['query'] = 'friends'
@@ -311,6 +288,8 @@ class AuthorIsfriendsView(APIView):
         return Response(response_data)
 
 # Return current friend_requests
+# TO be used with headers.
+
 
 class AuthorFriendRequestsView(APIView):
 
@@ -322,9 +301,52 @@ class AuthorFriendRequestsView(APIView):
         response_data = OrderedDict()
         response_data['query'] = 'friends'
         response_data['author'] = author.id
-        response_data['friend_requests'] = author_serializer.data["followers"]
+        response_data['size'] = 0
+
+
+        friend_requests = author.get_friend_requests()  
+
+        friend_serializer = AuthorSerializer(friend_requests, context={'request': request}, many=True)
+          
+
+        response_data['friend_requests'] = friend_serializer.data
+
+        response_data['size'] = len(friend_serializer.data)
 
         return Response( response_data )
+
+
+
+# api for friendrequest
+# upon recieiving the author that send the friend request add them
+class AuthorUpdateFriendRequestsView(APIView):
+
+    def get(self, request):
+        return Response(status.HTTP_200_OK)
+
+    def post(self, request, pk, *args, **kwargs):
+        recieving_author = request.data["author"]
+        friend = request.data["friend"]
+
+        try:
+            author = get_object_or_404(models.Author, id =  recieving_author["id"])
+            my_current_followers =  recieving_author.get_followers()
+
+            # add the author since we now track them
+            foreign_author = Author.objects.create(
+                                    id=request.data["id"],
+                                    host=request.data["host"],
+                                    displayName = request.data["displayName"],
+                                    url = request.data["url"]                 
+            )
+
+            # add the friend
+            recieving_author.add_friend(foreign_author)
+             
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 
 # https://docs.djangoproject.com/en/2.1/ref/class-based-views/base/#redirectview
 
