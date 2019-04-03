@@ -4,7 +4,7 @@ import datetime
 import uuid
 from django.contrib.auth.models import User
 from django.db.models.fields.files import ImageField
-from Authors.models import Author
+import Authors.models
 from NewPee import settings
 
 # Post model represents post,

@@ -176,7 +176,8 @@ def post_list(request):
             xpost = Post.objects.get(id=post["id"])
 
             if( view_access(xpost, Author.objects.get(user=request.user), xpost.getUnlisted() )):
-                print("Can see", post)
+                #print("Can see", post)
+                pass
 
 
             else:
@@ -208,11 +209,14 @@ def post_list(request):
 
         request.data["author"] = author.data
 
+        update_vis = False
         # clean the visible to field
-        visible_to = request.data["visible_to"]
-        del request.data["visible_to"]
+        if(request.data["visibility"] =="PRIVATE"):
+            visible_to = request.data["visible_to"]
+            del request.data["visible_to"]
+            update_vis = True
 
-        print("\n\n\n", request.data, "\n\n\n")
+
 
         serializer = PostSerializer(data=request.data, context={'request': request})
 
@@ -226,7 +230,8 @@ def post_list(request):
 
             serializer.save()
 
-            Post.objects.get(id=serializer.data["id"]).set_visible_to(visible_to[0])
+            if(update_vis):
+                Post.objects.get(id=serializer.data["id"]).set_visible_to(visible_to[0])
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

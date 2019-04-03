@@ -306,10 +306,7 @@ function addAuthorFriends(){
 
 }
 
-
-
 function updateFriends(enumType) {
-
 
     if (enumType===FriendsEnum.Add){
     addUserFriends();
@@ -332,11 +329,7 @@ let posts = getPosts();
 
 // In The future, we should keep these, then every ajax call just updates them depending.
 
-
-
-
 console.log(csrftoken);
-
 
 // Update page author profile.
 // adding the current logged in user to current authors page followers
@@ -406,10 +399,6 @@ function updatefollowingPOST(following,enumType){
                     updateFriends(FriendsEnum.Subtract);
                 }
             }
-
-
-
-
         },
         error: function (e) {      
             console.log("ERROR: ", e);
@@ -455,7 +444,6 @@ function updatefollowingGet(enumType){
             data["following"].shift();
             }
 
-
             updatefollowingPOST(JSON.stringify(data),enumType); // update the follower list
             $("#request-access").hide();
         },
@@ -464,10 +452,6 @@ function updatefollowingGet(enumType){
         }
     });
 };
-
-
-
-
 
 // Get the current followers of the Profile.
 // Add 
@@ -494,8 +478,6 @@ function updatefollowersGet(enumType){
             else{
                 data["followers"] = [0];
             }
-
-
 
             // Only add followers if they have some     
             if(author.followers.length != 0){
@@ -527,10 +509,6 @@ function updatefollowersGet(enumType){
         }
     });
 };
-
-
-
-
 
 function updateNumPostGet(){
     $.ajax({
@@ -573,9 +551,6 @@ function updateNumPostPut(numOfPost){
     });
 };
     
-
-
-
 // https://blog.teamtreehouse.com/creating-autocomplete-dropdowns-datalist-element
 
 // Get the <datalist> and <input> elements.
@@ -618,14 +593,10 @@ $(document).ready(function(){
     });
 });
 
-
-
 // Functions for adding 
 function callFollowers(){
     console.log("Second")
     updatefollowingGet(FriendsEnum.Add);
-
-
 }
 function callFollowing(callback){
     console.log("first");
@@ -633,7 +604,6 @@ function callFollowing(callback){
 
     callback();
 }
-
 
 // Functions for Subtracting
 function callRemoveFollowers(){
@@ -644,7 +614,6 @@ function callRemoveFollowing(callback){
     callback();
 }
 
-
 try {
 follow_submit_form.addEventListener('submit', event =>{
 
@@ -652,18 +621,14 @@ follow_submit_form.addEventListener('submit', event =>{
     event.stopImmediatePropagation();
     var follow_unfollow_text = follow_submit_button.textContent || follow_submit_button.innerText;
 
-
     //updatefollowersGet();
     //updatefollowingGet();
-
 
     console.log(follow_unfollow_text);
 
     //callFollowing(callFollowers);      // Add to your following list, add to their followers
 
     //callRemoveFollowing(callRemoveFollowers);   // Remove the followers
-
-
 
     //Both of these are called on a single submit.
     if(follow_unfollow_text === "Follow"){
@@ -675,9 +640,6 @@ follow_submit_form.addEventListener('submit', event =>{
     callRemoveFollowing(callRemoveFollowers);   
     }   
 
-
-
-
     //alert("button clicked");
 
 });
@@ -685,9 +647,6 @@ follow_submit_form.addEventListener('submit', event =>{
 catch{
 
 }
-
-
-
 
 const elementMakePost = document.querySelector("#post_creation_submit");
 
@@ -718,10 +677,6 @@ elementMakePost.addEventListener('submit', event => {
 
     var visible_to;
 
- 
-
-
-
     var data = { 
         title : post_title,
         author : author_uuid,
@@ -739,10 +694,6 @@ elementMakePost.addEventListener('submit', event => {
     } 
     
     data= JSON.stringify(data);
-
-
-
-
 
     console.log(data, "OUR DATA FOR POST");
 
@@ -792,12 +743,8 @@ elementUpdateProfile.addEventListener('submit', event => {
     if (newGitHubURL){
         data["github_url"] = newGitHubURL;
     }
-    
-
-    
 
     console.log(JSON.stringify(data));
-
 
     $.ajax({
         type: "PATCH",
@@ -815,4 +762,4 @@ elementUpdateProfile.addEventListener('submit', event => {
     });
 
 });  
-});  
+});

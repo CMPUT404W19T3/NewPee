@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
 {% block baseHead%} {% endblock %}
 
 {% endblock %}
@@ -22,16 +24,23 @@
 
         <!--left column-->
         <div class="col-3 mx-auto">
-            <div class="profile-pic">
-                {% if user.picture %}
-                    <img src="{{user.picture}}" alt="profile picture">
-                {% else %}
-                    <img src="{% static 'imgs/logo.png' %}" alt="profile picture">
-                {% endif %}
-            </div>
+                <div class="profile-pic">
+                    {% if author %}
+                        {% if author == logged_in_author %}
+                            <button id="button" type="button" class="change-profile-pic" data-toggle="modal" data-target="#change_profile_pic_modal"><i id="upload-icon" class="fas fa-upload" ></i></button>
+                            <img src="{{logged_in_author.image}}" alt="profile picture">
+                        {% else %}
+                            <img src="{{author.image}}" alt="foreign author picture">
+                        {% endif %}
+                    {% else %}
+                        <button class="change-profile-pic" onclick="changeProfilePic()"><i id="upload-icon" class="fas fa-upload"></i></button>
+                        <img src="{{logged_in_author.image}}" alt="profile picture">
+                    {% endif %}
+                    {% include "./change_profile_pic_modal.html" %}
+                </div>
             <div class="username">
                 {% if author %}
-                    {% if author.user == logged_in_author %}
+                    {% if author == logged_in_author %}
                         <p>{{logged_in_author.displayName}}</p>  
                     {% else %}
                         <p>{{author.displayName}}</p>
@@ -43,7 +52,7 @@
             <div class="stats">
                 <div class="stat">
                     {% if author %}
-                        {% if author.user == logged_in_author %}
+                        {% if author == logged_in_author %}
                             <p>{{logged_in_author.posts_created}}</p>
                         {% else %}
                             <p>{{author.posts_created}}</p>
@@ -87,7 +96,7 @@
                             <p>{{logged_in_author.bio}}</p>
                         {% endif %}
                         {% if logged_in_author.github_url %}
-                            <a href="{{logged_in_author.github_url}}">{{logged_in_author.github_url}}</a>
+                            <a href="{{.github_url}}">{{logged_in_author.github_url}}</a>
                         {% endif %}
                     {% else %}  
                         {% if author.bio %}
