@@ -95,7 +95,7 @@ urlpatterns = [
     path('authors/', get_author),
 
     # Friend Request
-    path('api/friendrequest', AuthorUpdateFriendRequestsView.as_view(), name = "api-friendrequest"),
+    path('api/friendrequest', AuthorUpdateFriendRequestsView.as_view(), name = "api-friendrequest"),    # how to send a friend request.
 
 
     # FRIENDS

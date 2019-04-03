@@ -9,7 +9,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<script src="{% static 'scripts/search.js' %}"></script>
+<script src="{% static 'scripts/friends.js' %}"></script>
+
+
 {% endblock %}
 
 {% block rightColumn %}
@@ -24,20 +26,17 @@
 <div class="authorPost">
     <hr>
 
+    <span id="author_id"> {{ author.id }} </span>
        
     <div class ="text-right">
 
-        
-        <div class="btn-group dropright">
-            <button id="edit_Post_Button" type="button" class="btn btn-info btn-sm ">Accept </button>
-          </div>
-
-        <button  id="remove_post_submit" type="submit" class="btn btn-danger btn-sm"> Decline</button>
-
-
+        <button id="accept_Post_Button" type="submit" class="btn btn-info btn-sm ">Accept </button>
+        <button  id="decline_Post_Button" type="submit" class="btn btn-danger btn-sm"> Decline</button>
 
       </div>
-      
+
+
+
     <h2 class="authorDisplayName">
         {{ author.displayName }} sent a friend request.
     </h2>
@@ -48,11 +47,12 @@
     </a>
         
 </div>
+
 {% endfor %}
 {% else %}
 <div class="foundNoAuthors">
     <hr>
-    <h2 class="displayNothing">No Authors were found with that search term!</h2>
+    <h2 class="displayNothing">You have no Friend Requests, try making some friends!</h2>
 </div>
 {% endif %}
 <br>

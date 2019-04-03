@@ -93,8 +93,12 @@ def respond_to_friends(request, format = None):
 
     authors = Author.objects.all()
 
+    current_author = Author.objects.get(user = request.user)
 
-    return render(request, 'friends.html', {'authors':authors})
+    friends_requests = current_author.get_friend_requests()
+
+
+    return render(request, 'friends.html', {'authors':friends_requests})
 
 
 
