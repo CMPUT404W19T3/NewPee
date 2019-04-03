@@ -1,13 +1,62 @@
-{% extends 'header.html' %}
-{% load rest_framework %}
 
-{% block head %}
+{% extends 'base.html' %}
+{% load rest_framework %}
+{% load static %}
+
+
+{% block baseHead %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/search.css' %}" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script src="{% static 'scripts/search.js' %}"></script>
 {% endblock %}
 
-{% block content %}
-<body>
-    <p>Greetings</p>
+{% block rightColumn %}
+<div class="col-9 mx-auto">
+    <p>{{logged_in_author.username}}</p>
+ 
+    <h1 class="authorList">
+    Authors
+</h1>
+{% if authors %}
+{% for author in authors %}
+<div class="authorPost">
+    <hr>
 
-{{ author }}
-</body>
+       
+    <div class ="text-right">
+
+        
+        <div class="btn-group dropright">
+            <button id="edit_Post_Button" type="button" class="btn btn-info btn-sm ">Accept </button>
+          </div>
+
+        <button  id="remove_post_submit" type="submit" class="btn btn-danger btn-sm"> Decline</button>
+
+
+
+      </div>
+      
+    <h2 class="authorDisplayName">
+        {{ author.displayName }} sent a friend request.
+    </h2>
+             
+   
+    <a href="/authors/{{author.id}}"> 
+    {{ author.user.first_name }} {{ author.user.last_name }}
+    </a>
+        
+</div>
+{% endfor %}
+{% else %}
+<div class="foundNoAuthors">
+    <hr>
+    <h2 class="displayNothing">No Authors were found with that search term!</h2>
+</div>
+{% endif %}
+<br>
+</div>
+
+
 {% endblock %}

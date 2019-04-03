@@ -16,11 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import include, url
 from django.urls import path
-from views.author_views import log_in, sign_up, logout_view, get_author, get_authors,redirect, feed
+from views.author_views import log_in, sign_up, logout_view, get_author, get_authors,redirect, feed, respond_to_friends
 from views import api_views
 
 from Authors.views import AuthorList, AuthorDetail, AuthorfriendsView, AuthorIsfriendsView, AuthorFriendRequestsView, AuthorFriendRequestActionsView, AuthorUpdateFriendRequestsView
-#import Author.views
+#import Authors.views
 from Posts.views import PostList, PostDetail
 
 from rest_framework.urlpatterns import format_suffix_patterns
@@ -76,8 +76,8 @@ urlpatterns = [
 
     # Author page
     path('authors/<uuid:pk>', AuthorDetail.as_view(), name="author_page"),
-    
-    path('authors/friends>', AuthorDetail.as_view(), name="friends"), #TODO: Update
+
+    path('authors/friends>', respond_to_friends, name="friends"), #TODO: Update
 
 
 

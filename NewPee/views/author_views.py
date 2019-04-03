@@ -89,6 +89,12 @@ def feed(request, format=None):
 
     return render(request, 'feed.html', {'posts':response.data})
 
+def respond_to_friends(request, format = None):
+
+    authors = Author.objects.all()
+
+
+    return render(request, 'friends.html', {'authors':authors})
 
 
 
