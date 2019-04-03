@@ -18,3 +18,13 @@ h2 {
     display: table;
     clear: both;
   } 
+
+
+
+
+  .ui-widget-header,.ui-state-default, ui-button {
+    background:#161494;
+    border: 1px solid #0e1102;
+    color: #FFFFFF;
+    font-weight: bold;
+ }

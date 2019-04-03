@@ -31,10 +31,43 @@ $(document).ready(function(){
     var userUUID = userID.split("/")[5];
     var user_api_url = "/api/authors/" + userID;
     const deletePostButton = document.querySelector("#remove_post_submit");
+    const editPostButton = document.querySelector("#edit_Post_Button");
+    const addAuthorClick = document.querySelector("#Add_Author");
+
     var author;
     
 
-    deletePostButton.addEventListener('submit', event =>{
+    $(function() {
+
+    $( "#dialog" ).dialog({
+        autoOpen: false, 
+        buttons: {
+           OK: function() {$(this).dialog("close");}
+        },
+        title: "Add Author",
+        position: ['right',200],
+     });
+
+     addAuthorClick.addEventListener('click', event =>{
+        event.preventDefault();
+
+        $( "#dialog" ).dialog( "open" );
+
+  
+    });
+
+    });
+
+
+    
+
+    editPostButton.addEventListener('click', event =>{
+
+    });
+
+
+
+    deletePostButton.addEventListener('click', event =>{
         event.preventDefault();
         console.log(userUUID);
         console.log(userID);
