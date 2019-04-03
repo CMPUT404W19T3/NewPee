@@ -63,7 +63,6 @@ function grabUser(){
 
 }
 
-
  function grabAuthor(){
     $.ajax({
         type: "GET",
@@ -85,8 +84,6 @@ function grabUser(){
 
             }
 
-
-
             $("#request-access").hide();
         },
         error: function (e) {
@@ -94,9 +91,7 @@ function grabUser(){
         }
     });
 
-
     }
-
 
 //https://stackoverflow.com/questions/30211605/javascript-html-collection-showing-as-0-length
 
@@ -715,6 +710,37 @@ elementMakePost.addEventListener('submit', event => {
 
 });
 
+// const elementUpdateProfilePic = document.querySelector("#button");
+// elementUpdateProfilePic.addEventListener('click', uploadImage);
+
+// function uploadImage() {
+//     $('#select-profile-pic').trigger('click');
+// }
+
+const elementUpdateProfilePic = document.getElementById("change_profile_pic_submit");
+elementUpdateProfilePic.addEventListener('submit', event => {
+
+    event.stopImmediatePropagation();
+    $('#change_profile_pic_modal').modal('hide');
+
+    var newProfilePic = document.getElementById("select-profile-pic").value;
+
+    $.ajax({
+        type: "PUT",
+        url: profile_image,
+        contentType: "multipart/form-data",
+        // headers:{"X-CSRFToken": csrftoken},
+        data: newProfilePic,
+        success : function(json) {
+            console.log(json);
+            $("#request-access").hide();
+        },
+        error: function (e) {
+            console.log("ERROR: ", e);
+        }
+    });
+});
+
 const elementUpdateProfile = document.querySelector("#edit_profile_submit");
 elementUpdateProfile.addEventListener('submit', event => {
     //event.preventDefault();
@@ -723,6 +749,7 @@ elementUpdateProfile.addEventListener('submit', event => {
     var newDisplayName = document.querySelector("#author-display-name").value;
     var newBio = document.querySelector("#author-bio").value;
     var newGitHubURL = document.querySelector("#author-github").value;
+    //var newProfilePic = document.querySelector("#author-profile-pic").value;
 
     var data = {}
     if (newDisplayName){

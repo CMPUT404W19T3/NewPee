@@ -27,9 +27,7 @@ class Post(models.Model):
     #text/markdown, text/plain, (application/base64, image/png;base64, image/jpeg;base64)???
     content_type = models.TextField(null=False,blank=False, default="text/plain")
     content = models.TextField(null=False,blank=False)
-    # image = models.URLField(null=True,blank=True)
-    # image = models.ImageField(upload_to = images)
-    # picture = models.ImageField(upload_to = 'media/', default = 'media/None/no-img.jpg')
+    # image = models.ImageField(upload_to = 'uploaded_images', blank=True)
     post_date = models.DateTimeField(auto_now_add=True)
     #Types of visibility
     visibility_choices = (

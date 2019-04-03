@@ -34,14 +34,16 @@ p{
 }
 
 .profile-pic{
+    position: relative;
     padding: 0%;
     width:100%;
     height: auto;
     border:1px solid grey;
-    border-radius: px;
+    border-radius: 8px;
 }
 
 .profile-pic img{
+    z-index: 1;
     margin: 0%;
     padding: 0%;
     width:100%;
@@ -49,8 +51,23 @@ p{
     object-fit: cover;
 }
 
+.profile-pic img:hover{
+    z-index: 1;
+    margin: 0%;
+    padding: 0%;
+    width:100%;
+    height: 200px;
+    object-fit: cover;
+}
 
-
+.profile-pic button{
+    margin: 0%;
+    padding: 0%;
+    width:100%;
+    height: 200px;
+    object-fit: cover;
+    position: absolute;
+}
 
 .username p{
     color: #0d0630;
@@ -93,7 +110,6 @@ p{
     margin-bottom: 15px;
 }
 
-
 .posting button{
     display:block;
     float: right;
@@ -118,3 +134,46 @@ p{
 textarea {
     resize: none;
 }
+
+.change-profile-pic {
+    border-radius: 8px 8px 8px 8px;
+    background-color: Transparent;
+    color: transparent;
+    border: transparent;
+    z-index: 1000;
+    /* top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #555;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px; */
+  }
+  
+.change-profile-pic:hover {
+    border: purple;
+    border-radius: 6px;
+    color: #e6f9af;
+    background: rgba(13, 6, 48, 0.9)
+  }
+
+.fa-upload {
+    font-size: 12rem;
+}
+
+.fade-scale {
+    transform: scale(0);
+    opacity: 0;
+    -webkit-transition: all .25s linear;
+    -o-transition: all .25s linear;
+    transition: all .25s linear;
+  }
+  
+  .fade-scale.in {
+    opacity: 1;
+    transform: scale(1);
+  }
