@@ -78,6 +78,7 @@ class AuthorDetail(APIView):
                 post_serializer = PostSerializer(posts, many=True,context={'request': request})
                 foreignposts = ForeignPost.objects.all()
                 foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True, context={'request': request})
+                allTime = chain(posts, foreignposts)
 
                 allPosts = chain(post_serializer.data, foreignposts_serializer.data)
                 return Response({'author': author_serializer.data, 'posts': post_serializer.data, \

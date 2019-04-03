@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.renderers import TemplateHTMLRenderer
 
+from datetime import datetime
+
 # from Posts.forms import ImageUploadForm
 
 # https://www.django-rest-framework.org/tutorial/3-class-based-views/
@@ -45,11 +47,16 @@ class PostDetail(APIView):
         except Post.DoesNotExist:
             raise Http404
 
+    def str_to_date_time(self, datetime_str):  
+        return datetime.datetime.strptime(datetime_str, '%b %d %Y %I:%M%p')
+
     def get(self, request, pk, *args, **kwargs):
         if request.method == "GET":
             post = self.get_object(pk)
             post_serializer = PostSerializer(post, context={'request': request})
             print(post)
+
+            post_date = post.post_date
             logged_in_author = Author.objects.get(user = request.user)
             logged_in_author_serializer = AuthorSerializer(logged_in_author, context={'request': request})
 

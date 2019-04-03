@@ -7,63 +7,60 @@
 {% endblock %}
 {% block rightColumn %}
 <div class="col-9 mx-auto">
-    <div class="posting-outter">
-        <div class="posting">
-                   
-            <input type="text" id="post-title" class="form-control mb-2" placeholder="Title">
-            <textarea class="form-control mb-2" rows="2" id="post-comment-description" placeholder="Write your description here."></textarea>
-            <textarea class="form-control mb-2" rows="4" id="post-comment-content" placeholder="Write your content here."></textarea>  
+    <div class="card posting">
+        <div class="card-body">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#posting">Post</a></li>
+                <li><a data-toggle="tab" href="#github">GitHub</a></li>
+            </ul>
+            <br>
+
+            <div class="tab-content">
+                <div id="posting" class="tab-pane fade in active">    
+                    <input type="text" id="post-title" class="form-control mb-2" placeholder="Title">
+                    <textarea class="form-control mb-2" rows="2" id="post-comment-description" placeholder="Write your description here."></textarea>
+                    <textarea class="form-control mb-2" rows="4" id="post-comment-content" placeholder="Write your content here."></textarea>  
 
 
-            <div class="form-check form-check-inline">
-                    <input class="form-check-input" checked="checked" type="radio" name="friends-radio-option" id="PublicPrivacy" value="1">
-                    <label class="form-check-label" for="private-radio-option">Public</label>
-                </div>
-            <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="friends-radio-option" id="FOAFPrivacy" value="2">
-                    <label class="form-check-label" for="private-radio-option">FOAF</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="friends-radio-option" id="FriendsPrivacy" value="3">
-                <label class="form-check-label" for="private-radio-option">Friends</label>
-            </div>
-            <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="friends-radio-option" id="PrivatePrivacy" value="4">
-                    <label class="form-check-label" for="private-radio-option">Private</label>
-                </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="friends-radio-option" id="ServerPrivay" value="5">
-                <label class="form-check-label" for="friends-radio-option">Server Only</label>
-            </div>
-                        
+                    {% include "radio_buttons.html" %}
+
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="markdown" value="text/markdown">
+                        <label class="form-check-label" for="friends-radio-option">Markdown</label>
+                    </div>
+
                     
-            <div class="file_upload">
-                <form method="post" enctype="multipart/form-data" data-ajax="false">
-                    {% csrf_token %}
-                    <input type="file" name="myfile" onchange="getFileData(this)">
-                    <button type="submit" id = "btnfileupload" class="btn btn-primary">upload file</button>
                             
-                </form>
+                    <div class="file_upload">
+                        <form method="post" enctype="multipart/form-data" data-ajax="false">
+                            {% csrf_token %}
+                            <input type="file" name="myfile" onchange="getFileData(this)">
+                            <button type="submit" id = "btnfileupload" class="btn btn-primary">upload file</button>
+                                    
+                        </form>
+                    </div>
+                            
+                    {% if uploaded_file_url %}
+                        <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+                    {% endif %}
+
+
+                    <!-- home.js handles form submission-->
+                    <form id="post_creation_submit">
+                        <button type="submit" class ="btn btn-primary">Post</button>
+                    </form>
+                </div>
+
+
+                <div id="github" class="tab-pane fade">
+                    {% include "radio_buttons.html" %}
+
+                    <form id="github_api_pull">
+                        <button type="submit" class="btn btn-primary">Github</button>
+                    </form>
+                </div>
             </div>
-                      
-            {% if uploaded_file_url %}
-                <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
-            {% endif %}
-
-            <br>
-            <br>
-
-            <div>
-                <button onclick="github_api()" type="button" class="btn btn-primary">Github</button>
-            </div>
-
-            <!-- home.js handles form submission-->
-            <form id="post_creation_submit">
-                <button type="submit" class ="btn btn-primary">Post</button>
-            </form>
-
-
-
         </div>
     </div>
 

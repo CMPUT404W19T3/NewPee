@@ -19,7 +19,7 @@ class Post(models.Model):
     #author = models.CharField(max_length=140, null=False,blank=False)
     # author = models.ForeignKey(User)
 
-    title = models.CharField(max_length=30, null=False, blank=False)
+    title = models.CharField(max_length=100, null=False, blank=False)
     #source = lastplaceigotthisfrom, origin = whereitcamefrom
     source = models.URLField(null=True,blank=True)
     origin = models.URLField(null=True,blank=True)
@@ -27,7 +27,14 @@ class Post(models.Model):
     #text/markdown, text/plain, (application/base64, image/png;base64, image/jpeg;base64)???
     content_type = models.TextField(null=False,blank=False, default="text/plain")
     content = models.TextField(null=False,blank=False)
+<<<<<<< HEAD
     # image = models.ImageField(upload_to = 'uploaded_images', blank=True)
+=======
+    github_id = models.TextField(null=True, blank=True)
+    # image = models.URLField(null=True,blank=True)
+    # image = models.ImageField(upload_to = images)
+    # picture = models.ImageField(upload_to = 'media/', default = 'media/None/no-img.jpg')
+>>>>>>> a4287fe4271db750ac450dbacf2418f0136fe013
     post_date = models.DateTimeField(auto_now_add=True)
     #Types of visibility
     visibility_choices = (
@@ -62,6 +69,62 @@ class Post(models.Model):
 
     def get_post_date(self):
         return self.post_date
+
+    def set_visible_to(self,visible_to):
+        self.visible_to.add(visible_to)
+
+
+    def privateViewAccess(self, viewing_author):
+
+        print(viewing_author)
+        print(self.visible_to.all())
+        print("\n\n")
+
+        if(viewing_author in self.visible_to.all()):
+            return True
+        else:
+
+            return False
+
+
+    def friendViewAccess(self,viewing_author):
+
+        if (viewing_author in self.author.friends.all()):
+            return True
+        else:
+            return False
+
+    def FOAFViewAccess(self, viewing_author):
+
+        for friend in self.author.friends.all():
+            for FofFriend in friend.friends.all():
+
+                if(viewing_author == FofFriend):
+                    return True
+
+        return False
+
+    def ServerViewAcces(self,viewing_author):
+
+        if (viewing_author.host != settings.HOSTNAME):
+            return False
+        else:
+            return True
+
+
+    def getUnlisted(self):
+
+        return self.unlisted    
+
+
+    #def ServerViewAcces(self, viewing_author):
+
+
+
+
+
+
+
 
 #Comment class represents comment,
 #stores an unique id, a parent post, author and body

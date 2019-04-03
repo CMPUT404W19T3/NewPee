@@ -5,8 +5,12 @@ from .forms import UserNameForm, UserLoginForm, postTitleForm, postInfoForm, pas
 from Authors.models import Author
 from django.contrib.auth.models import User
 from Posts.models import Post
+from Posts.serializers import PostSerializer
 from django.contrib.auth import authenticate, login
+from django.contrib import messages
 import json
+
+from .api_views import post_list
 
 from rest_framework import status
 #from rest_framework import api_view
@@ -16,6 +20,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+
 
 # Create your views here.
 
@@ -43,8 +48,12 @@ def log_in(request, format=None):
                 user = authenticate(username=username, password=password)
 
                 if user is not None:
-                    login(request, user)
-                    return HttpResponseRedirect('../authors/', {'form': form})
+                    author = Author.objects.get(user=user)
+                    if (author.isAuthorized):
+                        login(request, user)
+                        return HttpResponseRedirect('../authors/', {'form': form})
+                    else:
+                        return render(request, 'registration/login.html',{'form': form, 'approved': author.isAuthorized})
                 
 
                 return render(request, 'registration/login.html', {'form': form}, status=401)
@@ -69,6 +78,17 @@ def redirect(request, format=None):
             return HttpResponseRedirect("/login/")
     except:
         return HttpResponseRedirect("/login/")
+
+
+def feed(request, format=None):
+
+    response = post_list(request)
+
+    print(response.data)
+    #serializer = PostSerializer(response.data,many=True,context={'request': request})
+
+    return render(request, 'feed.html', {'posts':response.data})
+
 
 
 
@@ -122,14 +142,13 @@ def sign_up(request, format=None):
 
                 temp_user = authenticate(username=username, password=raw_password)
 
-                login(request,temp_user)
 
                 temp_user.email = "fake@gmail.com"
                 new_user = Author.objects.create(user=temp_user, displayName=temp_user.username)
 
 
         
-                return HttpResponseRedirect("/",)
+                return HttpResponseRedirect("../login",)
 
         return render(request, 'signup.html', {'form': form})
 
