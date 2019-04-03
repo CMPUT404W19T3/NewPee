@@ -16,7 +16,7 @@
     </head>
     <body>
 
-      <nav class="navbar bg-color justify-content-center">
+      <nav class="navbar bg-color justify-content-center" style="border-radius: 0px;">
         <a class="newPeeHeaderImg mr-auto" href="/authors/{{author.id}}">
           <img src="{% static 'imgs/logo.png' %}" alt="Logo" width="30" height="30" class="d-inline-block align-top">
         </a>
@@ -25,7 +25,7 @@
           <form method="GET">
               {{ form.search }}
               <datalist id="ajax_authors"></datalist>
-              <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i></button>
+              <button type="submit" class="btn btn-primary btn-sm" style="border-radius: 0px 3px 3px 0px;"><i class="fa fa-search"></i></button>
           </form>
         </div>
 
