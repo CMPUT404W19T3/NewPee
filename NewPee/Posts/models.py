@@ -30,7 +30,7 @@ class Post(models.Model):
     github_id = models.TextField(null=True, blank=True)
     # image = models.URLField(null=True,blank=True)
     # image = models.ImageField(upload_to = images)
-    # picture = models.ImageField(upload_to = 'media/', default = 'media/None/no-img.jpg')
+    image = models.ImageField(upload_to = 'media/', default = 'media/None/no-img.jpg')
     post_date = models.DateTimeField(auto_now_add=True)
     #Types of visibility
     visibility_choices = (
