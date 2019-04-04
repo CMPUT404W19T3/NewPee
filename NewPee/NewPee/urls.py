@@ -92,7 +92,7 @@ urlpatterns = [
     path('logout/', logout_view, name="logout"),
 
 
-    path('authors/', get_author),
+    path('authors/', get_author, name="get_author"),
 
     # Friend Request
     path('api/friendrequest', AuthorUpdateFriendRequestsView.as_view(), name = "api-friendrequest"),    # how to send a friend request.
