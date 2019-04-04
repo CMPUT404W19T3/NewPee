@@ -33,14 +33,10 @@
 
         
         <div class="btn-group dropright">
-            <button id="edit_Post_Button" type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button id="edit_Post_Button" type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#add_private_modal">
               Edit
             </button>
-            <div class="dropdown-menu">
-                <a id="Add_Author" class="dropdown-item" href="">Allow an author to see this post.</a>
-                <a class="dropdown-item" href="#">Another action</a>
-            </div>
-          </div>
+          
 
         <button  id="remove_post_submit" type="submit" class="btn btn-danger btn-sm"> Delete</button>
 
@@ -48,8 +44,6 @@
 
       </div>
 
-      <div id = "dialog"
-      title = "Add_Author">This my first jQuery UI Dialog!</div>
     
      
 
@@ -70,6 +64,8 @@
     </div>
   </div>
   {% include "comment.html" %}
+  {% include "add_private_modal.html" %}
+
 </div> 
 
 

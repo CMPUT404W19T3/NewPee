@@ -77,7 +77,7 @@ urlpatterns = [
     # Author page
     path('authors/<uuid:pk>', AuthorDetail.as_view(), name="author_page"),
 
-    path('authors/friends>', respond_to_friends, name="friends"), #TODO: Update
+    path('authors/friends', respond_to_friends, name="friends"), #TODO: Update
 
 
 

@@ -22,6 +22,8 @@ var author_api_url = "/api" + author_url;
 var FriendsEnum = Object.freeze({"Add":1, "Subtract":2, });
 const follow_submit_form = document.querySelector("#follow_user_submit");
 const follow_submit_button = document.querySelector("#follow_user_submit_button");
+
+
 var page_author;
 var user_author;
 
