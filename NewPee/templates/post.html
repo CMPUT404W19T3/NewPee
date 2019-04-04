@@ -19,7 +19,7 @@
  <div class="card" style="margin:0" id="posts/{{ post.id }}">
     <div class="card-header">
 
-      {{ posts.title }}
+      <p>{{ posts.title }}</p>
 
       <div class ="text-right">
 
@@ -28,30 +28,25 @@
               Edit
             </button>
           
-
-        <button  id="remove_post_submit" type="submit" class="btn btn-danger btn-sm"> Delete</button>
+        <button id="remove_post_submit" type="submit" class="btn btn-danger btn-sm"> Delete</button>
 
       </div>
-
-    
-    </div>
-        <div class="card-body" style="margin:0">
-        <h6 class="card-subtitle mb-2 text-muted">Posted by {{ posts.author.displayName }} from {{ posts.author.host }} at {{ posts.post_date|parse_iso }}</h6>
-        <p class="card-text">
-        <p class="card-subtitle mb-2 text-muted">Description: </p>
-        {{posts.description}}</p>
-        <p class="card-text">
-        <p class="card-subtitle mb-2 text-muted">content: </p>
-        {% if posts.content_type == "text/markdown"%}
-          {{ posts.content |apply_markup:"markdown"  }}
-        {% else %}
-          {{posts.content}}</p>
-        {% endif %}
     </div>
   </div>
+  <div class="card-body">
+  <h6 class="card-subtitle mb-2">Posted by {{ posts.author.displayName }} from {{ posts.author.host }} at {{ posts.post_date|parse_iso }}</h6><br>
+  <p class="card-subtitle mb-2" style="font-weight: bolder; color: #e6f9af">Description: </p>
+  <p class="card-text">{{posts.description}}</p><br>
+  <p class="card-subtitle mb-2" style="font-weight: bolder; color: #e6f9af">Content: </p>
+  <p class="card-text">
+    {% if posts.content_type == "text/markdown"%}
+      {{ posts.content |apply_markup:"markdown"  }}
+  {% else %}
+    {{posts.content}}</p>
+  {% endif %}
+</div>
   {% include "comment.html" %}
   {% include "add_private_modal.html" %}
-
 </div> 
 
 {% endblock %}

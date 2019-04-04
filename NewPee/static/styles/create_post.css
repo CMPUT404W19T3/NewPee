@@ -1,24 +1,31 @@
 /* Create two equal columns that floats next to each other */
- .column {
-    float: left;
-    width: 50%;
-    
-  }
 
-h2 {
-    color:red;
+.card {
+  background: #18314f;
+  border-radius: 8px 8px 8px 8px;
+  border: 0.2rem solid #36558f;
 }
-  
-  /* Clear floats after the columns */
-  .row:after {
-    content: "";
-    display: table;
-    clear: both;
-  } 
 
-  .ui-widget-header,.ui-state-default, ui-button {
-    background:#161494;
-    border: 1px solid #0e1102;
-    color: #FFFFFF;
-    font-weight: bold;
+.card-header {
+   border-bottom: 0.2rem solid #36558f;
+   background: #36558f;
+   border-radius: 8px 8px 0px 0px;
+ }
+
+ #edit_Post_Button {
+   background: #8bbeb2;
+ }
+
+ p {
+   color: #e6f9af;
+   font: 900;
+ }
+
+ .card-subtitle {
+   color: #ffffff;
+ }
+
+ .card-text {
+   color: #ffffff;
+   margin-bottom: 10px;
  }
