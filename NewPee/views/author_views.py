@@ -117,6 +117,14 @@ def respond_to_friends(request, format = None):
 
     friends_requests = current_author.get_friend_requests()
 
+    declinedrequest = current_author.get_declined_requests()
+
+
+    for friend in declinedrequest:
+        friend_requests = friends_requests.exclude(id = friend.id)
+
+    print(friend_requests, "\n\n\n")
+
     serializer_current = AuthorSerializer(current_author, context={'request': request})
 
     form = SearchForm()
@@ -130,14 +138,15 @@ def respond_to_friends(request, format = None):
                 
         return render(request, 'search.html', {'logged_in_author': current_author, 'authors': authors, 'form': form, 'search': search})
 
-    print(authors, "\n\n")
+    print(authors, "xxxx")
 
 
 
+    serializer_friends = AuthorSerializer(friend_requests, many=True, context={'request': request})
 
 
 
-    return render(request, 'friends.html', {'authors':friends_requests , 'current_author': serializer_current.data, 'form': form  })
+    return render(request, 'friends.html', { 'authors':serializer_friends.data , 'current_author': serializer_current.data, 'form': form, 'logged_in_author': current_author })
 
 
 

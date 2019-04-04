@@ -28,7 +28,7 @@ from django.core.paginator import Paginator
 
 from itertools import chain
 import operator
-
+import uuid
 class AuthorDetail(APIView):
 
     """
@@ -97,9 +97,26 @@ class AuthorDetail(APIView):
 
                 posts = api_views.post_list(request._request)
 
-                print(posts)
+                #posts.data.exclude(id=author["id"])
+                print("\n", posts.data, "\n")
 
-                allPosts = list(chain(posts.data, foreignposts_serializer.data))
+                filtered = {}
+
+                for post in posts.data:
+                    temp_author = post["author"]
+
+
+                    temp_uuid = temp_author["id"].split("/")[-1]
+
+                    print(temp_uuid, author.id)
+                    
+                    if (uuid.UUID(temp_uuid) == author.id):
+                        print("check")
+                        filtered.update({'posts':post})
+
+                print(filtered)
+
+                allPosts = list(chain(filtered, foreignposts_serializer.data))
                 allPosts.sort(key=lambda x: x['post_date'], reverse=True)
                 
 
@@ -338,8 +355,18 @@ class AuthorFriendRequestsView(APIView):
 
         friend_requests = author.get_friend_requests()  
 
+        declinedrequest = author.get_declined_requests()
+
+
+        for friend in declinedrequest:
+            friend_requests = friend_requests.exclude(id = friend.id)
+
+
+        print(friend_requests, "???")
+
         friend_serializer = AuthorSerializer(friend_requests, context={'request': request}, many=True)
-          
+        
+        print(friend_serializer.data)
 
         response_data['friend_requests'] = friend_serializer.data
 
@@ -358,12 +385,15 @@ class AuthorUpdateFriendRequestsView(APIView):
 
         recieving_author = request.data["author"]   # author recieving request
         friend = request.data["friend"]             # friend being added to author.
-        print(friend)
-        print(recieving_author)
+
         friend_uuid = friend["id"].split("/")[-1]
         recieving_author_uuid = recieving_author["id"].split("/")[-1]
 
         print(friend_uuid, "\n\n\n")
+
+
+            
+
 
         friend_uuid = friend_uuid.strip(" ")
         author = get_object_or_404(models.Author, id =  recieving_author_uuid)
@@ -371,6 +401,13 @@ class AuthorUpdateFriendRequestsView(APIView):
         try:
             # a local author we can just add them.
             friend = get_object_or_404(models.Author, id = friend_uuid)
+
+
+            if request.data["query"] == "declinerequest":
+                author.add_friend_request(friend)
+                return Response(status=status.HTTP_201_CREATED)
+
+
             author.add_friend(friend)
 
             return Response(status=status.HTTP_201_CREATED)
