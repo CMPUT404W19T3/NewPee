@@ -90,6 +90,14 @@ def feed(request, format=None):
 
     form = SearchForm()
 
+    search = request.GET.get('search')
+
+    if search:
+        exclude_author = Author.objects.filter(user = request.user)
+        authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
+                
+        return render(request, 'search.html', {'logged_in_author': author, 'authors': authors, 'form': form, 'search': search})
+
     print(response.data)
     #serializer = PostSerializer(response.data,many=True,context={'request': request})
     response_list = list(response.data)
@@ -112,6 +120,15 @@ def respond_to_friends(request, format = None):
     serializer_current = AuthorSerializer(current_author, context={'request': request})
 
     form = SearchForm()
+
+    search = request.GET.get('search')
+
+
+    if search:
+        exclude_author = Author.objects.filter(user = request.user)
+        authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
+                
+        return render(request, 'search.html', {'logged_in_author': current_author, 'authors': authors, 'form': form, 'search': search})
 
     print(authors, "\n\n")
 
