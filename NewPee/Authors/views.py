@@ -80,13 +80,8 @@ class AuthorDetail(APIView):
             search = request.GET.get('search')
 
             if search:
-<<<<<<< HEAD
                 exclude_author = Author.objects.filter(user = request.user)
                 authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
-=======
-
-                authors = Author.objects.filter(displayName__icontains = search)
->>>>>>> ce4e24cb4402d935fbfaa1e1d96d4a1fa515b67b
                 print("This is the authors", logged_in_author_serializer)
                 
                 return Response({'logged_in_author':logged_in_author_serializer.data, 'authors': authors, 'form': form, 'search': search}, template_name='search.html')
@@ -98,7 +93,6 @@ class AuthorDetail(APIView):
                 foreignposts = ForeignPost.objects.all()
                 foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True, context={'request': request})
 
-<<<<<<< HEAD
                 allPosts = list(chain(post_serializer.data, foreignposts_serializer.data))
                 allPosts.sort(key=lambda x: x['post_date'], reverse=True)
                 
@@ -106,9 +100,6 @@ class AuthorDetail(APIView):
 
                 page = request.GET.get('page')
                 pages = paginator.get_page(page)
-=======
-                allPosts = chain(post_serializer.data, foreignposts_serializer.data)
->>>>>>> ce4e24cb4402d935fbfaa1e1d96d4a1fa515b67b
 
                 return Response({'author': author_serializer.data, 'posts': post_serializer.data, \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data, \

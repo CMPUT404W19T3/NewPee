@@ -82,37 +82,45 @@ class Author(models.Model):
         return self.friends.all()
 
     def get_followers(self):
+
         return self.followers.all()
 
     def follow(self, author):
+        
         """
         Follow local author.
         """
+
         self.following.add(author)
         self.save()
 
     def followed(self,author):
+
         self.followers.add(author)
         self.save()
 
     def unfollow(self, author):
+
         """
         Unfollow local author.
         """
+
         self.following.remove(author)
         self.save()
     
     def get_following(self):
+
         """
         Return all authors that the current author is following.
         """
+
         return self.following.all()
    
     def get_friend_requests(self):
 
         followers = self.followers.all()
         friends = self.friends.all()
-
+        
         #print(friends, "my friends")
         #print(followers, "my followers")
 
@@ -121,6 +129,7 @@ class Author(models.Model):
         for follower in followers:
 
             if (follower in friends):   
+
                 friend_requests= friend_requests.filter(id=follower.id)
 
         return friend_requests
@@ -146,7 +155,6 @@ class Author(models.Model):
 
                 self.send_foreign_request(author)
 
-
     # send a friend request to foreign server    
     def send_foreign_request(self, author ):
 
@@ -163,7 +171,6 @@ class Author(models.Model):
         session = requests.Session()
         session.auth = (foreignServer.getUsername, foreignServer.getPassword)
         r = session.post(url= foreignServer.getfriendURL, data = PARAMS)
-
 
     # we have recieved a friend request from the author
     def send_friend_request(self, author):
@@ -215,8 +222,10 @@ class ForeignAuthor(models.Model):
     followers = models.ManyToManyField(Author, related_name="_followersForeign", symmetrical=False, blank=True)
     friend_requests = models.ManyToManyField(Author, related_name="_friend_requestsForeign", symmetrical=False, blank=True)
 
+
     # Only Admin can Change.
     isAuthorized = models.BooleanField(default=True)
+
 
     # All "get" functions for username, password, email, etc... are inherited from Django User
 
