@@ -1,10 +1,10 @@
 {% load static %}
 
 <hr>
-<form id="comment_creation_submit">
+<form id="comment_creation_submit" style="margin: 10px; color: white;">
     {% csrf_token %}
     {{ comment_form }}
-    <button type="submit" style="margin-top:5px"class ="btn btn-primary mr-0">Post</button>
+    <button type="submit" style="margin-top: 10px;"class ="btn btn-primary mr-0">Post</button>
 
 </form>
 <hr>
@@ -13,7 +13,7 @@
 {% for comment in comments %}
 
 <div class="card">
-  <div class="card-body">
+  <div class="card-body" style="background: #e6f9af;">
     {{ comment.content }}
   </div>
 </div> 

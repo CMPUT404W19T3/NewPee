@@ -32,6 +32,14 @@
         background: #e6f9af;
     }
 
+    .tabb {
+        background: #8bbeb2;
+        border-radius: 4px 4px 0px 0px;
+        border: 0px;
+        margin-right: 2px;
+        color: #18314f;
+    }
+
 </style>
 
 {% endblock %}
@@ -41,8 +49,8 @@
     <div class="card posting">
         <div class="card-body">
             <ul class="nav nav-tabs">
-                <li class="active"><a class="tab" data-toggle="tab" href="#posting">Post</a></li>
-                <li><a data-toggle="tab" class="tab" href="#github">GitHub</a></li>
+                <li class="active"><a class="tabb" data-toggle="tab" href="#posting">Post</a></li>
+                <li><a data-toggle="tab" class="tabb" href="#github">GitHub</a></li>
             </ul>
             <br>
             <div class="tab-content">
@@ -64,14 +72,14 @@
                             <label class="form-check-label" for="friends-radio-option">Unlisted</label>
                         </div>
 
-                    <div class="file_upload">
+                    <!-- <div class="file_upload">
                         <form method="post" enctype="multipart/form-data" data-ajax="false">
                             {% csrf_token %}
                             <input type="file" name="myfile" onchange="getFileData(this)">
                             <button type="submit" id = "btnfileupload" class="btn btn-primary">upload file</button>
                                     
                         </form>
-                    </div>
+                    </div> -->
                             
                     {% if uploaded_file_url %}
                         <p>File uploaded at: <a class href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
@@ -110,11 +118,9 @@
                     <li class="disabled"><span><i class="fa fa-chevron-left" aria-hidden="true"></i></span></li>
                 {% endif %}
 
-
                 {% if pages.number|add:'-3' > 1 %}
                     <li><a href="?page={{ pages.number|add:'-4' }}">&hellip;</a></li>
                 {% endif %}
-
 
                 {% for page in pages.paginator.page_range %}
                     {% if pages.number == page %}

@@ -1,11 +1,12 @@
-.card {
+.custom-card {
     background: #18314f;
     border: 0.2rem solid #36558f;
     color: #ffffff;
 }
 
-#cardd:hover {
+.custom-card:hover {
     border: 0.2rem solid #8bbeb2;
+    cursor: pointer;
 }
 
 .card-header {
