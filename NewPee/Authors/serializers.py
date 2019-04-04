@@ -36,7 +36,6 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = ('id', 'url', 'user', 'host', 'displayName', 'bio', 'posts_created', 'image', 'github_url', 'friends', 'following', 'followers')
         lookup_field = 'id'
 
-
 class ForeignAuthorSerializer(serializers.ModelSerializer):
 
     id = serializers.HyperlinkedIdentityField(view_name="api-author")

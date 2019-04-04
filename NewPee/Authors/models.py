@@ -19,6 +19,7 @@ class Author(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     posts_created = models.PositiveIntegerField(default=0)  # correspond to a unique_id
     image = models.ImageField(upload_to="profile_image", blank=True, default='NewPee.png')
+
     github_url = models.URLField(blank=True)
 
     friends = models.ManyToManyField("self", related_name="_friends", blank=True)
@@ -200,7 +201,6 @@ class Author(models.Model):
 
     # Remove an existing friend
     def remove_friend(self):
-
         self.friends.remove(author)
 
 #TODO: FIX 
@@ -222,10 +222,8 @@ class ForeignAuthor(models.Model):
     followers = models.ManyToManyField(Author, related_name="_followersForeign", symmetrical=False, blank=True)
     friend_requests = models.ManyToManyField(Author, related_name="_friend_requestsForeign", symmetrical=False, blank=True)
 
-
     # Only Admin can Change.
     isAuthorized = models.BooleanField(default=True)
-
 
     # All "get" functions for username, password, email, etc... are inherited from Django User
 
@@ -331,5 +329,5 @@ class ForeignAuthor(models.Model):
 
     # Remove an existing friend
     def remove_friend(self):
-
+        
         self.friends.remove(author)

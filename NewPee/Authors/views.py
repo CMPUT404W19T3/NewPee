@@ -33,7 +33,6 @@ class AuthorDetail(APIView):
     """
     Retrieve, update or delete an Author.
     """
-
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'home.html'
 
@@ -296,6 +295,7 @@ class AuthorIsfriendsView(APIView):
         friends_bool = False
 
         if author.is_friend(author2.id) and author2.is_friend(author.id):
+
             friends_bool = True
 
         # TODO : 	    "http://127.0.0.1:5454/author/de305d54-75b4-431b-adb2-eb6b9e546013",
@@ -328,11 +328,9 @@ class AuthorFriendRequestsView(APIView):
         response_data['author'] = author.id
         response_data['size'] = 0
 
-
         friend_requests = author.get_friend_requests()  
 
-        friend_serializer = AuthorSerializer(friend_requests, context={'request': request}, many=True)
-          
+        friend_serializer = AuthorSerializer(friend_requests, context={'request': request}, many=True)          
 
         response_data['friend_requests'] = friend_serializer.data
 
@@ -362,6 +360,7 @@ class AuthorUpdateFriendRequestsView(APIView):
         author = get_object_or_404(models.Author, id =  recieving_author_uuid)
 
         try:
+
             # a local author we can just add them.
             friend = get_object_or_404(models.Author, id = friend_uuid)
             author.add_friend(friend)
