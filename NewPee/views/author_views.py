@@ -121,9 +121,8 @@ def respond_to_friends(request, format = None):
 
 
     for friend in declinedrequest:
-        friend_requests = friends_requests.exclude(id = friend.id)
+        friends_requests = friends_requests.exclude(id = friend.id)
 
-    print(friend_requests, "\n\n\n")
 
     serializer_current = AuthorSerializer(current_author, context={'request': request})
 
@@ -142,7 +141,7 @@ def respond_to_friends(request, format = None):
 
 
 
-    serializer_friends = AuthorSerializer(friend_requests, many=True, context={'request': request})
+    serializer_friends = AuthorSerializer(friends_requests, many=True, context={'request': request})
 
 
 
