@@ -526,7 +526,7 @@ function callFollowing(callback){
 try {
 follow_submit_form.addEventListener('submit', event =>{
 
-    event.preventDefault();
+    //event.preventDefault();
     event.stopImmediatePropagation();
     var follow_unfollow_text = follow_submit_button.textContent || follow_submit_button.innerText;
 
@@ -634,7 +634,7 @@ const elementMakePost = document.querySelector("#post_creation_submit");
 
 elementMakePost.addEventListener('submit', event => {
     event.stopImmediatePropagation();
-    event.preventDefault();
+    //event.preventDefault();
 
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     console.log("button clicked");
@@ -734,16 +734,23 @@ elementPullGithub.addEventListener('submit', async event => {
 
     // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     var post_title;
+    var post_content = '<ul>';
     if (github_data[0].type === "PushEvent") {
         post_title = github_data[0].actor.display_login + " Pushed to " + github_data[0].repo.name;
+        for (let index of github_data[0].payload.commits) {
+            post_content += '<li>' + index.message + '</li>';
+        }
     }
     if (github_data[0].type === "DeleteEvent") {
         post_title = github_data[0].actor.display_login + " Deleted " + github_data[0].repo.name;
+    
+        for (let index of github_data[0].payload.commits) {
+            post_content += '<li>' + index.message + '</li>';
+        }
     }
-
-    var post_content = '<ul>';
-    for (let index of github_data[0].payload.commits) {
-        post_content += '<li>' + index.message + '</li>';
+    if (github_data[0].type === "IssuesEvent") {
+        post_title = github_data[0].actor.display_login + " Issue Activity " + github_data[0].repo.name;
+        post_content += '<li>' + "Issue Activity" + '</li>';
     }
     post_content += '</ul>'
     

@@ -96,7 +96,7 @@ def feed(request, format=None):
 
     author = Author.objects.get(user=request.user)
 
-    serializer=  AuthorSerializer(author, context={'request': request})
+    serializer =  AuthorSerializer(author, context={'request': request})
 
     followers = author.get_followers()
     following = author.get_following()

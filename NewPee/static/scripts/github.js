@@ -2,7 +2,7 @@ const elementPullGithub = document.querySelector("#github_api_pull");
 
 elementPullGithub.addEventListener('submit', event => {
     event.stopImmediatePropagation();
-    event.preventDefault();
+    //event.preventDefault();
 
     var github_data = github_api();
 

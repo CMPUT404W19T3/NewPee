@@ -29,7 +29,7 @@ class Author(models.Model):
     Admin = models.BooleanField(default=False)
 
     # Only Admin can Change.
-    isAuthorized = models.BooleanField(default=True)
+    isAuthorized = models.BooleanField(default=False)
 
     # This return is inherited from Django's built-in User
     def __str__(self):
