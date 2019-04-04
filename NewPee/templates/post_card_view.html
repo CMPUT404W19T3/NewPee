@@ -1,15 +1,23 @@
+{% load static %}
+{% block head %}
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/post_card_view.css' %}"/>
+{% endblock %}
+
+{% block content %}
+
 {% load parse_iso %}
- <div class="card" data-toggle="modal" id="posts/{{ post.id }}">
+
+ <div class="card" id="cardd" data-toggle="modal" id="posts/{{ post.id }}" >
     <div class="card-header">
         {{ post.title }}
     </div>  
-
-
         <div class="card-body">
-
-        <h6 class="card-subtitle mb-2 text-muted">{{ post.author.displayName }}</h6>
-        <h6 class="card-subtitle mb-2 text-muted">{{ post.post_date|parse_iso }}</h6>
-        <p class="card-text">description: <br>{{post.description}}</p>
+        <h6 class="card-subtitle mb-2" id="display-name">{{ post.author.displayName }}</h6>
+        <h6 class="card-subtitle mb-2" id="post-date">{{ post.post_date|parse_iso }}</h6>
+        <p class="card-text" id="description">description: <br>{{post.description}}</p>
   </div>
    
 </div>
+
+{% endblock %}

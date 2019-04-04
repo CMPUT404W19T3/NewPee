@@ -4,6 +4,34 @@
 {% block baseHead %}
 
 <script src="{% static 'scripts/home.js' %}"></script>
+<style>
+    .card {
+        background: #36558f;
+        border: 0rem solid transparent;
+    }
+
+    .form-control {
+        background: #e6f9af;
+    }
+
+    .form-control::placeholder {
+        color: rgba(54, 85, 143, 0.75);
+    }
+
+    .btn-primary {
+        background: #8bbeb2;
+        color: #18314f;
+    }
+
+    .btn-primary:hover {
+        background: #e6f9af;
+        color: #18314f;
+    }
+
+    nav-tabs {
+        background: #e6f9af;
+    }
+</style>
 
 {% endblock %}
 {% block rightColumn %}
@@ -16,13 +44,11 @@
                 <li><a data-toggle="tab" href="#github">GitHub</a></li>
             </ul>
             <br>
-
             <div class="tab-content">
                 <div id="posting" class="tab-pane fade in active">    
                     <input type="text" id="post-title" class="form-control mb-2" placeholder="Title">
                     <textarea class="form-control mb-2" rows="2" id="post-comment-description" placeholder="Write your description here."></textarea>
                     <textarea class="form-control mb-2" rows="4" id="post-comment-content" placeholder="Write your content here."></textarea>  
-
 
                     {% include "radio_buttons.html" %}
 
@@ -37,8 +63,6 @@
                             <label class="form-check-label" for="friends-radio-option">Unlisted</label>
                         </div>
 
-                    
-                            
                     <div class="file_upload">
                         <form method="post" enctype="multipart/form-data" data-ajax="false">
                             {% csrf_token %}
@@ -49,15 +73,14 @@
                     </div>
                             
                     {% if uploaded_file_url %}
-                        <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+                        <p>File uploaded at: <a class href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
                     {% endif %}
 
                     <!-- home.js handles form submission-->
                     <form id="post_creation_submit">
-                        <button type="submit" class ="btn btn-primary">Post</button>
+                        <button type="submit" id="post-btn" class ="btn btn-primary">Post</button>
                     </form>
                 </div>
-
                 <div id="github" class="tab-pane fade">
 
                     {% include "radio_buttons.html" %}
@@ -76,7 +99,6 @@
                 
             {% endfor %}
             {% endif %}
-
             
         <div class="col-md-12 text-center">
             <ul class="pagination">
@@ -112,8 +134,6 @@
                 {% endif %}
             </ul>
         </div>
-        
-      
 </div>
 
 {% endblock %}
