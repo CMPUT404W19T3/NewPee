@@ -46,7 +46,7 @@ class UserLoginForm(forms.Form):
 
 class SearchForm(forms.Form):
     search = forms.CharField(label="search", max_length=50,
-                    widget=forms.TextInput(attrs={'placeholder': 'Search by author or keywords', 'id': 'ajax', 'list': 'ajax_authors', 'class': 'form-control'}))
+                    widget=forms.TextInput(attrs={'placeholder': 'Search for authors', 'id': 'ajax', 'list': 'ajax_authors', 'class': 'form-control'}))
 
 class passwordLoginForm(forms.Form):
     password = forms.CharField(label="username", max_length=100)

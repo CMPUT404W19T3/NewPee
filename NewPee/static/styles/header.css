@@ -18,7 +18,7 @@ html, body{
   border: 0.1rem solid #8bbeb2;
   border-radius: 20%;
 }
-/*Resize the wrap to see the search bar change!*/
+
 .newPeeHeaderIcons{
   width: 60px;
 }
@@ -98,10 +98,11 @@ html, body{
   background: rgba(0,0,0,0.5);
   width: auto;
   height: auto;
-  position: absolute;
-  left: -8px;
+  position:absolute;
+  left:-8px;
 }
 
-.dropdown-item {
-  
+.btn-header{
+  background: #e6f9af; 
+  color: #0d0630;
 }

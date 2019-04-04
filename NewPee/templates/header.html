@@ -11,10 +11,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="{% static 'scripts/base.js' %}"></script>
-
         {% block head %}{% endblock %}
     </head>
-    <body>
 
       <nav class="navbar bg-color justify-content-center" id="header-borders">
         <a class="newPeeHeaderImg mr-auto" href="/authors/{{author.id}}">
@@ -25,35 +23,28 @@
           <form method="GET">
               {{ form.search }}
               <datalist id="ajax_authors"></datalist>
-              <button type="submit" class="btn btn-primary btn-sm" style="border-radius: 0px 3px 3px 0px;"><i class="fa fa-search"></i></button>
+              <button type="submit" class="btn btn-header btn-sm" style="border-radius: 0px 3px 3px 0px;"><i class="fa fa-search"></i></button>
           </form>
         </div>
 
         <div class="newPeeHeaderIcons ml-auto">
+          <div class="row">
           <div class="dropdown">
 
             <div class="icon wrapper" >
-               
-
-            <i class="fas fa-bell" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+            <i class="fas fa-bell fa-fw" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="{% url 'friends' %}">View Friends</a>
             </div>
-
-              <span id="badge_number" class="badge"> 0 </span>
             </div>
 
-            <i class="fas fa-caret-down"  id="logout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
-            </div>
           </div>
+          <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt fa-fw" id="logout"></i></a>
         </div>
-
+      </div>
+        
       </nav>
-
       {% block content %}
       {% endblock %}
-
     </body>
 </html>

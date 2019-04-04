@@ -23,8 +23,10 @@ from collections import OrderedDict
 from rest_framework.decorators import action
 from django.views.generic import RedirectView
 from Servers.models import Server
+from django.core.paginator import Paginator
 
 from itertools import chain
+import operator
 
 class AuthorDetail(APIView):
 
@@ -38,8 +40,11 @@ class AuthorDetail(APIView):
     def get_object(self, pk):
 
         try:
+
             return Author.objects.get(pk=pk)
+
         except Author.DoesNotExist:
+
             raise Http404
 
     def get(self, request, pk, *args, **kwargs):
@@ -75,8 +80,8 @@ class AuthorDetail(APIView):
             search = request.GET.get('search')
 
             if search:
-
-                authors = Author.objects.filter(displayName__icontains = search)
+                exclude_author = Author.objects.filter(user = request.user)
+                authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
                 print("This is the authors", logged_in_author_serializer)
                 
                 return Response({'logged_in_author':logged_in_author_serializer.data, 'authors': authors, 'form': form, 'search': search}, template_name='search.html')
@@ -87,18 +92,25 @@ class AuthorDetail(APIView):
                 post_serializer = PostSerializer(posts, many=True,context={'request': request})
                 foreignposts = ForeignPost.objects.all()
                 foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True, context={'request': request})
-                allTime = chain(posts, foreignposts)
 
-                allPosts = chain(post_serializer.data, foreignposts_serializer.data)
+                allPosts = list(chain(post_serializer.data, foreignposts_serializer.data))
+                allPosts.sort(key=lambda x: x['post_date'], reverse=True)
+                
+                paginator = Paginator(allPosts, 5)
+
+                page = request.GET.get('page')
+                pages = paginator.get_page(page)
+
                 return Response({'author': author_serializer.data, 'posts': post_serializer.data, \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data, \
-                'foreignposts': foreignposts_serializer.data, 'allPosts': allPosts})
+                'foreignposts': foreignposts_serializer.data, 'allPosts': allPosts, \
+                'pages': pages})
 
             except Post.DoesNotExist:
 
                 foreignposts = ForeignPost.objects.all()
-
                 foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True)
+
                 return Response({'author': author_serializer.data, 'form': form, \
                     'foreignposts': foreignposts_serializer.data, 'allPosts': allPosts})
 
@@ -154,7 +166,7 @@ class AuthorDetail(APIView):
                 'form': form, 'logged_in_author':logged_in_author_serializer.data })
 
 class AuthorList(APIView):
-    
+
     """
     List all Authors, or create a new Author.
     """
@@ -163,7 +175,6 @@ class AuthorList(APIView):
     def get(self, request, format=None):
 
         if request.method == "GET":
-
             print("This is the request\n\n", request)
             authors = Author.objects.all()
             print(authors)
@@ -285,7 +296,6 @@ class AuthorIsfriendsView(APIView):
         friends_bool = False
 
         if author.is_friend(author2.id) and author2.is_friend(author.id):
-            
             friends_bool = True
 
         # TODO : 	    "http://127.0.0.1:5454/author/de305d54-75b4-431b-adb2-eb6b9e546013",
@@ -318,10 +328,12 @@ class AuthorFriendRequestsView(APIView):
         response_data['author'] = author.id
         response_data['size'] = 0
 
+
         friend_requests = author.get_friend_requests()  
 
         friend_serializer = AuthorSerializer(friend_requests, context={'request': request}, many=True)
           
+
         response_data['friend_requests'] = friend_serializer.data
 
         response_data['size'] = len(friend_serializer.data)
@@ -333,11 +345,9 @@ class AuthorFriendRequestsView(APIView):
 class AuthorUpdateFriendRequestsView(APIView):
 
     def get(self, request):
-
         return Response(status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-
 
         recieving_author = request.data["author"]   # author recieving request
         friend = request.data["friend"]             # friend being added to author.
@@ -352,11 +362,9 @@ class AuthorUpdateFriendRequestsView(APIView):
         author = get_object_or_404(models.Author, id =  recieving_author_uuid)
 
         try:
-
             # a local author we can just add them.
             friend = get_object_or_404(models.Author, id = friend_uuid)
             author.add_friend(friend)
-
 
             return Response(status=status.HTTP_201_CREATED)
 
@@ -399,11 +407,9 @@ class AuthorFriendRequestActionsView( RedirectView):
         # Our sender is accepting the target author requests
 
         if method == "accept":
-
            sender_author.respond_to_friend_request(target_author, "accept")
 
         if method == "decline":
-
             sender_author.respond_to_friend_request(target_author, "decline")
 
         if method == "send-request":
@@ -411,5 +417,4 @@ class AuthorFriendRequestActionsView( RedirectView):
             sender.send_friend_request(target_author)   # target is sending request to the sender.
 
         if method == "unfriend":
-
             sender_author.remove(target_author)
