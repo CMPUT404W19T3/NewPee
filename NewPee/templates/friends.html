@@ -1,3 +1,5 @@
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
 
 {% extends 'base.html' %}
 {% load rest_framework %}
@@ -5,28 +7,48 @@
 
 
 {% block baseHead %}
+
 <link rel="stylesheet" type="text/css" href="{% static 'styles/search.css' %}" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+
 <script src="{% static 'scripts/friends.js' %}"></script>
+
+<script>
+
+        var user_id = "{{current_author.id}}";
+        var user_host = "{{current_author.host}}";
+        var user_displayName ="{{current_author.displayName}}";
+        var user_url = "{{current_author.url}}";
+
+        console.log(user_id);
+
+    
+    
+</script>
 
 
 {% endblock %}
 
+
+<h1> {{ authors }} </h1>
+
 {% block rightColumn %}
 <div class="col-9 mx-auto">
-    <p>{{logged_in_author.username}}</p>
+    <p>{{current_author.displayName}}</p>
  
-    <h1 class="authorList">
-    Authors
-</h1>
+  
 {% if authors %}
+<span >{{ user_author }}</span>
+
 {% for author in authors %}
 <div class="authorPost">
     <hr>
 
-    <span id="author_id"> {{ author.id }} </span>
+
        
     <div class ="text-right">
 
@@ -39,7 +61,10 @@
 
     <h2 class="authorDisplayName">
         {{ author.displayName }} sent a friend request.
+        
     </h2>
+    <span id="author_id"> {{ author.id }} </span>
+
              
    
     <a href="/authors/{{author.id}}"> 

@@ -4,7 +4,9 @@ from Authors.models import Author, User
 # https://medium.freecodecamp.org/nested-relationships-in-serializers-for-onetoone-fields-in-django-rest-framework-bdb4720d81e6
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
+        
         model = User
         fields = ('username', 'first_name', 'last_name', 'email')
 
@@ -29,16 +31,19 @@ class AuthorSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name="api-author")
 
     class Meta:
+
         model = Author
         fields = ('id', 'url', 'user', 'host', 'displayName', 'bio', 'posts_created', 'image', 'github_url', 'friends', 'following', 'followers')
         lookup_field = 'id'
 
 
 class ForeignAuthorSerializer(serializers.ModelSerializer):
+
     id = serializers.HyperlinkedIdentityField(view_name="api-author")
     url = serializers.HyperlinkedIdentityField(view_name="api-author")
 
     class Meta:
+
         model = Author
         fields = ('id', 'url', 'displayName', 'bio', 'posts_created', 'picture', 'github_url', 'friends', 'following', 'followers')
         lookup_field = 'id'

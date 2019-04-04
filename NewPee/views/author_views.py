@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
 from .forms import UserNameForm, UserLoginForm, postTitleForm, postInfoForm, passwordLoginForm, SearchForm
 from Authors.models import Author
+from Authors.serializers import AuthorSerializer
 from django.contrib.auth.models import User
 from Posts.models import Post
 from Posts.serializers import PostSerializer
@@ -97,8 +98,17 @@ def respond_to_friends(request, format = None):
 
     friends_requests = current_author.get_friend_requests()
 
+    serializer_current = AuthorSerializer(current_author, context={'request': request})
 
-    return render(request, 'friends.html', {'authors':friends_requests})
+
+    print(authors, "\n\n")
+
+
+
+
+
+
+    return render(request, 'friends.html', {'authors':friends_requests , 'current_author': serializer_current.data,  })
 
 
 

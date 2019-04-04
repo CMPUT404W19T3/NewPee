@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 import requests
-
+import NewPee.settings
 import Servers.models
 
 #from Servers.models import Server
@@ -26,7 +26,6 @@ class Author(models.Model):
     followers = models.ManyToManyField("self", related_name="_followers", symmetrical=False, blank=True)
     friend_requests = models.ManyToManyField("self", related_name="_friend_requests", symmetrical=False, blank=True)
 
-
     # Only Admin can Change.
     isAuthorized = models.BooleanField(default=True)
 
@@ -34,20 +33,24 @@ class Author(models.Model):
     def __str__(self):
 
         try:
-            return self.user.get_username()
-        except:
-            return self.displayName
 
+            return self.user.get_username()
+
+        except:
+            
+            return self.displayName
 
     # All "get" functions for username, password, email, etc... are inherited from Django User
 
     def get_author_id(self):
+
         return self.id
 
     # Determine what relationship an author has with another author
     # TODO: Remove from this class
 
     def is_friend(self, author_id):
+
         """
         Check if an author is a friend.
         """
@@ -55,20 +58,27 @@ class Author(models.Model):
         friends_ids = self.friends.all().values('id')
 
         try:
+
             if(friends_ids.get(id=author_id)):
+
                 return True
+
         except:
+
             return False
 
         #return self.friends.filter(uuid=author_id).exists()
 
     def get_friend_models(self):
+
         return self.friends
 
     def get_friends(self):
+
         """
         Returns all local friends.
         """
+        
         return self.friends.all()
 
     def get_followers(self):
@@ -97,39 +107,44 @@ class Author(models.Model):
         Return all authors that the current author is following.
         """
         return self.following.all()
-
    
     def get_friend_requests(self):
 
-
-
         followers = self.followers.all()
         friends = self.friends.all()
+
+        #print(friends, "my friends")
+        #print(followers, "my followers")
 
         friend_requests = followers
 
         for follower in followers:
 
-            if (follower not in friends):   
-                friend_requests.filter(id=follower.id)
+            if (follower in friends):   
+                friend_requests= friend_requests.filter(id=follower.id)
 
         return friend_requests
-
-
-
-
 
     # add a friend
     def add_friend(self, author):
 
-        self.followers.add(author)  # send a friend request hes our author
+        self.following.add(author)
+
+        if(author not in self.followers.all()):
+
+            self.followers.add(author)  # he is our follower.
 
         # we are already following the user.
         if (author in self.following.all()):
 
             # add author locally and then send a request to their server
             self.friends.add(author)
-            self.send_foreign_request(author)
+            author.add_friend(self)
+
+            # we are adding an author from a different server.
+            if(author.host != HOSTNAME):
+
+                self.send_foreign_request(author)
 
 
     # send a friend request to foreign server    
@@ -156,7 +171,6 @@ class Author(models.Model):
         self.followers.add(author)
         self.friend_requests.add(author)
 
-
         # if we are following the author add him to our friends.
         if (author in self.following.all()):
 
@@ -171,6 +185,7 @@ class Author(models.Model):
         self.friend_requests.remove(author) # no longer in our friend requests either way.
             
         if( choice == "accept"):
+
             self.friends.add(author)
             self.follow(author)
             
@@ -178,12 +193,10 @@ class Author(models.Model):
 
     # Remove an existing friend
     def remove_friend(self):
+
         self.friends.remove(author)
 
-
-
 #TODO: FIX 
-
 
 class ForeignAuthor(models.Model):
     
@@ -202,20 +215,20 @@ class ForeignAuthor(models.Model):
     followers = models.ManyToManyField(Author, related_name="_followersForeign", symmetrical=False, blank=True)
     friend_requests = models.ManyToManyField(Author, related_name="_friend_requestsForeign", symmetrical=False, blank=True)
 
-
     # Only Admin can Change.
     isAuthorized = models.BooleanField(default=True)
-
 
     # All "get" functions for username, password, email, etc... are inherited from Django User
 
     def get_author_id(self):
+
         return self.id
 
     # Determine what relationship an author has with another author
     # TODO: Remove from this class
 
     def is_friend(self, author_id):
+
         """
         Check if an author is a friend.
         """
@@ -223,48 +236,62 @@ class ForeignAuthor(models.Model):
         friends_ids = self.friends.all().values('id')
 
         try:
+
             if(friends_ids.get(id=author_id)):
+
                 return True
         except:
+
             return False
 
         #return self.friends.filter(uuid=author_id).exists()
 
     def get_friend_models(self):
+
         return self.friends
 
     def get_friends(self):
+        
         """
         Returns all local friends.
         """
+
         return self.friends.all()
 
     def follow(self, author):
+        
         """
         Follow local author.
         """
+        
         self.following.add(author)
         self.save()
 
     def followed(self,author):
+
         self.followers.add(author)
         self.save()
 
     def unfollow(self, author):
+
         """
         Unfollow local author.
         """
+
         self.following.remove(author)
         self.save()
     
     def get_following(self):
+
         """
         Return all authors that the current author is following.
         """
+
         return self.following.all()
 
     # Return all pending friend requests
     def get_friend_request(self):
+
         return self.friend_requests.all()
 
     # we have recieved a friend request from the author
@@ -272,7 +299,6 @@ class ForeignAuthor(models.Model):
 
         self.followers.add(author)
         self.friend_requests.add(author)
-
 
         # if we are following the author add him to our friends.
         if (author in self.following.all()):
@@ -288,6 +314,7 @@ class ForeignAuthor(models.Model):
         self.friend_requests.remove(author) # no longer in our friend requests either way.
             
         if( choice == "accept"):
+
             self.friends.add(author)
             self.follow(author)
             
@@ -295,4 +322,5 @@ class ForeignAuthor(models.Model):
 
     # Remove an existing friend
     def remove_friend(self):
+
         self.friends.remove(author)
