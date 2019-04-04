@@ -118,7 +118,8 @@ class AuthorDetail(APIView):
                 #filtered_serializer = PostSerializer(filtered, many=True,context={'request': request})
 
 
-                allPosts = list(chain(filtered, foreignposts_serializer.data))
+                allPosts = list(chain(post_serializer.data, foreignposts_serializer.data))
+                
                 allPosts.sort(key=lambda x: x['post_date'], reverse=True)
                 
 
