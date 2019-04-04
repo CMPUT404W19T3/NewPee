@@ -17,7 +17,7 @@
     </head>
     <body>
       <nav class="navbar bg-color justify-content-center" id="header-borders">
-        <a class="newPeeHeaderImg mr-auto" href="{% url 'get_author' %}">
+        <a class="newPeeHeaderImg mr-auto" href="{% url 'feed' %}">
           <img src="{% static 'imgs/logo.png' %}" alt="Logo" width="30" height="30" class="d-inline-block align-top">
         </a>
 
@@ -30,19 +30,21 @@
         </div>
 
         <div class="newPeeHeaderIcons ml-auto">
-          <div class="row">
+          <div class="row">  
+              <a href="{% url 'get_author' %}"><i class="fa fa-user-circle fa-fw" id="profile_icon" aria-hidden="true"></i></a>
           <div class="dropdown">
 
-            <div class="icon wrapper" >
-              </div>
-              <span id="badge_number" class="badge"></span>
-              </div>
+
+              <!-- <span id="badge_number" class="badge"></span>
+            </div> -->
             <i class="fas fa-bell fa-fw" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="{% url 'friends' %}">View Friends</a>
           </div>
-          <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt fa-fw" id="logout"></i></a>
+          
         </div>
+        <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt fa-fw" id="logout"></i></a>
+      </div>
       </div>
         
       </nav>
