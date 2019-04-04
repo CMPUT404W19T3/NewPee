@@ -389,14 +389,16 @@ class AuthorUpdateFriendRequestsView(APIView):
         friend_uuid = friend["id"].split("/")[-1]
         recieving_author_uuid = recieving_author["id"].split("/")[-1]
 
-        print(friend_uuid, "\n\n\n")
 
-
+        
             
 
 
         friend_uuid = friend_uuid.strip(" ")
         author = get_object_or_404(models.Author, id =  recieving_author_uuid)
+
+        print("YEEE\n\n", author, "\n\n\n")
+
 
         try:
             # a local author we can just add them.
@@ -408,7 +410,8 @@ class AuthorUpdateFriendRequestsView(APIView):
                 return Response(status=status.HTTP_201_CREATED)
 
 
-            author.add_friend(friend)
+            friend.add_friend(author)
+            
 
             return Response(status=status.HTTP_201_CREATED)
 

@@ -138,11 +138,16 @@ class Author(models.Model):
     # add a friend
     def add_friend(self, author):
 
-        self.following.add(author)
+        author.following.add(self)  # we are now following
+
+        #self.following.add(author)
 
         if(author not in self.followers.all()):
-
+            
+            print(author, self)
+            print("added follower")
             self.followers.add(author)  # he is our follower.
+
 
         # we are already following the user.
         if (author in self.following.all()):
