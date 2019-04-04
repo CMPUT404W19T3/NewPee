@@ -11,6 +11,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 import json
 
+from django.core.paginator import Paginator
+
 from .api_views import post_list
 
 from rest_framework import status
@@ -86,10 +88,18 @@ def feed(request, format=None):
     response = post_list(request)
     author = Author.objects.get(user=request.user)
 
+    form = SearchForm()
+
     print(response.data)
     #serializer = PostSerializer(response.data,many=True,context={'request': request})
+    response_list = list(response.data)
+    response_list.sort(key=lambda x: x['post_date'], reverse=True)
+    paginator = Paginator(response_list, 5)
 
-    return render(request, 'feed.html', {'posts':response.data, 'logged_in_author': author})
+    page = request.GET.get('page')
+    pages = paginator.get_page(page)
+
+    return render(request, 'feed.html', {'posts':response.data, 'logged_in_author': author, 'form': form, 'pages': pages})
 
 def respond_to_friends(request, format = None):
 
@@ -101,6 +111,7 @@ def respond_to_friends(request, format = None):
 
     serializer_current = AuthorSerializer(current_author, context={'request': request})
 
+    form = SearchForm()
 
     print(authors, "\n\n")
 
@@ -109,7 +120,7 @@ def respond_to_friends(request, format = None):
 
 
 
-    return render(request, 'friends.html', {'authors':friends_requests , 'current_author': serializer_current.data,  })
+    return render(request, 'friends.html', {'authors':friends_requests , 'current_author': serializer_current.data, 'form': form  })
 
 
 
