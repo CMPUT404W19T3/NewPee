@@ -12,26 +12,17 @@
 
 {% endblock %}
 
-
-
 {% block rightColumn %}
 {% load parse_iso %}
 <div class="col-9 mx-auto">
-
-
-
-
 
  <div class="card" style="margin:0" id="posts/{{ post.id }}">
     <div class="card-header">
 
       {{ posts.title }}
 
-            
-      
       <div class ="text-right">
 
-        
         <div class="btn-group dropright">
             <button id="edit_Post_Button" type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#add_private_modal">
               Edit
@@ -40,14 +31,9 @@
 
         <button  id="remove_post_submit" type="submit" class="btn btn-danger btn-sm"> Delete</button>
 
-
-
       </div>
 
     
-     
-
-
     </div>
         <div class="card-body" style="margin:0">
         <h6 class="card-subtitle mb-2 text-muted">Posted by {{ posts.author.displayName }} from {{ posts.author.host }} at {{ posts.post_date|parse_iso }}</h6>
@@ -67,6 +53,5 @@
   {% include "add_private_modal.html" %}
 
 </div> 
-
 
 {% endblock %}

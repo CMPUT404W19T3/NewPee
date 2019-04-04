@@ -2,90 +2,125 @@
 {% load rest_framework %}
 {% load static %}
 
-
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'styles/home.css' %}" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-
 {% block baseHead%} {% endblock %}
 
 {% endblock %}
 
 {% block content %}
-<div class="container">
 
-    <input type="hidden" id="userID" value={{ logged_in_author.id }}>
+<body class="main-background">
+    <div class="container">
 
-
-    <div class="col-11 row m-4">
-
-        <!--left column-->
-        <div class="col-3 mx-auto">
-                <div class="profile-pic">
-                    {% if author %}
-                        {% if author == logged_in_author %}
-                            <button id="button" type="button" class="change-profile-pic" data-toggle="modal" data-target="#change_profile_pic_modal"><i id="upload-icon" class="fas fa-upload" ></i></button>
+        <input type="hidden" id="userID" value={{ logged_in_author.id }}>
+    
+        <div class="col-11 row m-4">
+    
+            <!--left column-->
+            <div class="col-3 mx-auto">
+                    <div class="profile-pic">
+                        {% if author %}
+                            {% if author == logged_in_author %}
+                                <button id="button" type="button" class="change-profile-pic" data-toggle="modal" data-target="#change_profile_pic_modal"><i id="upload-icon" class="fas fa-upload" ></i></button>
+                                <img src="{{logged_in_author.image}}" alt="profile picture">
+                            {% else %}
+                                <img src="{{author.image}}" alt="foreign author picture">
+                            {% endif %}
+                        {% else %}
+                            <button class="change-profile-pic" onclick="changeProfilePic()"><i id="upload-icon" class="fas fa-upload"></i></button>
                             <img src="{{logged_in_author.image}}" alt="profile picture">
-                        {% else %}
-                            <img src="{{author.image}}" alt="foreign author picture">
                         {% endif %}
-                    {% else %}
-                        <button class="change-profile-pic" onclick="changeProfilePic()"><i id="upload-icon" class="fas fa-upload"></i></button>
-                        <img src="{{logged_in_author.image}}" alt="profile picture">
-                    {% endif %}
-                    {% include "./change_profile_pic_modal.html" %}
-                </div>
-            <div class="username">
-                {% if author %}
-                    {% if author == logged_in_author %}
-                        <p>{{logged_in_author.displayName}}</p>  
-                    {% else %}
-                        <p>{{author.displayName}}</p>
-                    {% endif %}
-                {% else %}
-                    <p>{{logged_in_author.displayName}}</p>  
-                {% endif %}
-            </div>
-            <div class="stats">
-                <div class="stat">
+                        {% include "./change_profile_pic_modal.html" %}
+                    </div>
+                <div class="username">
                     {% if author %}
                         {% if author == logged_in_author %}
-                            <p>{{logged_in_author.posts_created}}</p>
+                            <p>{{logged_in_author.displayName}}</p>  
                         {% else %}
-                            <p>{{author.posts_created}}</p>
+                            <p>{{author.displayName}}</p>
                         {% endif %}
                     {% else %}
-                        <p>{{logged_in_author.posts_created}}</p>  
+                        <p>{{logged_in_author.displayName}}</p>  
                     {% endif %}
+                </div>
+                <div class="stats">
+                    <div class="stat">
+                        {% if author %}
+                            {% if author == logged_in_author %}
+                                <p>{{logged_in_author.posts_created}}</p>
+                            {% else %}
+                                <p>{{author.posts_created}}</p>
+                            {% endif %}
+                        {% else %}
+                            <p>{{logged_in_author.posts_created}}</p>  
+                        {% endif %}
+                        
+                        <p>posts</p>
+                    </div>
+                    <div class="stat">
+                        {% if author %}
+                            {% if author.user == logged_in_author %}
+                                <p>{{logged_in_author.followers|length}}</p>
+                            {% else %}
+                                <p>{{author.followers|length}}</p>
+                            {% endif %}
+                        {% else %}
+                            <p>{{logged_in_author.followers|length}}</p>  
+                        {% endif %}
+                        <p>followers</p>
+                    </div>
+                    <div class="stat">
+                        {% if author %}
+                            {% if author.user == logged_in_author %}
+                                <p>{{logged_in_author.following|length}}</p>
+                            {% else %}
+                                <p>{{author.following|length}}</p>
+                            {% endif %}
+                        {% else %}
+                            <p>{{logged_in_author.following|length}}</p>  
+                        {% endif %}
+                        <p>following</p>
+                    </div>
                     
-                    <p>posts</p>
                 </div>
-                <div class="stat">
+                <div class="other-info">
                     {% if author %}
-                        {% if author.user == logged_in_author %}
-                            <p>{{logged_in_author.followers|length}}</p>
-                        {% else %}
-                            <p>{{author.followers|length}}</p>
+                        {% if logged_in_author == author %}
+                            {% if logged_in_author.bio %}
+                                <p>{{logged_in_author.bio}}</p>
+                            {% endif %}
+                            {% if logged_in_author.github_url %}
+                                <a href="{{.github_url}}">{{logged_in_author.github_url}}</a>
+                            {% endif %}
+                        {% else %}  
+                            {% if author.bio %}
+                                <p>{{author.bio}}</p>
+                            {% endif %}
+                            {% if author.github_url %}
+                                <a href="{{author.github_url}}">{{author.github_url}}</a>
+                            {% endif %}
                         {% endif %}
-                    {% else %}
-                        <p>{{logged_in_author.followers|length}}</p>  
                     {% endif %}
-                    <p>followers</p>
-                </div>
-                <div class="stat">
-                    {% if author %}
-                        {% if author.user == logged_in_author %}
-                            <p>{{logged_in_author.following|length}}</p>
+                    <hr>
+    
+                    {% if author%}
+                        {% if logged_in_author == author %}
+                            <button type="button" id="btn-primary" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
                         {% else %}
-                            <p>{{author.following|length}}</p>
+                        <form id="follow_user_submit" method="Post">
+                        <button type="submit" id="follow_user_submit_button" class="btn btn-primary col-12">Follow</button>
                         {% endif %}
+    
+                        </form>
                     {% else %}
-                        <p>{{logged_in_author.following|length}}</p>  
+                        <button type="button" id="btn-primary" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
                     {% endif %}
-                    <p>following</p>
+                    {% include "./edit_profile_modal.html" %}
                 </div>
                 
             </div>
@@ -130,7 +165,12 @@
         {% block rightColumn %}
         {% endblock %}
     
+            <!--right column-->
+            {% block rightColumn %}
+            {% endblock %}
+        
+        </div>
     </div>
-</div>
+</body>
 
 {% endblock %}
