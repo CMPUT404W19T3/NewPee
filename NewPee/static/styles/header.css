@@ -5,12 +5,17 @@ html, body{
     margin: 0%;
 }
 
+#header-borders {
+  border-radius: 0px;
+  border-bottom: 0.2rem solid #8bbeb2;
+}
+
 .bg-color{
-  background-color: #0d0630;
+  background-color: #18314f;
 }
 
 .newPeeHeaderImg{
-  border: 2px solid #36558f;
+  border: 0.1rem solid #8bbeb2;
   border-radius: 20%;
 }
 /*Resize the wrap to see the search bar change!*/
@@ -19,16 +24,15 @@ html, body{
 }
 
 .newPeeHeaderIcons i{
-  background-color: #0d0630;
-  color: white;  
+  background-color: #18314f;
+  color: #e6f9af;  
   font-size: 28px;
   display: inline-block;
   margin-left: 10%;
 }
 
 .newPeeHeaderIcons i:hover {
-    color: #36558f;  
-    
+    color: #36558f;    
 }
 
 .dropdown-content {
@@ -42,10 +46,8 @@ html, body{
 }
 
 .dropdown{
-  background-color: #0d0630;
+  background-color: #18314f;
 }
-
-
 
 .search {
   display:block;
@@ -73,11 +75,11 @@ html, body{
 .col-1{
   margin:0%;
 }
+
 .navbar-brand {
   padding: 0%;
   float: left;
 }
-
 
 .mr-auto{
   margin-left: 3%;
@@ -91,10 +93,15 @@ html, body{
   position:relative;
   float:left;
 }
+
 .badge{
   background: rgba(0,0,0,0.5);
   width: auto;
   height: auto;
-  position:absolute;
-  left:-8px;
+  position: absolute;
+  left: -8px;
+}
+
+.dropdown-item {
+  
 }

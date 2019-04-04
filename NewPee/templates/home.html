@@ -5,9 +5,9 @@
 
 <script src="{% static 'scripts/home.js' %}"></script>
 
-
 {% endblock %}
 {% block rightColumn %}
+
 <div class="col-9 mx-auto">
     <div class="card posting">
         <div class="card-body">
@@ -47,15 +47,14 @@
                         <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
                     {% endif %}
 
-
                     <!-- home.js handles form submission-->
                     <form id="post_creation_submit">
                         <button type="submit" class ="btn btn-primary">Post</button>
                     </form>
                 </div>
 
-
                 <div id="github" class="tab-pane fade">
+
                     {% include "radio_buttons.html" %}
 
                     <form id="github_api_pull">
@@ -65,8 +64,7 @@
             </div>
         </div>
     </div>
-
-
+    
             {% if allPosts %}
             {% for post in allPosts %}
                 {% include "./post_card_view.html" with post=post%}
