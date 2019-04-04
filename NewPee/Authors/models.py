@@ -25,6 +25,7 @@ class Author(models.Model):
     following = models.ManyToManyField("self", related_name="_following", symmetrical=False, blank=True)
     followers = models.ManyToManyField("self", related_name="_followers", symmetrical=False, blank=True)
     friend_requests = models.ManyToManyField("self", related_name="_friend_requests", symmetrical=False, blank=True)
+    Admin = models.BooleanField(default=False)
 
     # Only Admin can Change.
     isAuthorized = models.BooleanField(default=True)

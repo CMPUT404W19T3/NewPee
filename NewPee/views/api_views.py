@@ -36,6 +36,10 @@ def view_access(post, author, unlisted=False):
 
         returnStatement = True
 
+        # Admin can see all posts.
+        if author.Admin:        
+            return True
+
         #post = Post.objects.get(id=xpost["id"])
 
         if unlisted == True:

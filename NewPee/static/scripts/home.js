@@ -645,6 +645,7 @@ function makePost(post_title,post_content, post_description){
     var radio_value;
     var radioButtons = document.getElementsByName("friends-radio-option");
     var postType = document.getElementById("markdown");
+    var unlistedBool = document.getElementById("unlisted")
     var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY"})
     var visible_to;
 
@@ -674,6 +675,10 @@ function makePost(post_title,post_content, post_description){
     if (postType.checked){
         data["content_type"] = postType.value;
     };
+    
+    if (unlistedBool.checked){
+        data["unlisted"] = true;
+    }
 
     data= JSON.stringify(data);
     console.log(data, "OUR DATA FOR POST");
