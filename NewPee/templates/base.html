@@ -14,7 +14,6 @@
 
 {% block content %}
 
-
 <body class="main-background">
     <div class="container">
 
@@ -91,10 +90,7 @@
                 </div>
                 <div class="other-info">
                     {% if author %}
-                        {% if author == logged_in_author %}
-                            <p>{{logged_in_author.followers|length}}</p>
-                        {% else %}
-                            <p>{{author.followers|length}}</p>
+                        {% if logged_in_author == author %}
                             {% if logged_in_author.bio %}
                                 <p>{{logged_in_author.bio}}</p>
                             {% endif %}
@@ -110,27 +106,11 @@
                             {% endif %}
                         {% endif %}
                     {% endif %}
-<<<<<<< HEAD
-                    <p>followers</p>
-                </div>
-                <div class="stat">
-                    {% if author %}
-
-                        {% if author == logged_in_author %}
-                            {% if following|length > 0 %}
-                             <p>{{logged_in_author.following|length }}</p>
-                            {% else %}
-                            <p>{{following|length }}</p>
-                            {% endif %}
-
-                            
-=======
                     <hr>
     
                     {% if author%}
                         {% if logged_in_author == author %}
                             <button type="button" id="btn-primary" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
->>>>>>> 9216436e36a89c3b5532d982cf0bc0b767031595
                         {% else %}
                         <form id="follow_user_submit" method="Post">
                         <button type="submit" id="follow_user_submit_button" class="btn btn-primary col-12">Follow</button>
@@ -185,9 +165,6 @@
         {% block rightColumn %}
         {% endblock %}
     
-            <!--right column-->
-            {% block rightColumn %}
-            {% endblock %}
         
         </div>
     </div>
