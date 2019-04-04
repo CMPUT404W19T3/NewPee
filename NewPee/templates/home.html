@@ -67,12 +67,34 @@
     </div>
 
 
-            {% if allPosts %}
-            {% for post in allPosts %}
-                {% include "./post_card_view.html" with post=post%}
+            {% if pages %}
+            {% for page in pages %}
+                {% include "./post_card_view.html" with post=page%}
                 
             {% endfor %}
             {% endif %}
+
+            
+                <div class="col-md-12 text-center">
+            <div class="pagination">
+                <span class="step-links">
+                    {% if pages.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ pages.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ pages.number }} of {{ pages.paginator.num_pages }}.
+                    </span>
+            
+                    {% if pages.has_next %}
+                        <a href="?page={{ pages.next_page_number }}">next</a>
+                        <a href="?page={{ pages.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        
       
 </div>
 
