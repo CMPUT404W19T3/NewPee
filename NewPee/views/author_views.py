@@ -137,7 +137,7 @@ def respond_to_friends(request, format = None):
                 
         return render(request, 'search.html', {'logged_in_author': current_author, 'authors': authors, 'form': form, 'search': search})
 
-    print(authors, "xxxx")
+    print(friends_requests, "xxxx")
 
 
 

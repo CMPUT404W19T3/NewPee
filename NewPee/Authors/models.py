@@ -4,7 +4,7 @@ import uuid
 import requests
 import NewPee.settings
 import Servers.models
-
+from itertools import chain
 #from Servers.models import Server
 
 # Author represents a user that creates posts
@@ -168,7 +168,8 @@ class Author(models.Model):
         self.friend_requests.add(author)
     
     def get_declined_requests(self):
-        return self.friend_requests.all()
+
+        return  list(chain(self.friend_requests.all(), self.friends.all()))
 
 
     # send a friend request to foreign server    
