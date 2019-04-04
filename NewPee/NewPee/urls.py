@@ -77,7 +77,7 @@ urlpatterns = [
     # Author page
     path('authors/<uuid:pk>', AuthorDetail.as_view(), name="author_page"),
 
-    path('authors/friends>', respond_to_friends, name="friends"), #TODO: Update
+    path('authors/friends', respond_to_friends, name="friends"), #TODO: Update
 
 
 
@@ -92,7 +92,7 @@ urlpatterns = [
     path('logout/', logout_view, name="logout"),
 
 
-    path('authors/', get_author),
+    path('authors/', get_author, name="get_author"),
 
     # Friend Request
     path('api/friendrequest', AuthorUpdateFriendRequestsView.as_view(), name = "api-friendrequest"),    # how to send a friend request.

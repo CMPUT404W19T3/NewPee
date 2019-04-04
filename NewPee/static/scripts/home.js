@@ -22,6 +22,12 @@ var author_api_url = "/api" + author_url;
 var FriendsEnum = Object.freeze({"Add":1, "Subtract":2, });
 const follow_submit_form = document.querySelector("#follow_user_submit");
 const follow_submit_button = document.querySelector("#follow_user_submit_button");
+
+
+var sending_author;
+var recieving_author;
+
+
 var page_author;
 var user_author;
 
@@ -35,10 +41,21 @@ var csrftoken = getCookie('csrftoken');
 var author_url = location.pathname;
 var author_uuid = author_url.split("/")[2];
 var author_api_url = "/api" + author_url;
+
 var user_id = document.getElementById("userID").value; // grabbing from hidden value through django context
-var user_api_url = "/api/authors/" + user_id;
-console.log(user_id);
-console.log(user_api_url);
+
+user_id = author_url.split("/");
+user_id = user_id[user_id.length-1];
+
+var user_id = document.getElementById("userIDSpan");
+var user_id = document.getElementById("userID").value; // grabbing from hidden value through django context
+var user_id_spliced = user_id.split("/");
+
+
+var user_api_url = user_id;
+
+//console.log(user_id);
+
 
 function grabUser(){
     $.ajax({
@@ -318,113 +335,20 @@ let posts = getPosts();
 
 console.log(csrftoken);
 
-// Update page author profile.
-// adding the current logged in user to current authors page followers
-function updatefollowersPOST(follower, enumType){
-    console.log(follower);
-    $.ajax({
-        type: "PATCH",
-        //async: false,
-        url: author_api_url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
-        data: (follower),
-        success : function(json) {
-            console.log(json);
-            $("#request-access").hide();
-
-            // Depending on whether or not we following or unfollowing, switch text.
-            if(enumType === FriendsEnum.Add){
-                follow_submit_button.innerHTML = "Unfollow";
-            }
-            else{
-                follow_submit_button.innerHTML = "Follow";
-            }
-        },
-        error: function (e) {
-            console.log("ERROR: ", e);
-        }
-    });
-};
-
-// Update your following list
-// Patch the authors(add or minus) to your following data.
-function updatefollowingPOST(following,enumType){
-    console.log(following);
-    $.ajax({
-        type: "PATCH",
-        //async: false,
-        url: user_api_url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
-        data: (following),
-        success : function(json) {
-            console.log(json);
-            $("#request-access").hide();
-
-            // The author is following us
-            if (page_author.following.includes(user_id)){
-                console.log("Updating Friends");
-
-                // Add friends to both Accounts.
-                if (enumType === FriendsEnum.Add){
-                    console.log(" updating friends with enum ADD");
-                    updateFriends(FriendsEnum.Add);
-                }
-                  // Subtract friends from both Accounts.
-                  if (enumType === FriendsEnum.Subtract){
-                    console.log("updating friends with enum Subtract");
-                    updateFriends(FriendsEnum.Subtract);
-                }
-            }
-            else{
-                  // Subtract friends from both Accounts.
-                  if (enumType === FriendsEnum.Subtract){
-                    console.log("updating friends with enum Subtract");
-                    updateFriends(FriendsEnum.Subtract);
-                }
-            }
-        },
-        error: function (e) {
-            console.log("ERROR: ", e);
-        }
-    });
-};
-
 
 // Get the current followers of the Profile.
 // Add the clicked author to your following list.
 function updatefollowingGet(enumType){
     $.ajax({
         type: "GET",
-        //async: false,
+        async: false,
         url: user_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
         success : function(json) {
-            author = json;
-            var data = {};
-            // Either Adding to following list or removing from following list.
-            if (enumType === FriendsEnum.Add){
-                data["following"] = [author_uuid];
-            }
-            else{
-                data["following"] = [0];
-            }
-            // Only add followers if they have some
-            if(author.following.length != 0){
-
-            for (var authors in author.following){
-                if(author.following[authors] != author_uuid && author.following[authors] != 0){
-                    data["following"].push(author.following[authors]);
-                    }
-                }
-            }
-            // Remove the [0] from start of list.
-            if (enumType === FriendsEnum.Subtract){
-            data["following"].shift();
-            }
-            updatefollowingPOST(JSON.stringify(data),enumType); // update the follower list
+           sending_author = json;
+     
+            //updatefollowingPOST(JSON.stringify(data),enumType); // update the follower list
             $("#request-access").hide();
         },
         error: function (e) {
@@ -440,44 +364,15 @@ function updatefollowingGet(enumType){
 function updatefollowersGet(enumType){
     $.ajax({
         type: "GET",
-        //async: false,
+        async: false,
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
         success : function(json) {
-            author = json;
-            //console.log(author);
-            var data = {};
-            // Adding the 0 to be able to push the rest onto the array
-            if (enumType === FriendsEnum.Add){
-                data["followers"] = [user_id];
-                page_author = author;
-                page_author.followers.push([user_id]);
+           recieving_author = json;
+           console.log(recieving_author);
 
-            }
-            else{
-                data["followers"] = [0];
-            }
-
-            // Only add followers if they have some
-            if(author.followers.length != 0){
-            // Add back all the previous followers
-                for (var authors in author.followers){
-                    if(author.followers[authors] != user_id && author.followers[authors] != 0){
-                        data["followers"].push(author.followers[authors]);
-                    }
-                }
-            }
-
-            // Remove the 0 as we no longer need it
-            if (enumType === FriendsEnum.Subtract){
-                data["followers"].shift();
-            }
-
-            //update our global
-            page_author = author;
-            page_author.followers.push()
-            updatefollowersPOST(JSON.stringify(data),enumType); // update the follower list
+           // updatefollowersPOST(JSON.stringify(data),enumType); // update the follower list
             $("#request-access").hide();
         },
         error: function (e) {
@@ -573,26 +468,59 @@ $(document).ready(function(){
 });
 
 
+
+function sendFriendRequest(){
+
+
+
+  
+
+
+    data = {};
+    author = {};
+    friend = {};
+
+
+    console.log(sending_author , "send");
+    console.log(recieving_author, "rec");
+
+
+
+    data["query"] = "friendrequest";
+    data["author"] = sending_author;
+    data["friend"] = recieving_author;
+
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "/api/friendrequest",
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        data: JSON.stringify(data),
+        success : function(json) {
+            $("#request-access").hide();
+            console.log("requested access complete");
+        },
+        error: function (e) {
+            console.log("ERROR: ", e);
+        }
+
+    });
+}
+
 // Functions for adding
 function callFollowers(){
-    console.log("Second")
     updatefollowingGet(FriendsEnum.Add);
 }
 
 function callFollowing(callback){
-    console.log("first");
     updatefollowersGet(FriendsEnum.Add);    // Call second, friends piggybacks off Followers
     callback();
+
 }
 
-// Functions for Subtracting
-function callRemoveFollowers(){
-    updatefollowingGet(FriendsEnum.Subtract);
-}
-function callRemoveFollowing(callback){
-    updatefollowersGet(FriendsEnum.Subtract);
-    callback();
-}
+
+
 
 
 try {
@@ -601,20 +529,17 @@ follow_submit_form.addEventListener('submit', event =>{
     event.preventDefault();
     event.stopImmediatePropagation();
     var follow_unfollow_text = follow_submit_button.textContent || follow_submit_button.innerText;
-    //updatefollowersGet();
-    //updatefollowingGet();
 
-    console.log(follow_unfollow_text);
 
-    //callFollowing(callFollowers);      // Add to your following list, add to their followers
-    //callRemoveFollowing(callRemoveFollowers);   // Remove the followers
-    //Both of these are called on a single submit.
+
     if(follow_unfollow_text === "Follow"){
         callFollowing(callFollowers);
+        sendFriendRequest();
+
     }
-    else{
-    callRemoveFollowing(callRemoveFollowers);
-    }
+  
+
+
 });
 }
 catch{
@@ -643,6 +568,7 @@ function makePost(post_title,post_content, post_description){
     var radio_value;
     var radioButtons = document.getElementsByName("friends-radio-option");
     var postType = document.getElementById("markdown");
+    var unlistedBool = document.getElementById("unlisted")
     var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY"})
     var visible_to;
 
@@ -672,6 +598,10 @@ function makePost(post_title,post_content, post_description){
     if (postType.checked){
         data["content_type"] = postType.value;
     };
+    
+    if (unlistedBool.checked){
+        data["unlisted"] = true;
+    }
 
     data= JSON.stringify(data);
     console.log(data, "OUR DATA FOR POST");

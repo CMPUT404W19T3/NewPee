@@ -11,6 +11,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 import json
 
+from django.core.paginator import Paginator
+
 from .api_views import post_list
 
 from rest_framework import status
@@ -91,11 +93,28 @@ def redirect(request, format=None):
 def feed(request, format=None):
 
     response = post_list(request)
+    author = Author.objects.get(user=request.user)
+
+    form = SearchForm()
+
+    search = request.GET.get('search')
+
+    if search:
+        exclude_author = Author.objects.filter(user = request.user)
+        authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
+                
+        return render(request, 'search.html', {'logged_in_author': author, 'authors': authors, 'form': form, 'search': search})
 
     print(response.data)
     #serializer = PostSerializer(response.data,many=True,context={'request': request})
+    response_list = list(response.data)
+    response_list.sort(key=lambda x: x['post_date'], reverse=True)
+    paginator = Paginator(response_list, 5)
 
-    return render(request, 'feed.html', {'posts':response.data})
+    page = request.GET.get('page')
+    pages = paginator.get_page(page)
+
+    return render(request, 'feed.html', {'posts':response.data, 'logged_in_author': author, 'form': form, 'pages': pages})
 
 def respond_to_friends(request, format = None):
 
@@ -105,11 +124,35 @@ def respond_to_friends(request, format = None):
 
     friends_requests = current_author.get_friend_requests()
 
+    declinedrequest = current_author.get_declined_requests()
+
+
+    for friend in declinedrequest:
+        friends_requests = friends_requests.exclude(id = friend.id)
+
+
     serializer_current = AuthorSerializer(current_author, context={'request': request})
 
-    print(authors, "\n\n")
+    form = SearchForm()
 
-    return render(request, 'friends.html', {'authors':friends_requests , 'current_author': serializer_current.data,  })
+    search = request.GET.get('search')
+
+
+    if search:
+        exclude_author = Author.objects.filter(user = request.user)
+        authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
+                
+        return render(request, 'search.html', {'logged_in_author': current_author, 'authors': authors, 'form': form, 'search': search})
+
+    print(friends_requests, "xxxx")
+
+
+
+    serializer_friends = AuthorSerializer(friends_requests, many=True, context={'request': request})
+
+
+
+    return render(request, 'friends.html', { 'authors':serializer_friends.data , 'current_author': serializer_current.data, 'form': form, 'logged_in_author': current_author })
 
 def get_author(request, format=None):
 

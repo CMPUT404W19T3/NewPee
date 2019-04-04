@@ -4,7 +4,7 @@ import uuid
 import requests
 import NewPee.settings
 import Servers.models
-
+from itertools import chain
 #from Servers.models import Server
 
 # Author represents a user that creates posts
@@ -26,6 +26,7 @@ class Author(models.Model):
     following = models.ManyToManyField("self", related_name="_following", symmetrical=False, blank=True)
     followers = models.ManyToManyField("self", related_name="_followers", symmetrical=False, blank=True)
     friend_requests = models.ManyToManyField("self", related_name="_friend_requests", symmetrical=False, blank=True)
+    Admin = models.BooleanField(default=False)
 
     # Only Admin can Change.
     isAuthorized = models.BooleanField(default=True)
@@ -138,11 +139,16 @@ class Author(models.Model):
     # add a friend
     def add_friend(self, author):
 
-        self.following.add(author)
+        author.following.add(self)  # we are now following
+
+        #self.following.add(author)
 
         if(author not in self.followers.all()):
-
+            
+            print(author, self)
+            print("added follower")
             self.followers.add(author)  # he is our follower.
+
 
         # we are already following the user.
         if (author in self.following.all()):
@@ -155,6 +161,17 @@ class Author(models.Model):
             if(author.host != HOSTNAME):
 
                 self.send_foreign_request(author)
+
+
+    # adding a friend to our request so we don't have notification but they are our still following us
+    def add_friend_request(self, author):
+
+        self.friend_requests.add(author)
+    
+    def get_declined_requests(self):
+
+        return  list(chain(self.friend_requests.all(), self.friends.all()))
+
 
     # send a friend request to foreign server    
     def send_foreign_request(self, author ):

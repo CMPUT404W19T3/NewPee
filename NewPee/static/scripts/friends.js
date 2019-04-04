@@ -126,6 +126,49 @@ $(document).ready(function(){
         });
     }
 
+    function declineRequest(i){
+
+        data = {};
+        author = {};
+        friend = {};
+
+
+        author["id"] = user_id;
+        author["host"] = user_host;
+        author["displayName"] = user_displayName;
+        author["user_url"] = user_url;
+
+
+        friend["id"] = author_ids[i].innerHTML;
+
+        console.log(friend)
+
+
+        data["query"] = "declinerequest";
+        data["type"] = "local_add";
+        data["author"] = author;
+        data["friend"] = friend;
+
+        $.ajax({
+            type: "POST",
+            url: "/api/friendrequest",
+            contentType: 'application/json',
+            headers:{"X-CSRFToken": csrftoken},
+            data: JSON.stringify(data),
+            success : function(json) {
+                $("#request-access").hide();
+                console.log("requested access complete");
+            },
+            error: function (e) {
+                console.log("ERROR: ", e);
+            }
+    
+        });
+
+
+    }
+
+
     
     // LOOP Through our accept buttons
 
@@ -136,6 +179,16 @@ $(document).ready(function(){
             sendRequest(j);
         });
       }
+
+
+      for (let j = 0; j < reject_button.length; j++) {
+        let button = reject_button[j];
+        button.addEventListener('click', function() {
+            logButtonIndex(j);
+            declineRequest(j);
+        });
+      }
+
 
 
     

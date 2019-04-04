@@ -16,6 +16,7 @@ from Posts.models import Photo
 from Authors import models
 from Posts.models import Post, ForeignPost
 from Posts.serializers import PostSerializer, ForeignPostSerializer
+from views import api_views
 
 from rest_framework.generics import ListAPIView
 from collections import OrderedDict
@@ -27,7 +28,7 @@ from django.core.paginator import Paginator
 
 from itertools import chain
 import operator
-
+import uuid
 class AuthorDetail(APIView):
 
     """
@@ -92,17 +93,43 @@ class AuthorDetail(APIView):
                 foreignposts = ForeignPost.objects.all()
                 foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True, context={'request': request})
 
-                allPosts = list(chain(post_serializer.data, foreignposts_serializer.data))
+
+                posts = api_views.post_list(request._request)
+
+                #posts.data.exclude(id=author["id"])
+                print("\n", posts.data, "\n")
+
+                filtered = {}
+
+                for post in posts.data:
+                    temp_author = post["author"]
+
+
+                    temp_uuid = temp_author["id"].split("/")[-1]
+
+                    print(temp_uuid, author.id)
+                    
+                    if (uuid.UUID(temp_uuid) == author.id):
+                        print("check")
+                        filtered.update({'posts':post})
+
+                print(filtered)
+
+                #filtered_serializer = PostSerializer(filtered, many=True,context={'request': request})
+
+
+                allPosts = list(chain(filtered, foreignposts_serializer.data))
                 allPosts.sort(key=lambda x: x['post_date'], reverse=True)
                 
+
                 paginator = Paginator(allPosts, 5)
 
                 page = request.GET.get('page')
                 pages = paginator.get_page(page)
 
-                return Response({'author': author_serializer.data, 'posts': post_serializer.data, \
+                return Response({'author': author_serializer.data,  \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data, \
-                'foreignposts': foreignposts_serializer.data, 'allPosts': allPosts, \
+                'allPosts': allPosts, \
                 'pages': pages})
 
             except Post.DoesNotExist:
@@ -330,7 +357,17 @@ class AuthorFriendRequestsView(APIView):
 
         friend_requests = author.get_friend_requests()  
 
-        friend_serializer = AuthorSerializer(friend_requests, context={'request': request}, many=True)          
+        declinedrequest = author.get_declined_requests()
+
+        for friend in declinedrequest:
+            friend_requests = friend_requests.exclude(id = friend.id)
+
+
+        print(friend_requests, "???")
+
+        friend_serializer = AuthorSerializer(friend_requests, context={'request': request}, many=True)
+        
+        print(friend_serializer.data)
 
         response_data['friend_requests'] = friend_serializer.data
 
@@ -349,21 +386,34 @@ class AuthorUpdateFriendRequestsView(APIView):
 
         recieving_author = request.data["author"]   # author recieving request
         friend = request.data["friend"]             # friend being added to author.
-        print(friend)
-        print(recieving_author)
+
         friend_uuid = friend["id"].split("/")[-1]
         recieving_author_uuid = recieving_author["id"].split("/")[-1]
 
-        print(friend_uuid, "\n\n\n")
+
+        
+            
+
 
         friend_uuid = friend_uuid.strip(" ")
         author = get_object_or_404(models.Author, id =  recieving_author_uuid)
+
+        print("YEEE\n\n", author, "\n\n\n")
+
 
         try:
 
             # a local author we can just add them.
             friend = get_object_or_404(models.Author, id = friend_uuid)
-            author.add_friend(friend)
+
+
+            if request.data["query"] == "declinerequest":
+                author.add_friend_request(friend)
+                return Response(status=status.HTTP_201_CREATED)
+
+
+            friend.add_friend(author)
+            
 
             return Response(status=status.HTTP_201_CREATED)
 

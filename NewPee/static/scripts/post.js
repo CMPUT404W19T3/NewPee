@@ -32,32 +32,11 @@ $(document).ready(function(){
     var user_api_url = "/api/authors/" + userID;
     const deletePostButton = document.querySelector("#remove_post_submit");
     const editPostButton = document.querySelector("#edit_Post_Button");
-    const addAuthorClick = document.querySelector("#Add_Author");
 
     var author;
     
 
-    $(function() {
-
-    $( "#dialog" ).dialog({
-        autoOpen: false, 
-        buttons: {
-           OK: function() {$(this).dialog("close");}
-        },
-        title: "Add Author",
-        position: ['right',200],
-     });
-
-     addAuthorClick.addEventListener('click', event =>{
-        event.preventDefault();
-
-        $( "#dialog" ).dialog( "open" );
-
   
-    });
-
-    });
-
 
     
 

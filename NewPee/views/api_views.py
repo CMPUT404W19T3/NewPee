@@ -36,6 +36,10 @@ def view_access(post, author, unlisted=False):
 
         returnStatement = True
 
+        # Admin can see all posts.
+        if author.Admin:        
+            return True
+
         #post = Post.objects.get(id=xpost["id"])
 
         if unlisted == True:
@@ -203,7 +207,14 @@ def post_list(request):
     elif request.method == 'POST':
 
 
+        
         author_id = request.data["author"]
+
+        if("http" in author_id):
+            author_id = author_id.split("/")[-1]
+
+
+
 
         author = AuthorSerializer( Author.objects.get(id=author_id), context={'request': request})
 
