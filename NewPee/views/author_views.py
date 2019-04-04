@@ -84,11 +84,12 @@ def redirect(request, format=None):
 def feed(request, format=None):
 
     response = post_list(request)
+    author = Author.objects.get(user=request.user)
 
     print(response.data)
     #serializer = PostSerializer(response.data,many=True,context={'request': request})
 
-    return render(request, 'feed.html', {'posts':response.data})
+    return render(request, 'feed.html', {'posts':response.data, 'logged_in_author': author})
 
 def respond_to_friends(request, format = None):
 
