@@ -44,7 +44,7 @@ urlpatterns = [
     url( r'^login/$', log_in, name="login"),
     path('signup/', sign_up),
 
-    path('', feed, name="feed"),
+    path('feed/', feed, name="feed"),
     # Admin
     path('admin/', admin.site.urls),
 
