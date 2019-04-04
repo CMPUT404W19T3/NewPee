@@ -43,12 +43,14 @@ class Author(models.Model):
     # All "get" functions for username, password, email, etc... are inherited from Django User
 
     def get_author_id(self):
+
         return self.id
 
     # Determine what relationship an author has with another author
     # TODO: Remove from this class
 
     def is_friend(self, author_id):
+
         """
         Check if an author is a friend.
         """
@@ -56,20 +58,27 @@ class Author(models.Model):
         friends_ids = self.friends.all().values('id')
 
         try:
+
             if(friends_ids.get(id=author_id)):
+
                 return True
+
         except:
+
             return False
 
         #return self.friends.filter(uuid=author_id).exists()
 
     def get_friend_models(self):
+
         return self.friends
 
     def get_friends(self):
+
         """
         Returns all local friends.
         """
+        
         return self.friends.all()
 
     def get_followers(self):
