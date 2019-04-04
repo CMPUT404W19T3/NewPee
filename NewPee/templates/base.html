@@ -32,7 +32,7 @@
                             <img src="{{author.image}}" alt="foreign author picture">
                         {% endif %}
                     {% else %}
-                        <button class="change-profile-pic" onclick="changeProfilePic()"><i id="upload-icon" class="fas fa-upload"></i></button>
+                        <button id="button" type="button" class="change-profile-pic" data-toggle="modal" data-target="#change_profile_pic_modal"><i id="upload-icon" class="fas fa-upload" ></i></button>
                         <img src="{{logged_in_author.image}}" alt="profile picture">
                     {% endif %}
                     {% include "./change_profile_pic_modal.html" %}
