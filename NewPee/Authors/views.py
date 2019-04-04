@@ -16,6 +16,7 @@ from Posts.models import Photo
 from Authors import models
 from Posts.models import Post, ForeignPost
 from Posts.serializers import PostSerializer, ForeignPostSerializer
+from views import api_views
 
 from rest_framework.generics import ListAPIView
 from collections import OrderedDict
@@ -93,17 +94,23 @@ class AuthorDetail(APIView):
                 foreignposts = ForeignPost.objects.all()
                 foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True, context={'request': request})
 
-                allPosts = list(chain(post_serializer.data, foreignposts_serializer.data))
+
+                posts = api_views.post_list(request._request)
+
+                print(posts)
+
+                allPosts = list(chain(posts.data, foreignposts_serializer.data))
                 allPosts.sort(key=lambda x: x['post_date'], reverse=True)
                 
+
                 paginator = Paginator(allPosts, 5)
 
                 page = request.GET.get('page')
                 pages = paginator.get_page(page)
 
-                return Response({'author': author_serializer.data, 'posts': post_serializer.data, \
+                return Response({'author': author_serializer.data,  \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data, \
-                'foreignposts': foreignposts_serializer.data, 'allPosts': allPosts, \
+                'allPosts': allPosts, \
                 'pages': pages})
 
             except Post.DoesNotExist:
