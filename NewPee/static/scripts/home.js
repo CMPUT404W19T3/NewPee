@@ -726,7 +726,7 @@ const elementPullGithub = document.querySelector("#github_api_pull");
 
 elementPullGithub.addEventListener('submit', async event => {
     event.stopImmediatePropagation();
-    //event.preventDefault();
+    event.preventDefault();
 
     var github_data = await github_api();
 
@@ -734,27 +734,25 @@ elementPullGithub.addEventListener('submit', async event => {
 
     // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     var post_title;
+    var post_content = '<ul>';
     if (github_data[0].type === "PushEvent") {
         post_title = github_data[0].actor.display_login + " Pushed to " + github_data[0].repo.name;
-        var post_content = '<ul>';
-        try {
         for (let index of github_data[0].payload.commits) {
             post_content += '<li>' + index.message + '</li>';
         }
-        post_content += '</ul>'
     }
     if (github_data[0].type === "DeleteEvent") {
         post_title = github_data[0].actor.display_login + " Deleted " + github_data[0].repo.name;
-        var post_content = '<ul>';
-        try {
+    
         for (let index of github_data[0].payload.commits) {
             post_content += '<li>' + index.message + '</li>';
         }
-        post_content += '</ul>'
     }
     if (github_data[0].type === "IssuesEvent") {
         post_title = github_data[0].actor.display_login + " Issue Activity " + github_data[0].repo.name;
+        post_content += '<li>' + "Issue Activity" + '</li>';
     }
+    post_content += '</ul>'
     
     var post_description = "Github Activity";
     var github_id = github_data[0].id;
