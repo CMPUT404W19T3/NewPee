@@ -123,6 +123,10 @@ class AuthorDetail(APIView):
                 allPosts.sort(key=lambda x: x['post_date'], reverse=True)
                 
 
+
+                followers = author.get_followers()
+                following = author.get_following()
+
                 paginator = Paginator(allPosts, 5)
 
                 page = request.GET.get('page')
@@ -131,7 +135,7 @@ class AuthorDetail(APIView):
                 return Response({'author': author_serializer.data,  \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data, \
                 'allPosts': allPosts, \
-                'pages': pages})
+                'pages': pages, 'followers': followers, 'following': following})
 
             except Post.DoesNotExist:
 

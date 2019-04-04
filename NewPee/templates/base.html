@@ -19,7 +19,6 @@
 
     <input type="hidden" id="userID" value={{ logged_in_author.id }}>
 
-
     <div class="col-11 row m-4">
 
         <!--left column-->
@@ -65,7 +64,7 @@
                 </div>
                 <div class="stat">
                     {% if author %}
-                        {% if author.user == logged_in_author %}
+                        {% if author == logged_in_author %}
                             <p>{{logged_in_author.followers|length}}</p>
                         {% else %}
                             <p>{{author.followers|length}}</p>
@@ -77,8 +76,15 @@
                 </div>
                 <div class="stat">
                     {% if author %}
-                        {% if author.user == logged_in_author %}
-                            <p>{{logged_in_author.following|length}}</p>
+
+                        {% if author == logged_in_author %}
+                            {% if following|length > 0 %}
+                             <p>{{logged_in_author.following|length }}</p>
+                            {% else %}
+                            <p>{{following|length }}</p>
+                            {% endif %}
+
+                            
                         {% else %}
                             <p>{{author.following|length}}</p>
                         {% endif %}

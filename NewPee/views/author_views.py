@@ -86,8 +86,15 @@ def redirect(request, format=None):
 def feed(request, format=None):
 
     response = post_list(request)
+
     author = Author.objects.get(user=request.user)
 
+    serializer=  AuthorSerializer(author, context={'request': request})
+
+    followers = author.get_followers()
+    following = author.get_following()
+
+    print(len(following))
     form = SearchForm()
 
     search = request.GET.get('search')
@@ -96,7 +103,7 @@ def feed(request, format=None):
         exclude_author = Author.objects.filter(user = request.user)
         authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
                 
-        return render(request, 'search.html', {'logged_in_author': author, 'authors': authors, 'form': form, 'search': search})
+        return render(request, 'search.html', {'logged_in_author': serializer.data, 'author': author, 'authors': authors, 'form': form, 'search': search})
 
     print(response.data)
     #serializer = PostSerializer(response.data,many=True,context={'request': request})
@@ -107,7 +114,7 @@ def feed(request, format=None):
     page = request.GET.get('page')
     pages = paginator.get_page(page)
 
-    return render(request, 'feed.html', {'posts':response.data, 'logged_in_author': author, 'form': form, 'pages': pages})
+    return render(request, 'feed.html', {'posts':response.data, 'logged_in_author': author, 'author': author, 'form': form, 'pages': pages, 'following':following, 'followers': followers})
 
 def respond_to_friends(request, format = None):
 
