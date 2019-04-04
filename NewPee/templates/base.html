@@ -144,27 +144,12 @@
                 {% endif %}
                 <hr>
 
-                {% if author%}
-                    {% if logged_in_author == author %}
-                        <button type="button" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
-                    {% else %}
-                    <form id="follow_user_submit" method="Post">
-                    <button type="submit" id="follow_user_submit_button" class="btn btn-primary col-12">Follow</button>
-                    {% endif %}
-
-                    </form>
-                {% else %}
-                    <button type="button" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
-                {% endif %}
-                {% include "./edit_profile_modal.html" %}
-
             </div>
         </div> 
 
         <!--right column-->
         {% block rightColumn %}
         {% endblock %}
-    
         
         </div>
     </div>
