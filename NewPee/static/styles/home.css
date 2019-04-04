@@ -4,6 +4,15 @@ p{
     color: black;
 }
 
+#ajax {
+    background-color: #e6f9af;
+    border: 2px solid #8bbeb2;
+}
+
+#ajax::placeholder {
+    color: #36558f;
+}
+
 .container{
     box-sizing: border-box;
     display: flex;
@@ -100,7 +109,6 @@ p{
     text-align: center;
     margin: 0%;
 }
-
 
 .posting button{
     display:block;

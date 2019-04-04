@@ -32,7 +32,7 @@ html, body{
 }
 
 .newPeeHeaderIcons i:hover {
-    color: #36558f;    
+    color: #8bbeb2;    
 }
 
 .dropdown-content {
@@ -103,6 +103,6 @@ html, body{
 }
 
 .btn-header{
-  background: #e6f9af; 
+  background: #8bbeb2; 
   color: #0d0630;
 }
