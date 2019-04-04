@@ -27,17 +27,22 @@ from Servers.models import Server
 from itertools import chain
 
 class AuthorDetail(APIView):
+
     """
     Retrieve, update or delete an Author.
     """
+
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'home.html'
 
     def get_object(self, pk):
 
         try:
+
             return Author.objects.get(pk=pk)
+
         except Author.DoesNotExist:
+
             raise Http404
 
     def get(self, request, pk, *args, **kwargs):
@@ -46,6 +51,7 @@ class AuthorDetail(APIView):
         title:
         Return the current author.
         """
+
         serializer_context = {'request': request}
 
         if request.method == "GET":
@@ -53,8 +59,11 @@ class AuthorDetail(APIView):
             servers = Server.objects.all()
             
             for x in servers:
+
                 print(x.isServerActive(), x)
+
                 if x.isServerActive():
+
                     x.updateAuthors()
                     x.updatePosts()
             
@@ -69,11 +78,14 @@ class AuthorDetail(APIView):
             search = request.GET.get('search')
 
             if search:
+
                 authors = Author.objects.filter(displayName__icontains = search)
                 print("This is the authors", logged_in_author_serializer)
+                
                 return Response({'logged_in_author':logged_in_author_serializer.data, 'authors': authors, 'form': form, 'search': search}, template_name='search.html')
 
             try:
+
                 posts = Post.objects.filter(author=pk)
                 post_serializer = PostSerializer(posts, many=True,context={'request': request})
                 foreignposts = ForeignPost.objects.all()
@@ -81,13 +93,16 @@ class AuthorDetail(APIView):
                 allTime = chain(posts, foreignposts)
 
                 allPosts = chain(post_serializer.data, foreignposts_serializer.data)
+
                 return Response({'author': author_serializer.data, 'posts': post_serializer.data, \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data, \
                 'foreignposts': foreignposts_serializer.data, 'allPosts': allPosts})
 
             except Post.DoesNotExist:
+
                 foreignposts = ForeignPost.objects.all()
                 foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True)
+
                 return Response({'author': author_serializer.data, 'form': form, \
                     'foreignposts': foreignposts_serializer.data, 'allPosts': allPosts})
 
@@ -95,6 +110,7 @@ class AuthorDetail(APIView):
     def post(self, request, pk, *args, **kwargs):
 
         print(">")
+
         if request.method == 'POST' and request.FILES['myfile']:
 
             author = self.get_object(pk)
@@ -109,9 +125,11 @@ class AuthorDetail(APIView):
 
             # Future TODO: Possibly add it to the DB, but don't have too.
             try:
+
                 Photo.objects.create(myfile)
 
             except:
+
                 print("Not an image!")
 
             print(myfile)
@@ -123,6 +141,7 @@ class AuthorDetail(APIView):
             #return redirect('/authors',  uploaded_file_url= uploaded_file_url)
 
             try:
+
                 posts = Post.objects.filter(author=pk)
                 post_serializer = PostSerializer(posts, many=True)
 
@@ -130,19 +149,23 @@ class AuthorDetail(APIView):
                 'uploaded_file_url': uploaded_file_url, \
                 'author': author_serializer.data, 'posts': post_serializer.data, \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data })
+            
             except:
+
                  return render(request, 'home.html', {
                 'uploaded_file_url': uploaded_file_url, \
                 'author': author_serializer.data,  \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data })
 
 class AuthorList(APIView):
+
     """
     List all Authors, or create a new Author.
     """
 
     @csrf_exempt
     def get(self, request, format=None):
+
         if request.method == "GET":
             print("This is the request\n\n", request)
             authors = Author.objects.all()
@@ -153,6 +176,7 @@ class AuthorList(APIView):
             # print("This is a serializer: ", serializer)
             # print("This is the type: ", type(serializer))
             # print("This is the data inside of serializer", serializer.data)
+
             return Response({
                 'authors': author_serializer.data,
                 'posts': post_serializer.data,
@@ -160,10 +184,8 @@ class AuthorList(APIView):
 
     def post(self, request, format=None):
 
-
         # we are posting with an image, store it usign FileSystemStorage in our media folder.
         # if request.method == 'POST' and request.FILES['myfile']:
-
 
         #     myfile = request.FILES['myfile']
 
@@ -216,7 +238,6 @@ class AuthorfriendsView(APIView):
 
             author = get_object_or_404(models.Author, id= pk)
 
-
             # good request with array of authors
             try:
                 authors = request.data["authors"]
@@ -228,8 +249,6 @@ class AuthorfriendsView(APIView):
                     our_friends = author.get_friends().values('id')
                     #print(our_friends, "page friends")
 
-                    
-
                     #print(our_friends.get(id=request_author["id"]), "IS A FRIEND")
 
                     # Check they are friend
@@ -239,6 +258,7 @@ class AuthorfriendsView(APIView):
                             #print("appending author")
                             friends.append(request_author)
                     except:
+
                         pass
 
                 response_data = OrderedDict()
@@ -275,8 +295,6 @@ class AuthorIsfriendsView(APIView):
 
         friends = []
 
-        
-
         friends.append(ser1.data["id"])
         friends.append(ser2.data["id"])
 
@@ -289,7 +307,6 @@ class AuthorIsfriendsView(APIView):
 
 # Return current friend_requests
 # TO be used with headers.
-
 
 class AuthorFriendRequestsView(APIView):
 
@@ -315,8 +332,6 @@ class AuthorFriendRequestsView(APIView):
 
         return Response( response_data )
 
-
-
 # api for friendrequest
 # upon recieiving the author that send the friend request add them
 class AuthorUpdateFriendRequestsView(APIView):
@@ -325,7 +340,6 @@ class AuthorUpdateFriendRequestsView(APIView):
         return Response(status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-
 
         recieving_author = request.data["author"]   # author recieving request
         friend = request.data["friend"]             # friend being added to author.
@@ -339,21 +353,17 @@ class AuthorUpdateFriendRequestsView(APIView):
         friend_uuid = friend_uuid.strip(" ")
         author = get_object_or_404(models.Author, id =  recieving_author_uuid)
 
-
-
-
         try:
             # a local author we can just add them.
             friend = get_object_or_404(models.Author, id = friend_uuid)
             author.add_friend(friend)
 
-
             return Response(status=status.HTTP_201_CREATED)
 
-            
         except:
             
             print("friend didn't exist")
+
             try:
 
                 my_current_followers =  author.get_followers()
@@ -370,9 +380,8 @@ class AuthorUpdateFriendRequestsView(APIView):
                 author.add_friend(foreign_author)
                     
             except:
+
                 return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
 
 # https://docs.djangoproject.com/en/2.1/ref/class-based-views/base/#redirectview
 

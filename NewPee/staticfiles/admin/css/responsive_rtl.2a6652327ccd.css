@@ -1,6 +1,6 @@
 /* TABLETS */
 
-@media (max-width: 1024px) {
+@media (max-width: 64rem) {
     [dir="rtl"] .colMS {
         margin-right: 0;
     }
@@ -62,7 +62,7 @@
 
 /* MOBILE */
 
-@media (max-width: 767px) {
+@media (max-width: 48rem) {
     [dir="rtl"] .change-list .filtered .results,
     [dir="rtl"] .change-list .filtered .paginator,
     [dir="rtl"] .filtered #toolbar,
