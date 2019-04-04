@@ -19,13 +19,13 @@ class Author(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     posts_created = models.PositiveIntegerField(default=0)  # correspond to a unique_id
     image = models.ImageField(upload_to="profile_image", blank=True, default='NewPee.png')
+
     github_url = models.URLField(blank=True)
 
     friends = models.ManyToManyField("self", related_name="_friends", blank=True)
     following = models.ManyToManyField("self", related_name="_following", symmetrical=False, blank=True)
     followers = models.ManyToManyField("self", related_name="_followers", symmetrical=False, blank=True)
     friend_requests = models.ManyToManyField("self", related_name="_friend_requests", symmetrical=False, blank=True)
-
 
     # Only Admin can Change.
     isAuthorized = models.BooleanField(default=True)
@@ -37,7 +37,6 @@ class Author(models.Model):
             return self.user.get_username()
         except:
             return self.displayName
-
 
     # All "get" functions for username, password, email, etc... are inherited from Django User
 
@@ -101,12 +100,9 @@ class Author(models.Model):
    
     def get_friend_requests(self):
 
-
-
         followers = self.followers.all()
         friends = self.friends.all()
 
-        
         #print(friends, "my friends")
         #print(followers, "my followers")
 
@@ -118,10 +114,6 @@ class Author(models.Model):
                 friend_requests= friend_requests.filter(id=follower.id)
 
         return friend_requests
-
-
-    
-
 
     # add a friend
     def add_friend(self, author):
@@ -142,7 +134,6 @@ class Author(models.Model):
             if(author.host != HOSTNAME):
                 self.send_foreign_request(author)
 
-
     # send a friend request to foreign server    
     def send_foreign_request(self, author ):
 
@@ -160,13 +151,11 @@ class Author(models.Model):
         session.auth = (foreignServer.getUsername, foreignServer.getPassword)
         r = session.post(url= foreignServer.getfriendURL, data = PARAMS)
 
-
     # we have recieved a friend request from the author
     def send_friend_request(self, author):
 
         self.followers.add(author)
         self.friend_requests.add(author)
-
 
         # if we are following the author add him to our friends.
         if (author in self.following.all()):
@@ -191,10 +180,7 @@ class Author(models.Model):
     def remove_friend(self):
         self.friends.remove(author)
 
-
-
 #TODO: FIX 
-
 
 class ForeignAuthor(models.Model):
     
@@ -213,10 +199,8 @@ class ForeignAuthor(models.Model):
     followers = models.ManyToManyField(Author, related_name="_followersForeign", symmetrical=False, blank=True)
     friend_requests = models.ManyToManyField(Author, related_name="_friend_requestsForeign", symmetrical=False, blank=True)
 
-
     # Only Admin can Change.
     isAuthorized = models.BooleanField(default=True)
-
 
     # All "get" functions for username, password, email, etc... are inherited from Django User
 
