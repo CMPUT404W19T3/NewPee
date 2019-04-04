@@ -47,7 +47,7 @@ $(document).ready(function(){
 
 
     deletePostButton.addEventListener('click', event =>{
-        event.preventDefault();
+        //event.preventDefault();
         console.log(userUUID);
         console.log(userID);
         console.log("DELETING");
@@ -113,7 +113,7 @@ $(document).ready(function(){
 
     elementMakeComment.addEventListener('submit', event => {
         
-        event.preventDefault();
+        //event.preventDefault();
         // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
         
         var postID = location.pathname.split("/")[2];

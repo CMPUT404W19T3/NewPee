@@ -526,7 +526,7 @@ function callFollowing(callback){
 try {
 follow_submit_form.addEventListener('submit', event =>{
 
-    event.preventDefault();
+    //event.preventDefault();
     event.stopImmediatePropagation();
     var follow_unfollow_text = follow_submit_button.textContent || follow_submit_button.innerText;
 
@@ -634,7 +634,7 @@ const elementMakePost = document.querySelector("#post_creation_submit");
 
 elementMakePost.addEventListener('submit', event => {
     event.stopImmediatePropagation();
-    event.preventDefault();
+    //event.preventDefault();
 
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     console.log("button clicked");
@@ -726,7 +726,7 @@ const elementPullGithub = document.querySelector("#github_api_pull");
 
 elementPullGithub.addEventListener('submit', async event => {
     event.stopImmediatePropagation();
-    event.preventDefault();
+    //event.preventDefault();
 
     var github_data = await github_api();
 
