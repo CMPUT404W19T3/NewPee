@@ -156,6 +156,16 @@ class Author(models.Model):
 
                 self.send_foreign_request(author)
 
+
+    # adding a friend to our request so we don't have notification but they are our still following us
+    def add_friend_request(self, author):
+
+        self.friend_requests.add(author)
+    
+    def get_declined_requests(self):
+        return self.friend_requests.all()
+
+
     # send a friend request to foreign server    
     def send_foreign_request(self, author ):
 
