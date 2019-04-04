@@ -7,7 +7,7 @@ html, body{
 
 #header-borders {
   border-radius: 0px;
-  border-bottom: 0.2rem solid #8bbeb2;
+  border-bottom: 0.1rem solid #e6f9af;
 }
 
 .bg-color{
@@ -25,14 +25,14 @@ html, body{
 
 .newPeeHeaderIcons i{
   background-color: #18314f;
-  color: #e6f9af;  
+  color: #8bbeb2;  
   font-size: 28px;
   display: inline-block;
   margin-left: 10%;
 }
 
 .newPeeHeaderIcons i:hover {
-    color: #8bbeb2;    
+    color: #e6f9af;    
 }
 
 .dropdown-content {

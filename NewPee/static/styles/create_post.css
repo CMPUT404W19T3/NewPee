@@ -1,7 +1,4 @@
-
-
-
- /* Create two equal columns that floats next to each other */
+/* Create two equal columns that floats next to each other */
  .column {
     float: left;
     width: 50%;
@@ -18,9 +15,6 @@ h2 {
     display: table;
     clear: both;
   } 
-
-
-
 
   .ui-widget-header,.ui-state-default, ui-button {
     background:#161494;

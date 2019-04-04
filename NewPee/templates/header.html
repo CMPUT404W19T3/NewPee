@@ -13,8 +13,8 @@
         <script src="{% static 'scripts/base.js' %}"></script>
         {% block head %}{% endblock %}
     </head>
-
-      <nav class="navbar bg-color justify-content-center" id="header-borders">
+    <body>
+      <nav class="navbar navbar-fixed-top bg-color justify-content-center module-border-wrap" id="header-borders">
         <a class="newPeeHeaderImg mr-auto" href="/authors/{{author.id}}">
           <img src="{% static 'imgs/logo.png' %}" alt="Logo" width="30" height="30" class="d-inline-block align-top">
         </a>

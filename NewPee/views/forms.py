@@ -1,5 +1,3 @@
-
-
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -28,16 +26,20 @@ class UserNameForm(UserCreationForm):
                    error_messages = {'required': "Passwords do not match."})
 
     class Meta:
+
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
 class postTitleForm(forms.Form):
+
     post_title = forms.CharField(label="username", max_length=100)
 
 class postInfoForm(forms.Form):
+
     post_info = forms.CharField(label="username", max_length=100)
 
 class UserLoginForm(forms.Form):
+
     username = forms.CharField(label="username", max_length=100,
                     widget=forms.TextInput(attrs={'placeholder': 'Username',  'class': 'form-control'}))
 
@@ -45,12 +47,15 @@ class UserLoginForm(forms.Form):
                     widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'form-control'}))
 
 class SearchForm(forms.Form):
+
     search = forms.CharField(label="search", max_length=50,
                     widget=forms.TextInput(attrs={'placeholder': 'Search for authors', 'id': 'ajax', 'list': 'ajax_authors', 'class': 'form-control'}))
 
 class passwordLoginForm(forms.Form):
+
     password = forms.CharField(label="username", max_length=100)
 
 class CommentForm(forms.Form):
+
     comment = forms.CharField(label="comment", max_length=100,
                     widget=forms.TextInput(attrs={'placeholder': 'What\'s on your mind?', 'id':'comment', 'class': 'form-control'}))

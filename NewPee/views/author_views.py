@@ -22,14 +22,15 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
-
 # Create your views here.
 
 # The post is now created.
 # TODO : May need some work? on handling the body content.
 
 def logout_view(request):
+
     logout(request)
+
     return redirect('/login')
 
 def log_in(request, format=None):
@@ -40,7 +41,6 @@ def log_in(request, format=None):
 
             if form.is_valid():
 
-
                 #form.save()
 
                 username = form.cleaned_data.get('username')
@@ -49,13 +49,18 @@ def log_in(request, format=None):
                 user = authenticate(username=username, password=password)
 
                 if user is not None:
+
                     author = Author.objects.get(user=user)
+
                     if (author.isAuthorized):
+
                         login(request, user)
+
                         return HttpResponseRedirect('../authors/', {'form': form})
+
                     else:
+
                         return render(request, 'registration/login.html',{'form': form, 'approved': author.isAuthorized})
-                
 
                 return render(request, 'registration/login.html', {'form': form}, status=401)
 
@@ -68,18 +73,20 @@ def log_in(request, format=None):
 
             return render(request, 'registration/login.html', {'form': form})
 
-
-
 def redirect(request, format=None):
 
     try:
+
         if (not request.user.is_anonymous):
+
             return HttpResponseRedirect("/authors/")
+
         else:
+
             return HttpResponseRedirect("/login/")
     except:
-        return HttpResponseRedirect("/login/")
 
+        return HttpResponseRedirect("/login/")
 
 def feed(request, format=None):
 
@@ -100,20 +107,11 @@ def respond_to_friends(request, format = None):
 
     serializer_current = AuthorSerializer(current_author, context={'request': request})
 
-
     print(authors, "\n\n")
-
-
-
-
-
 
     return render(request, 'friends.html', {'authors':friends_requests , 'current_author': serializer_current.data,  })
 
-
-
 def get_author(request, format=None):
-
 
         print(request)
 
@@ -127,7 +125,9 @@ def get_author(request, format=None):
 def get_authors(request, format=None):
 
     form = SearchForm()
+
     print(form)
+
     return render(request, 'search.html/', {'form': form})
 
 def sign_up(request, format=None):
@@ -147,9 +147,7 @@ def sign_up(request, format=None):
 
         form = UserNameForm(request.POST)
 
-
         if form.is_valid():
-
 
             form.save()
 
@@ -157,17 +155,13 @@ def sign_up(request, format=None):
             raw_password = form.cleaned_data.get('password1')
             raw_confirm_password = form.cleaned_data.get('password2')
 
-
             if raw_password == raw_confirm_password:
 
                 temp_user = authenticate(username=username, password=raw_password)
 
-
                 temp_user.email = "fake@gmail.com"
                 new_user = Author.objects.create(user=temp_user, displayName=temp_user.username)
 
-
-        
                 return HttpResponseRedirect("../login",)
 
         return render(request, 'signup.html', {'form': form})
@@ -180,8 +174,13 @@ def sign_up(request, format=None):
         return render(request, 'signup.html', {'form': form})
 
 def custom_login(request):
+
     print(request)
+
     if request.user.is_authenticated():
+
         return HttpResponseRedirect("/")
+
     else:
+
         return login(request)
