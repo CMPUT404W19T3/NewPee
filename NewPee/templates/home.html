@@ -28,9 +28,10 @@
         color: #18314f;
     }
 
-    nav-tabs {
+    .nav a:hover {
         background: #e6f9af;
     }
+
 </style>
 
 {% endblock %}
@@ -40,8 +41,8 @@
     <div class="card posting">
         <div class="card-body">
             <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#posting">Post</a></li>
-                <li><a data-toggle="tab" href="#github">GitHub</a></li>
+                <li class="active"><a class="tab" data-toggle="tab" href="#posting">Post</a></li>
+                <li><a data-toggle="tab" class="tab" href="#github">GitHub</a></li>
             </ul>
             <br>
             <div class="tab-content">

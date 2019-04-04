@@ -61,7 +61,12 @@ p{
 #btn-primary {
     border: 0.2rem solid #36558f;
     background-color: #8bbeb2;
-    color: #0d0630;
+    color: #18314f;
+}
+
+#btn-primary:hover {
+    background-color: #e6f9af;
+    color: #18314f;
 }
 
 .profile-pic img{
@@ -169,9 +174,8 @@ textarea {
   }
   
 .change-profile-pic:hover {
-    border: purple;
     border-radius: 6px;
-    color: #e6f9af;
+    color: #18314f;
     background: #8bbeb2;
   }
 
