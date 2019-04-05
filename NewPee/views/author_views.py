@@ -1,31 +1,24 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from django import forms
-from .forms import UserNameForm, UserLoginForm, postTitleForm, postInfoForm, passwordLoginForm, SearchForm
 from Authors.models import Author
 from Authors.serializers import AuthorSerializer
+from django import forms
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.views.decorators.csrf import csrf_exempt
 from Posts.models import Post
 from Posts.serializers import PostSerializer
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
+from rest_framework import status
+from rest_framework.response import Response
+from .api_views import post_list
+from .forms import UserNameForm, UserLoginForm, PostTitleForm, PostInfoForm, PasswordLoginForm, SearchForm
+
 import json
 
-from django.core.paginator import Paginator
-
-from .api_views import post_list
-
-from rest_framework import status
-#from rest_framework import api_view
-from rest_framework.response import Response
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.forms import UserCreationForm
-
-from django.contrib.auth import logout
-from django.shortcuts import redirect
-
 # Create your views here.
-
 # The post is now created.
 # TODO : May need some work? on handling the body content.
 
@@ -67,6 +60,7 @@ def log_in(request, format=None):
                 return render(request, 'registration/login.html', {'form': form}, status=401)
 
             else:
+                
                 return render(request, 'registration/login.html', {})
 
         else:
@@ -93,31 +87,29 @@ def redirect(request, format=None):
 def feed(request, format=None):
 
     response = post_list(request)
-
     author = Author.objects.get(user=request.user)
-
     serializer =  AuthorSerializer(author, context={'request': request})
-
     followers = author.get_followers()
     following = author.get_following()
 
     print(len(following))
-    form = SearchForm()
 
+    form = SearchForm()
     search = request.GET.get('search')
 
     if search:
+
         exclude_author = Author.objects.filter(user = request.user)
         authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
                 
         return render(request, 'search.html', {'logged_in_author': serializer.data, 'author': author, 'authors': authors, 'form': form, 'search': search})
 
     print(response.data)
+
     #serializer = PostSerializer(response.data,many=True,context={'request': request})
     response_list = list(response.data)
     response_list.sort(key=lambda x: x['post_date'], reverse=True)
     paginator = Paginator(response_list, 5)
-
     page = request.GET.get('page')
     pages = paginator.get_page(page)
 
@@ -126,26 +118,20 @@ def feed(request, format=None):
 def respond_to_friends(request, format = None):
 
     authors = Author.objects.all()
-
     current_author = Author.objects.get(user = request.user)
-
     friends_requests = current_author.get_friend_requests()
-
     declinedrequest = current_author.get_declined_requests()
 
-
     for friend in declinedrequest:
+
         friends_requests = friends_requests.exclude(id = friend.id)
 
-
     serializer_current = AuthorSerializer(current_author, context={'request': request})
-
     form = SearchForm()
-
     search = request.GET.get('search')
 
-
     if search:
+
         exclude_author = Author.objects.filter(user = request.user)
         authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
                 
@@ -153,11 +139,7 @@ def respond_to_friends(request, format = None):
 
     print(friends_requests, "xxxx")
 
-
-
     serializer_friends = AuthorSerializer(friends_requests, many=True, context={'request': request})
-
-
 
     return render(request, 'friends.html', { 'authors':serializer_friends.data , 'current_author': serializer_current.data, 'form': form, 'logged_in_author': current_author })
 
@@ -210,7 +192,6 @@ def sign_up(request, format=None):
                 temp_user = authenticate(username=username, password=raw_password)
 
                 temp_user.email = "fake@gmail.com"
-                new_user = Author.objects.create(user=temp_user, displayName=temp_user.username)
 
                 return HttpResponseRedirect("../login",)
 

@@ -1,11 +1,13 @@
 from django.db import models
-import uuid
 from django_q.tasks import async_task, result
-import requests
-import Posts.models #import Post, ForeignPost
+
 import Authors.models #import Author, ForeignAuthor
+import Posts.models #import Post, ForeignPost
+import requests
+import uuid
 
 class Server(models.Model):
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=1000, null=False, blank=False)
     host = models.URLField(max_length=1000, unique=True)
@@ -16,17 +18,19 @@ class Server(models.Model):
     password = models.CharField(max_length=140, null=False, blank=False, default="test_pass")
     isActive = models.BooleanField(default=True)
 
-
-
     def getUsername(self):
+
         return self.username
+
     def getPassword(self):
+
         return self.password
+
     def isServerActive(self):
+
         return self.isActive
 
     def createAuthors(self,data):
-
 
         for authors in task.result['authors']:
 
@@ -36,15 +40,12 @@ class Server(models.Model):
             email= authors["email"]
 
             if ( Author.objects.filter(id=author_uuid)):
+
                 pass
-
-
-
 
     def retrieveAuthors(self):
 
         URL = self.posts_endpoint
-
         location = self.name
 
         PARAMS = {
@@ -56,47 +57,40 @@ class Server(models.Model):
 
         session = requests.Session()
         session.auth = (self.username, self.password)
-
         r = session.get(url= URL)
-
         data = r.json()
 
         print(data, "our data retrieved")
-
 
         foreign_post = (data["posts"])
 
         for post in foreign_post:
 
             foreign_author = post["author"]
-
             foreign_author_uuid = foreign_author["id"].split("/")[-1]
 
             # only pavlov server works right now.
 
             if(foreign_author["id"].split("/")[2] != "social.hydrated.app"):
+
                 continue
 
-
             try:
+
                 Author.objects.get(id = foreign_author_uuid)
                 
             except Author.DoesNotExist:
 
-
-
                 request2 = session.get(url = foreign_author["id"],)
-
-
-                #request2 = requests.get(url = foreign_author["id"], data= PARAMS)
-
 
                 print(foreign_author["id"])
                 data2 = request2.json()
                 print(data2)
 
                 try:
+
                     print("sideways", data2["id"].split("/")[-1])
+
                     new_id = (data2["id"].split("/")[-1])
                     Author.objects.get(id = (data2["id"].split("/")[-1]))
 
@@ -116,32 +110,29 @@ class Server(models.Model):
                         url = url,
                         displayName = displayName,
                     )
+
                     for friend in friends:
+
                         new_author.friends.add(friend)
 
         return data
-
-
-
-
 
     def updateAuthors(self):
         
         data = self.retrieveAuthors()
 
-
         #async_task(retrieveAuthors, hook = createAuthors)
-
-
-
 
     def createPosts(self,data):
 
-        
         for post in data['posts']:
+
             try:
+
                 ForeignPost.objects.get(id = post['id'])
+
             except ForeignPost.DoesNotExist:
+
                 ForeignPost.objects.create(
                     id = post['id'],
                     author=post["author"],
@@ -181,11 +172,8 @@ class Server(models.Model):
             # )
             # newPost.save()
 
-
-
-
-
     def retrievePosts(self):
+
         URL = self.posts_endpoint
         location = self.name
         
@@ -196,17 +184,16 @@ class Server(models.Model):
 
         session = requests.Session()
         session.auth = (self.username, self.password)
-
         r = session.get(url= URL)
-
         #r = requests.get(url= URL)
-
         data = r.json()
         return data
 
 
     def updatePosts(self):
+
         data = self.retrievePosts()
+
         self.createPosts(data)
         #self.createPosts(data)
         #async_task(self.retrievePosts, hook = self.createPosts)

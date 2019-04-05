@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block head %}
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -47,7 +48,9 @@
       <!-- The body contains 2 input boxes which are the username, password and the login button. -->
       <div class="card-body">
         <form name = "get_user" method="POST">
+
           {% csrf_token %}
+
           <div class="input-group form-group">
             <div class="input-group-prepend">
               <span class="input-group-text"><i style="max-width:100%;" class="fas fa-user-graduate fa-lg"></i></span>
@@ -55,6 +58,7 @@
               <!-- Username input -->
               <!-- Username Form and styling found in forms.py -->
               {{form.username}}
+
             </div>
           </div>
           <div class="input-group form-group">
@@ -64,6 +68,7 @@
                 <!-- Passwore input -->
                 <!-- Passwore Form and styling found in forms.py -->
                 {{form.password}}
+
               </div>
           </div>
 
@@ -82,4 +87,5 @@
     </div>
   </div>
 </div>
+
 {% endblock %}

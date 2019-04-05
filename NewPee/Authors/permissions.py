@@ -1,5 +1,5 @@
-from rest_framework import permissions
 from Authors.models import Author
+from rest_framework import permissions
 
 class IsOwnerOrReadOnlyAuthor(permissions.BasePermission):
 

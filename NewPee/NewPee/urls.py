@@ -13,31 +13,29 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.conf.urls import include, url
-from django.urls import path
-from views.author_views import log_in, sign_up, logout_view, get_author, get_authors,redirect, feed, respond_to_friends
-from views import api_views
 
 from Authors.views import AuthorList, AuthorDetail, AuthorfriendsView, AuthorIsfriendsView, AuthorFriendRequestsView, AuthorFriendRequestActionsView, AuthorUpdateFriendRequestsView
-#import Authors.views
-from Posts.views import PostList, PostDetail
-
-from rest_framework.urlpatterns import format_suffix_patterns
-from rest_framework.documentation import include_docs_urls
-from django.conf.urls.static import static
 from django.conf import settings
+from django.conf.urls.static import static
+from django.conf.urls import include, url
+from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.urls import path
+from Posts.views import PostList, PostDetail
+from rest_framework import routers
+from rest_framework.documentation import include_docs_urls
 from rest_framework_swagger.views import get_swagger_view
+from rest_framework.urlpatterns import format_suffix_patterns
+from views import api_views
+from views.author_views import log_in, sign_up, logout_view, get_author, get_authors,redirect, feed, respond_to_friends
 
 API_TITLE = "API Documentation"
 API_DESCRIPTION = 'Built-in interactive API documentation for NewPee.'
 
 schema_view = get_swagger_view(title='Documentation')
 
-from rest_framework import routers
-
 urlpatterns = [
+
     # Login, Signup and Logout
     # path('',log_in), Root should be home if user is logged in
     #path('login/', log_in),
@@ -61,10 +59,8 @@ urlpatterns = [
     #TODO
     # http://service/author/{AUTHOR_ID}/posts (all posts made by {AUTHOR_ID} visible to the currently authenticated user)
 
-
     #TODO 
     # http://service/posts/{post_id}/comments access to the comments in a post
-
 
     path('friends/<uuid:pk>', AuthorDetail.as_view()),
 
@@ -80,8 +76,6 @@ urlpatterns = [
 
     path('authors/friends', respond_to_friends, name="friends"), #TODO: Update
 
-
-
     # Post Modal View
     path('posts/<uuid:pk>', PostDetail.as_view(), name="post_page"),
 
@@ -92,12 +86,10 @@ urlpatterns = [
     path('home/', AuthorList.as_view(), name="home"),
     path('logout/', logout_view, name="logout"),
 
-
     path('authors/', get_author, name="get_author"),
 
     # Friend Request
     path('api/friendrequest', AuthorUpdateFriendRequestsView.as_view(), name = "api-friendrequest"),    # how to send a friend request.
-
 
     # FRIENDS
     path('api/author/<uuid:pk>/friends/', AuthorfriendsView.as_view(), name="api-friendlist"),      # GET Return query of friends, # POST a list of authors, returns 
@@ -116,8 +108,8 @@ urlpatterns = [
 # https://www.django-rest-framework.org/topics/documenting-your-api/
 # https://docs.djangoproject.com/en/2.1/topics/http/urls/
 # https://www.django-rest-framework.org/api-guide/format-suffixes/
-
 #urlpatterns = format_suffix_patterns(urlpatterns)
 
 if settings.DEBUG:
+    
     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

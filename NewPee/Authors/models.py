@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
-import uuid
-import requests
-import NewPee.settings
-import Servers.models
 from itertools import chain
+import NewPee.settings
+import requests
+import Servers.models
+import uuid
+
 #from Servers.models import Server
 
 # Author represents a user that creates posts
@@ -19,13 +20,12 @@ class Author(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     posts_created = models.PositiveIntegerField(default=0)  # correspond to a unique_id
     image = models.ImageField(upload_to="profile_image", blank=True, default='NewPee.png')
-
     github_url = models.URLField(blank=True)
-
     friends = models.ManyToManyField("self", related_name="_friends", blank=True)
     following = models.ManyToManyField("self", related_name="_following", symmetrical=False, blank=True)
     followers = models.ManyToManyField("self", related_name="_followers", symmetrical=False, blank=True)
     friend_requests = models.ManyToManyField("self", related_name="_friend_requests", symmetrical=False, blank=True)
+
     Admin = models.BooleanField(default=False)
 
     # Only Admin can Change.
@@ -43,7 +43,6 @@ class Author(models.Model):
             return self.displayName
 
     # All "get" functions for username, password, email, etc... are inherited from Django User
-
     def get_author_id(self):
 
         return self.id
@@ -147,21 +146,21 @@ class Author(models.Model):
             
             print(author, self)
             print("added follower")
-            self.followers.add(author)  # he is our follower.
 
+            self.followers.add(author)  # he is our follower.
 
         # we are already following the user.
         if (author in self.following.all()):
 
             # add author locally and then send a request to their server
             self.friends.add(author)
+
             author.add_friend(self)
 
             # we are adding an author from a different server.
             if(author.host != HOSTNAME):
 
                 self.send_foreign_request(author)
-
 
     # adding a friend to our request so we don't have notification but they are our still following us
     def add_friend_request(self, author):
@@ -171,7 +170,6 @@ class Author(models.Model):
     def get_declined_requests(self):
 
         return  list(chain(self.friend_requests.all(), self.friends.all()))
-
 
     # send a friend request to foreign server    
     def send_foreign_request(self, author ):
@@ -188,7 +186,6 @@ class Author(models.Model):
         # send a request to foreign server
         session = requests.Session()
         session.auth = (foreignServer.getUsername, foreignServer.getPassword)
-        r = session.post(url= foreignServer.getfriendURL, data = PARAMS)
 
     # we have recieved a friend request from the author
     def send_friend_request(self, author):
@@ -218,6 +215,7 @@ class Author(models.Model):
 
     # Remove an existing friend
     def remove_friend(self):
+        
         self.friends.remove(author)
 
 #TODO: FIX 
@@ -227,13 +225,11 @@ class ForeignAuthor(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     url = models.URLField(max_length=1000, null=True,blank=True)
     host = models.URLField(default="newpee.herokuapp.com/")
-
     displayName = models.CharField(max_length=15)
     bio = models.TextField(max_length=500, blank=True)
     posts_created = models.PositiveIntegerField(default=0)  # correspond to a unique_id
     picture = models.URLField(blank=True)
     github_url = models.URLField(blank=True)
-
     friends = models.ManyToManyField(Author, related_name="_friendsForeign", blank=True)
     following = models.ManyToManyField(Author, related_name="_followingForeign", symmetrical=False, blank=True)
     followers = models.ManyToManyField(Author, related_name="_followersForeign", symmetrical=False, blank=True)

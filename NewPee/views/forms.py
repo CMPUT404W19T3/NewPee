@@ -30,11 +30,11 @@ class UserNameForm(UserCreationForm):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
-class postTitleForm(forms.Form):
+class PostTitleForm(forms.Form):
 
     post_title = forms.CharField(label="username", max_length=100)
 
-class postInfoForm(forms.Form):
+class PostInfoForm(forms.Form):
 
     post_info = forms.CharField(label="username", max_length=100)
 
@@ -51,7 +51,7 @@ class SearchForm(forms.Form):
     search = forms.CharField(label="search", max_length=50,
                     widget=forms.TextInput(attrs={'placeholder': 'Search for authors', 'id': 'ajax', 'list': 'ajax_authors', 'class': 'form-control'}))
 
-class passwordLoginForm(forms.Form):
+class PasswordLoginForm(forms.Form):
 
     password = forms.CharField(label="username", max_length=100)
 

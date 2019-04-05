@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ["*"] if DEBUG else ['newpee.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
+    
     'Authors',
     'Posts',
     'Servers',
@@ -95,8 +96,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
 }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -147,5 +146,6 @@ LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_URL = '/login'
 
 if '/app' in os.environ['HOME']:
+    
     import django_heroku
     django_heroku.settings(locals())

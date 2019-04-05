@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from .Authors import Author
-from .Posts import Post, Comment
-
+import Author
+import Post, Comment
 
 # Register models.
 

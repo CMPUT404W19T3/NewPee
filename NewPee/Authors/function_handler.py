@@ -1,7 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import User
-import uuid
+from django.db import models
 from models import Author
+
+import uuid
 
 def check_friend_status(User1ID, User2ID):
 

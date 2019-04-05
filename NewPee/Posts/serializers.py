@@ -1,9 +1,10 @@
-from rest_framework import serializers
-from Posts.models import Post, Comment, ForeignPost
 from Authors.models import Author, User
 from Authors.serializers import AuthorSerializer, UserSerializer
+from Posts.models import Post, Comment, ForeignPost
+from rest_framework import serializers
 
 class PostSerializer(serializers.ModelSerializer):
+
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey('Authors.Author', on_delete=models.CASCADE , null=False, blank=False, related_name="author")
@@ -29,24 +30,20 @@ class PostSerializer(serializers.ModelSerializer):
 
     author = AuthorSerializer(many=False, read_only=True, )
 
-
-
     class Meta:
+
         model = Post
         fields = ('id', 'author', 'title', 'source', 'origin', 'description', 'content', 'content_type', 'post_date', 'visibility', 'visible_to', 'unlisted')
         lookup_field = 'id'
-
-
-
 
     # custom save method to work with visible_To
     '''
     def save(self,visible_to):
 
-
         print(self.validated_data)
 
         try:
+
             id =  self.validated_data['id']
             author =  self.validated_data['author']
             title =  self.validated_data['title']
@@ -59,12 +56,11 @@ class PostSerializer(serializers.ModelSerializer):
             visibility =  self.validated_data ['visibility']
             #visible_to.set(visible_to)
             unlisted =  self.validated_data ['unlisted']
+
         except:
+            
             pass
     '''
-        
-
-
 
     def create(self, validated_data):
 
@@ -75,25 +71,26 @@ class PostSerializer(serializers.ModelSerializer):
 
         return Post.objects.create(**validated_data)
 
-
     def to_internal_value(self, data):
+
         #print('\n')
         #print(data, "\n")
         internal_value = super(PostSerializer, self).to_internal_value(data)
         author = data.get("author")
         stripped_id = author["id"].split("/",5)
         author_object = Author.objects.get( id= stripped_id[5])
-
-
         internal_value.update({"author":author_object})
 
         #my_non_model_field_value = ConvertRawValueInSomeCleverWay(my_non_model_field_raw_value)
         #internal_value.update({"my_non_model_field": my_non_model_field_value})
+
         print("Post serializer finished")
+
         return internal_value
 
 
 class CommentSerializer(serializers.ModelSerializer):
+
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     parent = models.ForeignKey('Post', on_delete=models.CASCADE , null=False,blank=False)
@@ -103,12 +100,12 @@ class CommentSerializer(serializers.ModelSerializer):
     """
 
     class Meta:
+
         model = Comment
         fields = ('id', 'parent', 'author', 'content', 'post_date')
 
-
-
 class ForeignPostSerializer(serializers.ModelSerializer):
+
     '''
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.URLField(null=False, blank=False)
@@ -121,14 +118,15 @@ class ForeignPostSerializer(serializers.ModelSerializer):
     visibility = models.CharField(max_length=10, choices=visibility_choices, default="PUBLIC")
     unlisted = models.BooleanField(default=False)
     '''
+
     #author = AuthorSerializer(many=False, read_only=True, )
 
     class Meta:
+
         model = ForeignPost
         fields = ('id', 'author', 'title', 'source', 'origin', 'description', 'content', 'post_date', 'visibility', 'unlisted')
         lookup_field = 'id'
 
- 
     # def create(self, validated_data):
 
     #     #print(self.validated_data)
@@ -138,8 +136,8 @@ class ForeignPostSerializer(serializers.ModelSerializer):
 
     #     return ForeignPost.objects.create(**validated_data)
 
-
     # def to_internal_value(self, data):
+    
     #     #print('\n')
     #     #print(data, "\n")
     #     internal_value = super(ForeignPostSerializer, self).to_internal_value(data)

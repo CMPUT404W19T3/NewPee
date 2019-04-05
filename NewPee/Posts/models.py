@@ -1,11 +1,12 @@
-from django.db import models
-import json
-import datetime
-import uuid
 from django.contrib.auth.models import User
+from django.db import models
 from django.db.models.fields.files import ImageField
-import Authors.models
 from NewPee import settings
+
+import Authors.models
+import datetime
+import json
+import uuid
 
 # Post model represents post,
 # stores an unique id, author which is a user model, title, body, image and a timestamp
@@ -18,7 +19,6 @@ class Post(models.Model):
     author = models.ForeignKey('Authors.Author', on_delete=models.CASCADE , null=True, blank=False, related_name="author")
     #author = models.CharField(max_length=140, null=False,blank=False)
     # author = models.ForeignKey(User)
-
     title = models.CharField(max_length=100, null=False, blank=False)
     #source = lastplaceigotthisfrom, origin = whereitcamefrom
     source = models.URLField(null=True,blank=True)
@@ -46,29 +46,36 @@ class Post(models.Model):
     unlisted = models.BooleanField(default=False)
 
     def get_id(self):
+        
         return self.id
 
     def get_author(self):
+
         return self.author
 
     def get_title(self):
+
         return self.title
 
     def get_body(self):
+
         return self.body
 
     def set_image(self,image_url):
+
         self.image = image_url
 
     def get_image(self):
+
         return self.image
 
     def get_post_date(self):
+
         return self.post_date
 
     def set_visible_to(self,visible_to):
-        self.visible_to.add(visible_to)
 
+        self.visible_to.add(visible_to)
 
     def privateViewAccess(self, viewing_author):
 
@@ -77,25 +84,31 @@ class Post(models.Model):
         print("\n\n")
 
         if(viewing_author in self.visible_to.all()):
+            
             return True
+            
         else:
 
             return False
 
-
     def friendViewAccess(self,viewing_author):
 
         if (viewing_author in self.author.friends.all()):
+            
             return True
+
         else:
+
             return False
 
     def FOAFViewAccess(self, viewing_author):
 
         for friend in self.author.friends.all():
+
             for FofFriend in friend.friends.all():
 
                 if(viewing_author == FofFriend):
+
                     return True
 
         return False
@@ -103,24 +116,18 @@ class Post(models.Model):
     def ServerViewAcces(self,viewing_author):
 
         if (viewing_author.host != settings.HOSTNAME):
-            return False
-        else:
-            return True
 
+            return False
+
+        else:
+
+            return True
 
     def getUnlisted(self):
 
         return self.unlisted    
 
-
     #def ServerViewAcces(self, viewing_author):
-
-
-
-
-
-
-
 
 #Comment class represents comment,
 #stores an unique id, a parent post, author and body
@@ -134,18 +141,23 @@ class Comment(models.Model):
     post_date = models.DateTimeField(auto_now_add=True)
 
     def get_id(self):
+
         return self.id
 
     def get_parent(self):
+
         return self.parent
 
     def get_author(self):
+
         return self.author
 
     def get_body(self):
+
         return self.body
 
     def get_post_date(self):
+
         return self.post_date
 
 '''
@@ -155,24 +167,21 @@ https://stackoverflow.com/questions/18747730/storing-images-in-db-using-django-m
 '''
 
 class Photo(models.Model):
-    #
+
     viewers = models.ManyToManyField(User)
     photo = models.ImageField(upload_to='media/')
 
 # class ImageModel(models.Model):
 #     model_img = models.ImageField(upload_to = 'media/', default = 'media/None/no-img.jpg')
 
-
 class ForeignPost(models.Model):
 
     # override Django id
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
     # have to change to a user model
     #author = models.ForeignKey('Authors.Author', on_delete=models.CASCADE , null=False, blank=False, related_name="author")
     author = models.URLField(max_length=1000, null=False, blank=False)
     # author = models.ForeignKey(User)
-
     title = models.CharField(max_length=30, null=False, blank=False)
     #source = lastplaceigotthisfrom, origin = whereitcamefrom
     source = models.URLField(null=True,blank=True)

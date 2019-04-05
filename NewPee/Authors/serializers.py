@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from Authors.models import Author, User
+from rest_framework import serializers
 
 # https://medium.freecodecamp.org/nested-relationships-in-serializers-for-onetoone-fields-in-django-rest-framework-bdb4720d81e6
 
@@ -22,7 +22,6 @@ class AuthorSerializer(serializers.ModelSerializer):
     posts_created = models.PositiveIntegerField(default=0)  # correspond to a unique_id
     picture = models.URLField(blank=True)
     github_url = models.URLField(blank=True)
-
     friends = models.ManyToManyField("self", blank=True)
     following = models.ManyToManyField("self", symmetrical=False, blank=True)
     '''
