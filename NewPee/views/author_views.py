@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from Posts.models import Post
@@ -26,48 +27,60 @@ def logout_view(request):
 
     logout(request)
 
-    return redirect('/login')
+    return redirect(reverse('logout'))
 
 def log_in(request, format=None):
 
-        if request.method == 'POST':
+    form = UserLoginForm(request.POST or None)
 
-            form = UserLoginForm(request.POST)
+    if request.POST and form.is_valid():
+        user = form.login(request)
+        if user:
+            author = Author.objects.get(user=user)
+            if (author.isAuthorized):
+                login(request, user)
+            return HttpResponseRedirect(reverse('get_author'), {'form': form})
+    return render(request, 'registration/login.html', {'form': form})
 
-            if form.is_valid():
+        # if request.method == 'POST':
 
-                #form.save()
+        #     form = UserLoginForm(request.POST)
 
-                username = form.cleaned_data.get('username')
-                password = form.cleaned_data.get('password')
+        #     if form.is_valid():
 
-                user = authenticate(username=username, password=password)
+        #         #form.save()
 
-                if user is not None:
+        #         username = form.cleaned_data.get('username')
+        #         password = form.cleaned_data.get('password')
 
-                    author = Author.objects.get(user=user)
+        #         user = authenticate(username=username, password=password)
 
-                    if (author.isAuthorized):
+        #         if user is not None:
 
-                        login(request, user)
+        #             author = Author.objects.get(user=user)
 
-                        return HttpResponseRedirect('../authors/', {'form': form})
+        #             if (author.isAuthorized):
 
-                    else:
+        #                 login(request, user)
 
-                        return render(request, 'registration/login.html',{'form': form, 'approved': author.isAuthorized})
+        #                 return HttpResponseRedirect(reverse('get_author'), {'form': form})
 
-                return render(request, 'registration/login.html', {'form': form}, status=401)
+        #             else:
 
-            else:
+        #                 return render(request, 'registration/login.html',{'form': form, 'approved': author.isAuthorized})
+
+        #         return render(request, 'registration/login.html', {'form': form}, status=401)
+
+        #     else:
                 
-                return render(request, 'registration/login.html', {})
+        #         return render(request, 'registration/login.html', {'form': form})
 
-        else:
+        # # Not a POST?
+        # else:
 
-            form = UserLoginForm()
+        #     form = UserLoginForm()
 
-            return render(request, 'registration/login.html', {'form': form})
+        #     return render(request, 'registration/login.html', {'form': form})
 
 def redirect(request, format=None):
 
@@ -192,6 +205,7 @@ def sign_up(request, format=None):
                 temp_user = authenticate(username=username, password=raw_password)
 
                 temp_user.email = "fake@gmail.com"
+                Author.objects.create(user=temp_user, displayName=temp_user.username)
 
                 return HttpResponseRedirect("../login",)
 
