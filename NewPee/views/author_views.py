@@ -192,6 +192,7 @@ def sign_up(request, format=None):
                 temp_user = authenticate(username=username, password=raw_password)
 
                 temp_user.email = "fake@gmail.com"
+                Author.objects.create(user=temp_user, displayName=temp_user.username)
 
                 return HttpResponseRedirect("../login",)
 
