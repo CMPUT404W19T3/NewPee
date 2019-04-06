@@ -1,8 +1,3 @@
-
-
-
-
-
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -20,39 +15,19 @@ function getCookie(name) {
 }
 
 var csrftoken = getCookie('csrftoken');
-
-
 $(document).ready(function(){
-
-
-
-
-
-
     console.log("JS Working");
-
-
     var reject_button = document.querySelectorAll("#decline_Post_Button");
     var accept_button = document.querySelectorAll("#accept_Post_Button");
     var author_ids = document.querySelectorAll("#author_id");
-    
-    var array_num = new Array();
-
     //var allButtonsOnPage = document.querySelectorAll('button');
-    
     var logButtonIndex = function(buttonIndex) {
         console.log('buttonIndex:', buttonIndex);
       }
-
-
     console.log(author_ids);
     console.log(reject_button);
-
     console.log(author_ids[0])
-
     /*
-
-
     {
 	"query":"friendrequest",
 	"author": {
@@ -66,49 +41,30 @@ $(document).ready(function(){
 		"host":"http://127.0.0.1:5454/",
 		"displayName":"Lara Croft",
                 "url":"http://127.0.0.1:5454/author/de305d54-75b4-431b-adb2-eb6b9e546013",
-
 	}
 }
 
 */
     var imageArray = new Array();
-   
     for( var i = 0; i <= (author_ids.length); i++){
-    
-    imageArray[i] = accept_button[i];
-
+        imageArray[i] = accept_button[i];
     }
-
-
     console.log(imageArray)
-
     function sendRequest(i){
-
-
-
         data = {};
         author = {};
         friend = {};
-
-
         author["id"] = user_id;
         author["host"] = user_host;
         author["displayName"] = user_displayName;
         author["user_url"] = user_url;
-
-       console.log(  i );
-
+        console.log(  i );
         friend["id"] = author_ids[i].innerHTML;
-
         console.log(friend)
-
-
-
         data["query"] = "friendrequest";
         data["type"] = "local_add";
         data["author"] = author;
         data["friend"] = friend;
-
         $.ajax({
             type: "POST",
             url: "/api/friendrequest",
@@ -122,33 +78,23 @@ $(document).ready(function(){
             error: function (e) {
                 console.log("ERROR: ", e);
             }
-    
         });
     }
 
     function declineRequest(i){
-
         data = {};
         author = {};
         friend = {};
-
-
         author["id"] = user_id;
         author["host"] = user_host;
         author["displayName"] = user_displayName;
         author["user_url"] = user_url;
-
-
         friend["id"] = author_ids[i].innerHTML;
-
         console.log(friend)
-
-
         data["query"] = "declinerequest";
         data["type"] = "local_add";
         data["author"] = author;
         data["friend"] = friend;
-
         $.ajax({
             type: "POST",
             url: "/api/friendrequest",
@@ -162,25 +108,17 @@ $(document).ready(function(){
             error: function (e) {
                 console.log("ERROR: ", e);
             }
-    
         });
-
-
     }
 
-
-    
     // LOOP Through our accept buttons
-
     for (let j = 0; j < accept_button.length; j++) {
         let button = accept_button[j];
         button.addEventListener('click', function() {
             logButtonIndex(j);
             sendRequest(j);
         });
-      }
-
-
+    }
       for (let j = 0; j < reject_button.length; j++) {
         let button = reject_button[j];
         button.addEventListener('click', function() {
@@ -189,17 +127,11 @@ $(document).ready(function(){
         });
       }
 
-
-
-    
-
     /*
     reject_button[i].addEventListener('click', event => {
-
         value = i;
         console.log("clicked");
         alert("yet");
-
         $.ajax({
             type: "POST",
             url: "api/author/<uuid:pk>/decline-friend-request/",
@@ -214,29 +146,11 @@ $(document).ready(function(){
             error: function (e) {
                 console.log("ERROR: ", e);
             }
-    
         });
-
-
-
     });
-
-
     accept_button[i].addEventListener('click', event => {
-
-        
-        
-
-
-
     });
     }
-
-
     i = 0;
-    
     */
-
-
-
 });

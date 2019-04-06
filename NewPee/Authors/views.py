@@ -65,10 +65,8 @@ class AuthorDetail(APIView):
             
             author = self.get_object(pk)
             author_serializer = AuthorSerializer(author, context = {'request': request})
-
             logged_in_author = Author.objects.get(user = request.user)
             logged_in_author_serializer = AuthorSerializer(logged_in_author, context= {'request': request})
-
             form = SearchForm()
             #print("\n\nSEARCH:", request.GET.get('search'))
             search = request.GET.get('search')
@@ -88,7 +86,6 @@ class AuthorDetail(APIView):
                 post_serializer = PostSerializer(posts, many=True,context={'request': request})
                 foreignposts = ForeignPost.objects.all()
                 foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True, context={'request': request})
-
                 posts = api_views.post_list(request._request)
 
                 #posts.data.exclude(id=author["id"])

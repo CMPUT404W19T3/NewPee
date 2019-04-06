@@ -15,43 +15,26 @@ function getCookie(name) {
 }
 
 var csrftoken = getCookie('csrftoken');
-
 var post_url = location.pathname;
 var post_uuid = post_url.split("/")[2];
 
 console.log(post_uuid)
 
-
 $(document).ready(function(){
 
-    
-    
     const elementMakeComment = document.getElementById("comment_creation_submit");
     var userID = document.getElementById("userID").value;
     var userUUID = userID.split("/")[5];
     var user_api_url = "/api/authors/" + userID;
     const deletePostButton = document.querySelector("#remove_post_submit");
     const editPostButton = document.querySelector("#edit_Post_Button");
-
     var author;
-    
-
-  
-
-    
-
-    editPostButton.addEventListener('click', event =>{
-
-    });
-
-
 
     deletePostButton.addEventListener('click', event =>{
         //event.preventDefault();
         console.log(userUUID);
         console.log(userID);
         console.log("DELETING");
-
         
         $.ajax({
             type: "GET",
@@ -64,7 +47,6 @@ $(document).ready(function(){
                 var data = {};
                 data["posts_created"] = author.posts_created - 1;
                 console.log(JSON.stringify(data));
-
 
                 $.ajax({
                     type: "PATCH",
@@ -87,10 +69,6 @@ $(document).ready(function(){
             }
         });
 
-    
-
-        
-
         $.ajax({
             type: "DElETE",
             async: false,
@@ -105,19 +83,13 @@ $(document).ready(function(){
                 console.log("ERROR: ", e);
             }
         });
-        
-
         location.pathname = "/authors/" + userUUID;
     });
 
-
-    elementMakeComment.addEventListener('submit', event => {
-        
+    elementMakeComment.addEventListener('submit', event => {        
         //event.preventDefault();
         // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
-        
         var postID = location.pathname.split("/")[2];
-
         var comment = document.querySelector("#comment").value;
         var data = JSON.stringify({
             parent: postID,
@@ -130,7 +102,6 @@ $(document).ready(function(){
             
         // Goes to post_created
         // author.view post_created view
-            
         $.ajax({
             type: "POST",
             async: false,
@@ -147,6 +118,4 @@ $(document).ready(function(){
             }
         });
     });
-
-
 });
