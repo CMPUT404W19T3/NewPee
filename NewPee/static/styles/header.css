@@ -42,9 +42,9 @@ html, body{
   top: 4.8rem;
   background: linear-gradient(-90deg, #18314f, #36558f, #8bbeb2, #e6f9af);
 	background-size: 400% 400%;
-	-webkit-animation: Gradient 10s ease infinite;
-	-moz-animation: Gradient 10s ease infinite;
-	animation: Gradient 10s ease infinite;
+	-webkit-animation: Gradient 5s ease infinite;
+	-moz-animation: Gradient 5s ease infinite;
+	animation: Gradient 5s ease infinite;
 }
 
 .dropdown-content {

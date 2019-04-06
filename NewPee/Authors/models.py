@@ -19,7 +19,7 @@ class Author(models.Model):
     displayName = models.CharField(max_length=15)
     bio = models.TextField(max_length=500, blank=True)
     posts_created = models.PositiveIntegerField(default=0)  # correspond to a unique_id
-    image = models.ImageField(upload_to="profile_image", blank=True, default='NewPee.png')
+    image = models.ImageField(upload_to="profile_image", blank=True, default='media/NewPee.png')
     github_url = models.URLField(blank=True)
     friends = models.ManyToManyField("self", related_name="_friends", blank=True)
     following = models.ManyToManyField("self", related_name="_following", symmetrical=False, blank=True)
