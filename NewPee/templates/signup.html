@@ -28,69 +28,70 @@
 <!-- This container has the input boxes for creating a profile: First Name, Last Name, Username, Email, Password -->
 <div class="container">
     <div class="d-flex justify-content-center h-100">
-    <div class="card">
-        <div class="card-header">
-        <h3>Sign Up</h3>
-        </div>
-        <div class="card-body">
+      <div class="card">
+          <div class="card-header">
+          <h3>Sign Up</h3>
+          </div>
+          <div class="card-body">
             <form enctype="multipart/form-data" method="post">
-                {% csrf_token %}
-                
-                <!-- First Name Form and styling found in forms.py -->
-                <div class="input-group form-group">
-                    {{form.first_name}}
-                </div>
+              {% csrf_token %}
+              
+              <!-- First Name Form and styling found in forms.py -->
+              <div class="input-group form-group">
+                  {{form.first_name}}
+              </div>
 
-                <!-- Last Name Form and styling found in forms.py -->
-                <div class="input-group form-group">
-                    {{form.last_name}}
-                </div>
+              <!-- Last Name Form and styling found in forms.py -->
+              <div class="input-group form-group">
+                  {{form.last_name}}
+              </div>
 
-                <!-- Username Form and styling found in forms.py -->
-                <div class="input-group form-group">
-                    {{form.username}}
-                </div>
+              <!-- Username Form and styling found in forms.py -->
+              <div class="input-group form-group">
+                  {{form.username}}
+              </div>
 
-                <!-- Email Form and styling found in forms.py -->
-                <div class="input-group form-group">
-                    {{form.email}}
-                </div>
+              <!-- Email Form and styling found in forms.py -->
+              <div class="input-group form-group">
+                  {{form.email}}
+              </div>
 
-                <!-- Password Form and styling found in forms.py -->
-                <div class="input-group form-group">
-                    {{form.password1}}
-                </div>
+              <!-- Password Form and styling found in forms.py -->
+              <div class="input-group form-group">
+                  {{form.password1}}
+              </div>
 
-                <!-- Confirm Password Form and styling found in forms.py -->
-                <div class="input-group form-group">
-                    {{form.password2}}
-                </div>
+              <!-- Confirm Password Form and styling found in forms.py -->
+              <div class="input-group form-group">
+                  {{form.password2}}
+              </div>
 
-                <!-- Submit Button for Account Creations -->
-                <div class="form-group">
-                    <input type="submit" value="Create Account" class="btn float-right signup_btn">
-                </div>
-            </form>
-        </div>
-        <div class="input-group form-group">
-                <div class="input-group-prepend">
+              <span class="input-group-prepend">
                   {% if form.errors %}
+                  <ul>
                     {% for field in form %}
                       {% for error in field.errors %}
                         <div class="alert alert-danger">
-                          <strong>{{ error|escape }}</strong>
+                          <li><strong>{{ error|escape }}</strong></li>
                         </div>
                       {% endfor %}
                     {% endfor %}
                     {% for error in form.non_field_errors %}
                       <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
+                        <li><strong>{{ error|escape }}</strong></li>
                       </div>
                     {% endfor %}
+                  </ul>
                   {% endif %}
-                </div>
-            </div>
-    </div>
+                </span>
+
+              <!-- Submit Button for Account Creations -->
+              <input type="submit" value="Create Account" class="btn float-right signup_btn">
+              
+            </form>
+          </div>
+      </div>
     </div>
 </div>
+
 {% endblock %}
