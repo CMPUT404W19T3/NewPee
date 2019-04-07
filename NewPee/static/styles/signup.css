@@ -85,9 +85,20 @@ html, body {
 
 .card-footer {
     border-top: 1px solid #36558f;
-    
 }
 
 input, label {
     display:block;
+}
+
+.alert-danger {
+    font-size: 0.75rem;
+    padding: 0px;
+    background: transparent;
+    border: transparent;
+    color: red;
+    display: block;
+    align-content: center;
+    margin: auto;
+    margin-top: 1.5rem;
 }
