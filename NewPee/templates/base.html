@@ -18,9 +18,9 @@
     <div class="container">
 
         <input type="hidden" id="userID" value={{ logged_in_author.id }}>
-    
+
         <div class="col-11 row m-4">
-    
+
             <!--left column-->
             <div class="col-3 mx-auto">
                 <div class="profile-pic">
@@ -41,12 +41,12 @@
                 <div class="username">
                     {% if author %}
                         {% if author == logged_in_author %}
-                            <p>{{logged_in_author.displayName}}</p>  
+                            <p>{{logged_in_author.displayName}}</p>
                         {% else %}
                             <p>{{author.displayName}}</p>
                         {% endif %}
                     {% else %}
-                        <p>{{logged_in_author.displayName}}</p>  
+                        <p>{{logged_in_author.displayName}}</p>
                     {% endif %}
                 </div>
                 <div class="stats">
@@ -58,9 +58,9 @@
                                 <p>{{author.posts_created}}</p>
                             {% endif %}
                         {% else %}
-                            <p>{{logged_in_author.posts_created}}</p>  
+                            <p>{{logged_in_author.posts_created}}</p>
                         {% endif %}
-                        
+
                         <p>posts</p>
                     </div>
                     <div class="stat">
@@ -69,9 +69,9 @@
                                 <p>{{logged_in_author.followers|length}}</p>
                             {% else %}
                                 <p>{{author.followers|length}}</p>
-                            {% endif %}
+                            {% endif %}`````````````````````````````````````````````````````````````````````````
                         {% else %}
-                            <p>{{logged_in_author.followers|length}}</p>  
+                            <p>{{logged_in_author.followers|length}}</p>
                         {% endif %}
                         <p>followers</p>
                     </div>
@@ -83,7 +83,7 @@
                                 <p>{{author.following|length}}</p>
                             {% endif %}
                         {% else %}
-                            <p>{{logged_in_author.following|length}}</p>  
+                            <p>{{logged_in_author.following|length}}</p>
                         {% endif %}
                         <p>following</p>
                     </div>
@@ -97,7 +97,7 @@
                             {% if logged_in_author.github_url %}
                                 <a href="{{.github_url}}">{{logged_in_author.github_url}}</a>
                             {% endif %}
-                        {% else %}  
+                        {% else %}
                             {% if author.bio %}
                                 <p>{{author.bio}}</p>
                             {% endif %}
@@ -107,7 +107,7 @@
                         {% endif %}
                     {% endif %}
                     <hr>
-    
+
                     {% if author%}
                         {% if logged_in_author == author %}
                             <button type="button" id="btn-primary" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
@@ -115,20 +115,20 @@
                         <form id="follow_user_submit" method="Post">
                         <button type="submit" id="follow_user_submit_button" class="btn btn-primary col-12">Follow</button>
                         {% endif %}
-    
+
                         </form>
                     {% else %}
                         <button type="button" id="btn-primary" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
                     {% endif %}
                     {% include "./edit_profile_modal.html" %}
                 </div>
-                
+
             </div>
 
         <!--right column-->
         {% block rightColumn %}
         {% endblock %}
-        
+
         </div>
     </div>
 </body>

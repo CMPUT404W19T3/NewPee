@@ -32,11 +32,17 @@ function grabFriendRequest(){
         headers:{"X-CSRFToken": csrftoken},
         success : function(json) {
             data = json;
+<<<<<<< HEAD
             //print(data, "our friend data")         
+=======
+
+            //print(data, "our friend data")
+
+>>>>>>> master
             badge_number.innerHTML = data["size"];
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -53,7 +59,7 @@ function grabUser(){
             console.log(user);
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -61,5 +67,13 @@ function grabUser(){
 const badge_number = document.querySelector("#badge_number");
 var csrftoken = getCookie('csrftoken');
 grabUser();
+<<<<<<< HEAD
 grabFriendRequest();
 });
+=======
+//grabFriendRequest();
+
+
+
+});
+>>>>>>> master

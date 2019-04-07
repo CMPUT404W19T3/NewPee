@@ -20,7 +20,15 @@ $(document).ready(function(){
     var reject_button = document.querySelectorAll("#decline_Post_Button");
     var accept_button = document.querySelectorAll("#accept_Post_Button");
     var author_ids = document.querySelectorAll("#author_id");
+<<<<<<< HEAD
     //var allButtonsOnPage = document.querySelectorAll('button');
+=======
+
+    var array_num = new Array();
+
+    //var allButtonsOnPage = document.querySelectorAll('button');
+
+>>>>>>> master
     var logButtonIndex = function(buttonIndex) {
         console.log('buttonIndex:', buttonIndex);
       }
@@ -46,8 +54,16 @@ $(document).ready(function(){
 
 */
     var imageArray = new Array();
+<<<<<<< HEAD
     for( var i = 0; i <= (author_ids.length); i++){
         imageArray[i] = accept_button[i];
+=======
+
+    for( var i = 0; i <= (author_ids.length); i++){
+
+    imageArray[i] = accept_button[i];
+
+>>>>>>> master
     }
     console.log(imageArray)
     function sendRequest(i){
@@ -74,10 +90,15 @@ $(document).ready(function(){
             success : function(json) {
                 $("#request-access").hide();
                 console.log("requested access complete");
+                location.reload()
             },
             error: function (e) {
                 console.log("ERROR: ", e);
             }
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
         });
     }
 
@@ -108,9 +129,18 @@ $(document).ready(function(){
             error: function (e) {
                 console.log("ERROR: ", e);
             }
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
         });
     }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> master
     // LOOP Through our accept buttons
     for (let j = 0; j < accept_button.length; j++) {
         let button = accept_button[j];
@@ -127,6 +157,13 @@ $(document).ready(function(){
         });
       }
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> master
     /*
     reject_button[i].addEventListener('click', event => {
         value = i;
@@ -146,11 +183,33 @@ $(document).ready(function(){
             error: function (e) {
                 console.log("ERROR: ", e);
             }
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
         });
     });
     accept_button[i].addEventListener('click', event => {
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+>>>>>>> master
     });
     }
     i = 0;
+<<<<<<< HEAD
     */
 });
+=======
+
+    */
+
+
+
+});
+>>>>>>> master

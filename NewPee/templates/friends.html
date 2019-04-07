@@ -26,30 +26,47 @@
 
         console.log(user_id);
 
-    
-    
+
+
 </script>
 
 
 {% endblock %}
 
-
-<h1> {{ authors }} </h1>
-
 {% block rightColumn %}
+
 <div class="col-9 mx-auto">
     <p>{{current_author.displayName}}</p>
- 
-  
+    <h1> Friends </h1>
+{% for author in friends %}
+
+    <div class="authorPost">
+
+
+
+      <h2 class="authorDisplayName">
+          {{ author.displayName }}
+
+      </h2>
+
+
+        <hr>
+
+
+    </div>
+{% endfor %}
+
 {% if authors %}
 <span >{{ user_author }}</span>
+
+<h1> Friend requests</h1>
 
 {% for author in authors %}
 <div class="authorPost">
     <hr>
 
 
-       
+
     <div class ="text-right">
 
         <button id="accept_Post_Button" type="submit" class="btn btn-info btn-sm ">Accept </button>
@@ -61,16 +78,16 @@
 
     <h2 class="authorDisplayName">
         {{ author.displayName }} sent a friend request.
-        
+
     </h2>
     <span id="author_id"> {{ author.id }} </span>
 
-             
-   
-    <a href="/authors/{{author.id}}"> 
+
+
+    <a href="/authors/{{author.id}}">
     {{ author.user.first_name }} {{ author.user.last_name }}
     </a>
-        
+
 </div>
 
 {% endfor %}
