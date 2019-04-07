@@ -260,14 +260,30 @@ def post_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #@login_required(login_url='/login')
+@permission_classes((IsOwnerOrReadOnly, IsOwnerOrReadOnlyAuthor))
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes((IsOwnerOrReadOnly))
 def post_detail(request, pk):
 
     """
     Retrieve, update or delete a Post.
 
     """
+
+    if request.user.is_anonymous:
+        if request.method == 'DELETE':
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+        post = Post.objects.get(pk=pk)
+
+
+        if post.visibility == "PUBLIC":
+
+            serializer = PostSerializer(post, context={'request': request})
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+ 
 
 
     try:
@@ -291,7 +307,7 @@ def post_detail(request, pk):
 
         serializer = PostSerializer(post, context={'request': request})
 
-        return Response(seria4lizer.data)
+        return Response(serializer.data)
 
     elif request.method == 'PUT':
 
