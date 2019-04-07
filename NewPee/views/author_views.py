@@ -15,7 +15,7 @@ from Posts.serializers import PostSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from .api_views import post_list
-from .forms import UserNameForm, UserLoginForm, PostTitleForm, PostInfoForm, PasswordLoginForm, SearchForm
+from .forms import UserCreateForm, UserLoginForm, PostTitleForm, PostInfoForm, PasswordLoginForm, SearchForm
 
 import json
 
@@ -39,7 +39,9 @@ def log_in(request, format=None):
             author = Author.objects.get(user=user)
             if (author.isAuthorized):
                 login(request, user)
-            return HttpResponseRedirect(reverse('get_author'), {'form': form})
+                return HttpResponseRedirect(reverse('get_author'), {'form': form})
+            else:
+                form.authorize_message()
     return render(request, 'registration/login.html', {'form': form})
 
         # if request.method == 'POST':
@@ -177,46 +179,55 @@ def get_authors(request, format=None):
 
 def sign_up(request, format=None):
 
-    if request.method == 'POST':
+    form = UserCreateForm(request.POST or None)
 
-        # form = UserNameForm(request.POST)
-        # form2 = passwordLoginForm(request.POST)
+    if request.POST and form.is_valid():
+        form.save()
+        new_user = form.signup()
+        Author.objects.create(user=new_user, displayName=new_user.username)
+        return HttpResponseRedirect(reverse('login'), {'form': form})
+    return render(request, 'signup.html', {'form': form})
+        
+    # if request.method == 'POST':
 
-        #username = request.POST.get('username')
-        #password = request.POST.get('password')
+    #     # form = UserCreateForm(request.POST)
+    #     # form2 = passwordLoginForm(request.POST)
 
-        #print("Username and password accept.")
-        #print(username, password)
+    #     #username = request.POST.get('username')
+    #     #password = request.POST.get('password')
 
-        # views/forms/form
+    #     #print("Username and password accept.")
+    #     #print(username, password)
 
-        form = UserNameForm(request.POST)
+    #     # views/forms/form
 
-        if form.is_valid():
+    #     form = UserCreateForm(request.POST)
 
-            form.save()
+        # if form.is_valid():
 
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            raw_confirm_password = form.cleaned_data.get('password2')
+            # form.save()
 
-            if raw_password == raw_confirm_password:
+            # username = form.cleaned_data.get('username')
+            # raw_password = form.cleaned_data.get('password1')
+            # raw_confirm_password = form.cleaned_data.get('password2')
 
-                temp_user = authenticate(username=username, password=raw_password)
+            # if raw_password == raw_confirm_password:
 
-                temp_user.email = "fake@gmail.com"
-                Author.objects.create(user=temp_user, displayName=temp_user.username)
+                # temp_user = authenticate(username=username, password=raw_password)
 
-                return HttpResponseRedirect("../login",)
+                # # temp_user.email = "fake@gmail.com"
+                # Author.objects.create(user=temp_user, displayName=temp_user.username)
 
-        return render(request, 'signup.html', {'form': form})
+                # return HttpResponseRedirect("../login",)
 
-    else:
+        # return render(request, 'signup.html', {'form': form})
 
-        form = UserNameForm()
-        #form2 = passwordLoginForm()
+    # else:
 
-        return render(request, 'signup.html', {'form': form})
+    #     form = UserCreateForm()
+    #     #form2 = passwordLoginForm()
+
+    #     return render(request, 'signup.html', {'form': form})
 
 def custom_login(request):
 

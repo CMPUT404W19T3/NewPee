@@ -3,49 +3,48 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
-# Naming and cleanup
-class UserNameForm(UserCreationForm):
+class UserCreateForm(UserCreationForm):
 
-    first_name = forms.CharField(help_text='Required*', label="First Name", max_length=100, 
-                    widget=forms.TextInput(attrs={'placeholder': 'First Name', 'class': 'form-control'}))
+    first_name = forms.CharField(label="First Name", max_length=100, required=True, 
+        widget=forms.TextInput(attrs={'placeholder': 'First Name', 'class': 'form-control'}))
 
-    last_name = forms.CharField(label="Last Name", max_length=100,
-                    widget=forms.TextInput(attrs={'placeholder': 'Last name', 'class': 'form-control'}))
+    last_name = forms.CharField(label="Last Name", max_length=100, required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Last name', 'class': 'form-control'}))
 
-    email = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': 'Email', 'class': 'form-control'}))
+    email = forms.EmailField(label="Email",
+        widget=forms.TextInput(attrs={'placeholder': 'Email', 'class': 'form-control'}))
 
-    username = forms.CharField(label="username", max_length=100,
-                   widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'form-control'}),
-                   error_messages = {'required': "Username is required."})
+    username = forms.CharField(label="username", max_length=100, required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'form-control'}),
+        error_messages = {'required': "Username is required."})
 
-    password1 = forms.CharField(label="password", max_length=100,
-                   widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'form-control'}),
-                   error_messages = {'required': "Password is required."})
+    password1 = forms.CharField(label="password", max_length=100, required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'form-control'}),
+        error_messages = {'required': "Password is required."})
 
-    password2 = forms.CharField(label="password", max_length=100,
-                   widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password', 'class': 'form-control'}),
-                   error_messages = {'required': "Passwords do not match."})
+    password2 = forms.CharField(label="password", max_length=100, required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password', 'class': 'form-control'}),
+        error_messages = {'required': "Passwords do not match."})
 
     class Meta:
-
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+    
+    def signup(self):
+        username = self.cleaned_data.get('username')
+        password1 = self.cleaned_data.get('password1')
+        new_user = authenticate(username=username, password=password1)
 
-class PostTitleForm(forms.Form):
+        return new_user
 
-    post_title = forms.CharField(label="username", max_length=100)
-
-class PostInfoForm(forms.Form):
-
-    post_info = forms.CharField(label="username", max_length=100)
 
 class UserLoginForm(forms.Form):
 
     username = forms.CharField(label="username", max_length=100, required=True, 
-    widget=forms.TextInput(attrs={'placeholder': 'Username',  'class': 'form-control'}))
+        widget=forms.TextInput(attrs={'placeholder': 'Username',  'class': 'form-control'}))
 
     password = forms.CharField(label="password", required=True,
-    widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'form-control'}))
+        widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'form-control'}))
 
     def clean(self):
         username = self.cleaned_data.get('username')
@@ -60,6 +59,17 @@ class UserLoginForm(forms.Form):
         password = self.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         return user
+    
+    def authorize_message(self):
+        raise forms.ValidationError("User needs to be authorized by a Server Administrator.")
+
+class PostTitleForm(forms.Form):
+
+    post_title = forms.CharField(label="username", max_length=100)
+
+class PostInfoForm(forms.Form):
+
+    post_info = forms.CharField(label="username", max_length=100)
 
 class SearchForm(forms.Form):
 
