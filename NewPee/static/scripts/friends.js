@@ -35,11 +35,11 @@ $(document).ready(function(){
     var reject_button = document.querySelectorAll("#decline_Post_Button");
     var accept_button = document.querySelectorAll("#accept_Post_Button");
     var author_ids = document.querySelectorAll("#author_id");
-    
+
     var array_num = new Array();
 
     //var allButtonsOnPage = document.querySelectorAll('button');
-    
+
     var logButtonIndex = function(buttonIndex) {
         console.log('buttonIndex:', buttonIndex);
       }
@@ -72,9 +72,9 @@ $(document).ready(function(){
 
 */
     var imageArray = new Array();
-   
+
     for( var i = 0; i <= (author_ids.length); i++){
-    
+
     imageArray[i] = accept_button[i];
 
     }
@@ -118,11 +118,12 @@ $(document).ready(function(){
             success : function(json) {
                 $("#request-access").hide();
                 console.log("requested access complete");
+                location.reload()
             },
             error: function (e) {
                 console.log("ERROR: ", e);
             }
-    
+
         });
     }
 
@@ -162,14 +163,14 @@ $(document).ready(function(){
             error: function (e) {
                 console.log("ERROR: ", e);
             }
-    
+
         });
 
 
     }
 
 
-    
+
     // LOOP Through our accept buttons
 
     for (let j = 0; j < accept_button.length; j++) {
@@ -191,7 +192,7 @@ $(document).ready(function(){
 
 
 
-    
+
 
     /*
     reject_button[i].addEventListener('click', event => {
@@ -214,7 +215,7 @@ $(document).ready(function(){
             error: function (e) {
                 console.log("ERROR: ", e);
             }
-    
+
         });
 
 
@@ -224,8 +225,8 @@ $(document).ready(function(){
 
     accept_button[i].addEventListener('click', event => {
 
-        
-        
+
+
 
 
 
@@ -234,7 +235,7 @@ $(document).ready(function(){
 
 
     i = 0;
-    
+
     */
 
 

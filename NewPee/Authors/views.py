@@ -59,7 +59,7 @@ class AuthorDetail(APIView):
         if request.method == "GET":
 
             servers = Server.objects.all()
-            
+
             for x in servers:
 
                 print(x.isServerActive(), x)
@@ -68,7 +68,7 @@ class AuthorDetail(APIView):
 
                     x.updateAuthors()
                     x.updatePosts()
-            
+
             author = self.get_object(pk)
             author_serializer = AuthorSerializer(author, context = {'request': request})
 
@@ -83,7 +83,7 @@ class AuthorDetail(APIView):
                 exclude_author = Author.objects.filter(user = request.user)
                 authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
                 print("This is the authors", logged_in_author_serializer)
-                
+
                 return Response({'logged_in_author':logged_in_author_serializer.data, 'authors': authors, 'form': form, 'search': search}, template_name='search.html')
 
             try:
@@ -108,7 +108,7 @@ class AuthorDetail(APIView):
                     temp_uuid = temp_author["id"].split("/")[-1]
 
                     print(temp_uuid, author.id)
-                    
+
                     if (uuid.UUID(temp_uuid) == author.id):
                         print("check")
                         filtered.update({'posts':post})
@@ -119,9 +119,9 @@ class AuthorDetail(APIView):
 
 
                 allPosts = list(chain(post_serializer.data, foreignposts_serializer.data))
-                
+
                 allPosts.sort(key=lambda x: x['post_date'], reverse=True)
-                
+
 
 
                 followers = author.get_followers()
@@ -188,7 +188,7 @@ class AuthorDetail(APIView):
                 'uploaded_file_url': uploaded_file_url, \
                 'author': author_serializer.data, 'posts': post_serializer.data, \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data })
-            
+
             except:
 
                  return render(request, 'home.html', {
@@ -292,7 +292,7 @@ class AuthorfriendsView(APIView):
 
                     # Check they are friend
                     try:
-                        
+
                         if our_friends.get(id=request_author["id"]):
                             #print("appending author")
                             friends.append(request_author)
@@ -360,7 +360,7 @@ class AuthorFriendRequestsView(APIView):
         response_data['author'] = author.id
         response_data['size'] = 0
 
-        friend_requests = author.get_friend_requests()  
+        friend_requests = author.get_friend_requests()
 
         declinedrequest = author.get_declined_requests()
 
@@ -368,11 +368,11 @@ class AuthorFriendRequestsView(APIView):
             friend_requests = friend_requests.exclude(id = friend.id)
 
 
-        print(friend_requests, "???")
+        #print(friend_requests, "???")
 
         friend_serializer = AuthorSerializer(friend_requests, context={'request': request}, many=True)
-        
-        print(friend_serializer.data)
+
+        #print(friend_serializer.data)
 
         response_data['friend_requests'] = friend_serializer.data
 
@@ -396,34 +396,38 @@ class AuthorUpdateFriendRequestsView(APIView):
         recieving_author_uuid = recieving_author["id"].split("/")[-1]
 
 
-        
-            
+
+
 
 
         friend_uuid = friend_uuid.strip(" ")
         author = get_object_or_404(models.Author, id =  recieving_author_uuid)
 
         print("YEEE\n\n", author, "\n\n\n")
+        print("friend_uuid", friend_uuid)
 
 
         try:
 
             # a local author we can just add them.
             friend = get_object_or_404(models.Author, id = friend_uuid)
-
+            print(friend)
 
             if request.data["query"] == "declinerequest":
                 author.add_friend_request(friend)
                 return Response(status=status.HTTP_201_CREATED)
 
+            try:
+                friend.add_friend(author)
+            except:
+                print("adding friend failed")
 
-            friend.add_friend(author)
-            
+            print("?")
 
             return Response(status=status.HTTP_201_CREATED)
 
         except:
-            
+
             print("friend didn't exist")
 
             try:
@@ -435,12 +439,12 @@ class AuthorUpdateFriendRequestsView(APIView):
                                         id=friend["id"],
                                         host=friend["host"],
                                         displayName = friend["displayName"],
-                                        url = friend["url"]                 
+                                        url = friend["url"]
                 )
 
                 # add the friend
                 author.add_friend(foreign_author)
-                    
+
             except:
 
                 return Response(status=status.HTTP_400_BAD_REQUEST)

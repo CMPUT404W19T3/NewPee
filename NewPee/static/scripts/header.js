@@ -39,13 +39,13 @@ function grabFriendRequest(){
         headers:{"X-CSRFToken": csrftoken},
         success : function(json) {
             data = json;
-            
+
             //print(data, "our friend data")
-                
+
             badge_number.innerHTML = data["size"];
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -66,7 +66,7 @@ function grabUser(){
 
             $("#request-access").hide();
         },
-        error: function (e) {      
+        error: function (e) {
             console.log("ERROR: ", e);
         }
     });
@@ -77,9 +77,8 @@ const badge_number = document.querySelector("#badge_number");
 var csrftoken = getCookie('csrftoken');
 
 grabUser();
-grabFriendRequest();
+//grabFriendRequest();
 
 
 
-});  
-
+});

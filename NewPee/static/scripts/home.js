@@ -347,7 +347,7 @@ function updatefollowingGet(enumType){
         headers:{"X-CSRFToken": csrftoken},
         success : function(json) {
            sending_author = json;
-     
+
             //updatefollowingPOST(JSON.stringify(data),enumType); // update the follower list
             $("#request-access").hide();
         },
@@ -473,7 +473,7 @@ function sendFriendRequest(){
 
 
 
-  
+
 
 
     data = {};
@@ -537,7 +537,7 @@ follow_submit_form.addEventListener('submit', event =>{
         sendFriendRequest();
 
     }
-  
+
 
 
 });
@@ -552,7 +552,7 @@ async function github_api() {
 
         // const response = await fetch('some-url', {});
         // const json = await response.json();
-    
+
         // return json.first_name.concat(' ').concat(json.last_name);
 
     console.log("This is it: ", page_author.github_url);
@@ -564,7 +564,7 @@ async function github_api() {
 }
 
 function makePost(post_title,post_content, post_description){
-   
+
     var radio_value;
     var radioButtons = document.getElementsByName("friends-radio-option");
     var postType = document.getElementById("markdown");
@@ -590,7 +590,7 @@ function makePost(post_title,post_content, post_description){
     };
 
 
-     //update friends stuff here 
+     //update friends stuff here
     if (radio_value==4){
         data["visible_to"] =  [page_author["id"]];
     }
@@ -598,7 +598,7 @@ function makePost(post_title,post_content, post_description){
     if (postType.checked){
         data["content_type"] = postType.value;
     };
-    
+
     if (unlistedBool.checked){
         data["unlisted"] = true;
     }
@@ -634,7 +634,7 @@ const elementMakePost = document.querySelector("#post_creation_submit");
 
 elementMakePost.addEventListener('submit', event => {
     event.stopImmediatePropagation();
-    //event.preventDefault();
+    event.preventDefault();
 
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     console.log("button clicked");
@@ -743,7 +743,7 @@ elementPullGithub.addEventListener('submit', async event => {
     }
     if (github_data[0].type === "DeleteEvent") {
         post_title = github_data[0].actor.display_login + " Deleted " + github_data[0].repo.name;
-    
+
         for (let index of github_data[0].payload.commits) {
             post_content += '<li>' + index.message + '</li>';
         }
@@ -753,7 +753,7 @@ elementPullGithub.addEventListener('submit', async event => {
         post_content += '<li>' + "Issue Activity" + '</li>';
     }
     post_content += '</ul>'
-    
+
     var post_description = "Github Activity";
     var github_id = github_data[0].id;
     var radioButtons = document.getElementsByName("friends-radio-option");
@@ -778,7 +778,7 @@ elementPullGithub.addEventListener('submit', async event => {
     console.log(page_author)
     var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY"})
     var visible_to;
-    
+
     var data = {
         title : post_title,
         author : page_author["id"],

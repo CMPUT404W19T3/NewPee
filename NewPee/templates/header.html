@@ -30,19 +30,17 @@
         </div>
 
         <div class="newPeeHeaderIcons ml-auto">
-          <div class="row">  
+          <div class="row">
               <a href="{% url 'get_author' %}"><i class="fa fa-user-circle fa-fw" id="profile_icon" aria-hidden="true"></i></a>
-          <div class="dropdown">
+
 
 
               <!-- <span id="badge_number" class="badge"></span>
             </div> -->
-            <i class="fas fa-bell fa-fw" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="{% url 'friends' %}">View Friends</a>
-          </div>
-          
-        </div>
+          <a href="{% url 'friends' %}">  <i class="fas fa-user-friends fa-fw" ></i>
+
+
+
         <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt fa-fw" id="logout"></i></a>
       </div>
       </div>

@@ -24,8 +24,8 @@ console.log(post_uuid)
 
 $(document).ready(function(){
 
-    
-    
+
+
     const elementMakeComment = document.getElementById("comment_creation_submit");
     var userID = document.getElementById("userID").value;
     var userUUID = userID.split("/")[5];
@@ -34,11 +34,11 @@ $(document).ready(function(){
     const editPostButton = document.querySelector("#edit_Post_Button");
 
     var author;
-    
 
-  
 
-    
+
+
+
 
     editPostButton.addEventListener('click', event =>{
 
@@ -52,7 +52,7 @@ $(document).ready(function(){
         console.log(userID);
         console.log("DELETING");
 
-        
+
         $.ajax({
             type: "GET",
             url: userID,
@@ -71,25 +71,25 @@ $(document).ready(function(){
                     url: userID,
                     contentType: 'application/json',
                     headers:{"X-CSRFToken": csrftoken},
-                    data: JSON.stringify(data), 
+                    data: JSON.stringify(data),
                     success : function(json) {
                         console.log(json);
                         $("#request-access").hide();
                     },
-                    error: function (e) {      
+                    error: function (e) {
                         console.log("ERROR: ", e);
                     }
                 });
                 $("#request-access").hide();
             },
-            error: function (e) {       
+            error: function (e) {
                 console.log("ERROR: ", e);
             }
         });
 
-    
 
-        
+
+
 
         $.ajax({
             type: "DElETE",
@@ -101,21 +101,21 @@ $(document).ready(function(){
                 $("#request-access").hide();
                 console.log("requested access complete");
             },
-            error: function (e) {       
+            error: function (e) {
                 console.log("ERROR: ", e);
             }
         });
-        
 
-        location.pathname = "/authors/" + userUUID;
+
+        //location.pathname = "/authors/" + userUUID;
     });
 
 
     elementMakeComment.addEventListener('submit', event => {
-        
+
         //event.preventDefault();
         // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
-        
+
         var postID = location.pathname.split("/")[2];
 
         var comment = document.querySelector("#comment").value;
@@ -127,10 +127,10 @@ $(document).ready(function(){
         });
 
         console.log(data);
-            
+
         // Goes to post_created
         // author.view post_created view
-            
+
         $.ajax({
             type: "POST",
             async: false,
@@ -142,7 +142,7 @@ $(document).ready(function(){
                 $("#request-access").hide();
                 console.log("requested access complete");
             },
-            error: function (e) {       
+            error: function (e) {
                 console.log("ERROR: ", e);
             }
         });

@@ -37,7 +37,7 @@ def view_access(post, author, unlisted=False):
         returnStatement = True
 
         # Admin can see all posts.
-        if author.Admin:        
+        if author.Admin:
             return True
 
         #post = Post.objects.get(id=xpost["id"])
@@ -148,7 +148,13 @@ def Author_detail(request, pk, format= None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        author.delete()
+        #author.delete()
+
+        author = request["author"]
+        post = request["post"]
+
+        #if(request["post"])
+
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @permission_classes((IsAuthenticated,IsOwnerOrReadOnlyAuthor, ))
@@ -185,7 +191,6 @@ def post_list(request):
 
 
             else:
-                print("Can't see", post)
                 non_visible_filtered_post = posts.exclude(id = post["id"])
                 posts = posts & non_visible_filtered_post
 
@@ -207,7 +212,7 @@ def post_list(request):
     elif request.method == 'POST':
 
 
-        
+
         author_id = request.data["author"]
 
         if("http" in author_id):
@@ -251,7 +256,6 @@ def post_list(request):
 #@login_required(login_url='/login')
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes((IsOwnerOrReadOnly,IsAuthenticated, ))
-
 def post_detail(request, pk):
 
     """
@@ -261,7 +265,7 @@ def post_detail(request, pk):
 
 
 
-        
+
 
 
     try:
@@ -279,7 +283,7 @@ def post_detail(request, pk):
     if request.method == 'GET':
         serializer = PostSerializer(post, context={'request': request})
 
-        return Response(serializer.data)
+        return Response(seria4lizer.data)
 
     elif request.method == 'PUT':
         serializer = PostSerializer(post, data=request.data, context={'request': request})
@@ -289,7 +293,20 @@ def post_detail(request, pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        post.delete()
+        print(request.user)
+
+
+        post = Post.objects.get(pk=pk)
+        author = Author.objects.get(user=request.user)
+
+        if (author != post.author):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        else:
+            post.delete()
+
+
+        print("\n\n\n\n\n")
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 #@permission_classes((IsAuthenticated,IsOwnerOrReadOnlyAuthor, ))
