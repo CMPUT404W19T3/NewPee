@@ -167,7 +167,7 @@ def Author_detail(request, pk, format= None):
 
 
 
-@permission_classes((IsAuthenticated,IsOwnerOrReadOnlyAuthor, ))
+@permission_classes((IsOwnerOrReadOnlyAuthor, ))
 @api_view(['GET', 'POST'])
 def post_list(request):
 
@@ -249,7 +249,7 @@ def post_list(request):
 
 #@login_required(login_url='/login')
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes((IsOwnerOrReadOnly,IsAuthenticated, ))
+@permission_classes((IsOwnerOrReadOnly))
 def post_detail(request, pk):
 
     """

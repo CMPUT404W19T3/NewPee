@@ -377,14 +377,6 @@ $(document).ready(function(){
 
 function sendFriendRequest(){
 
-<<<<<<< HEAD
-=======
-
-
-
-
-
->>>>>>> master
     data = {};
     author = {};
     friend = {};
@@ -432,12 +424,6 @@ follow_submit_form.addEventListener('submit', event =>{
         sendFriendRequest();
 
     }
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> master
 });
 }
 catch{
@@ -460,13 +446,8 @@ async function github_api() {
     return json;
 }
 
-<<<<<<< HEAD
 function makePost(post_title,post_content, post_description, content_type){
     
-=======
-function makePost(post_title,post_content, post_description){
-
->>>>>>> master
     var radio_value;
     var radioButtons = document.getElementsByName("friends-radio-option");
     var unlistedBool = document.getElementById("unlisted")
@@ -488,24 +469,14 @@ function makePost(post_title,post_content, post_description){
         visible_to : visible_to,
         content_type : content_type
     };
-<<<<<<< HEAD
-     //update friends stuff here 
-=======
 
 
      //update friends stuff here
->>>>>>> master
     if (radio_value==4){
         data["visible_to"] =  [page_author["id"]];
     }
 
-<<<<<<< HEAD
-=======
-    if (postType.checked){
-        data["content_type"] = postType.value;
-    };
 
->>>>>>> master
     if (unlistedBool.checked){
         data["unlisted"] = true;
     }
@@ -537,11 +508,8 @@ const elementMakePost = document.querySelector("#post_creation_submit");
 
 elementMakePost.addEventListener('submit', event => {
     event.stopImmediatePropagation();
-<<<<<<< HEAD
-=======
     event.preventDefault();
 
->>>>>>> master
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     console.log("button clicked");
     var post_title = document.querySelector("#post-title").value;

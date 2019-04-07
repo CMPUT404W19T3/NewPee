@@ -30,21 +30,25 @@ class Server(models.Model):
 
         return self.isActive
 
-    def createAuthors(self,data):
+    def createAuthors(self,author):
 
-        for authors in task.result['authors']:
 
-            author_uuid = authors["id"]
-            firstname = authors["firstname"]
-            lastname = authors["lastname"]
-            email= authors["email"]
+        author_uuid = author["id"]
+        author_url = author["url"]
+        author_host = author["host"]
+        author_displayName = author["displayName"]
 
-            if ( Author.objects.filter(id=author_uuid)):
+        #firstname = author["firstname"]
+        #lastname = author["lastname"]
+        #email= author["email"]
 
-                pass
+        if ( Author.objects.filter(id=author_uuid)):
 
-    def retrieveAuthors(self):
+            pass
 
+    def retrieveAuthors(self,data):
+
+        '''
         URL = self.posts_endpoint
         location = self.name
 
@@ -61,65 +65,88 @@ class Server(models.Model):
         data = r.json()
 
         print(data, "our data retrieved")
+        '''
 
-        foreign_post = (data["posts"])
 
-        for post in foreign_post:
+        foreign_posts = (data["posts"])
+
+        for post in foreign_posts:
 
             foreign_author = post["author"]
             foreign_author_uuid = foreign_author["id"].split("/")[-1]
 
-            # only pavlov server works right now.
-
-            if(foreign_author["id"].split("/")[2] != "social.hydrated.app"):
-
-                continue
 
             try:
 
-                Author.objects.get(id = foreign_author_uuid)
+                Authors.models.Author.objects.get(id = foreign_author_uuid)
                 
-            except Author.DoesNotExist:
+            except Authors.models.Author.DoesNotExist:
 
-                request2 = session.get(url = foreign_author["id"],)
 
-                print(foreign_author["id"])
-                data2 = request2.json()
-                print(data2)
+                #author_uuid = foreign_author["id"]
+                author_url =  foreign_author["url"]
+                author_host =  foreign_author["host"]
+                author_displayName =  foreign_author["displayName"]
 
-                try:
-
-                    print("sideways", data2["id"].split("/")[-1])
-
-                    new_id = (data2["id"].split("/")[-1])
-                    Author.objects.get(id = (data2["id"].split("/")[-1]))
-
-                except Author.DoesNotExist:
-
-                    id = data2["id"].split("/")[-1]
-                    host = data2["host"]
-                    url = data2["url"]
-                    displayName = data2["displayName"]
-                    friends = data2["friends"]
-
-                    #print(id,host,url,displayName,friends)
-
-                    new_author = Author.objects.create(
-                        id = id,
-                        host = host,
-                        url = url,
-                        displayName = displayName,
+                new_author = Authors.models.Author.objects.create(
+                        id =  foreign_author_uuid,
+                        host = author_host,
+                        url = author_url,
+                        displayName = author_displayName,
                     )
 
-                    for friend in friends:
+                #for friend in friends:
 
-                        new_author.friends.add(friend)
+                #    new_author.friends.add(friend)
+                print("\n\n\n\ CREATED AUTHOR \n\n\n")
+                
+
+                PARAMS = {
+                'username': self.username,
+                'password' : self.password
+                }
+
+                session = requests.Session()
+                session.auth = (self.username, self.password)
+
+
+
+                # Can't pull data from other servers, only pull others server data from our authorized host
+                if(self.host not in foreign_author["id"]):
+                    url = self.author_endpoint + foreign_author_uuid
+                else:
+                    url = foreign_author["id"]
+
+
+                print(url, "connecting to...")
+
+                request2 = session.get(url = url)
+                data2 = request2.json()
+
+
+                print(data2, foreign_author["id"])
+
+                friends = data2["friends"]
+
+                #for friend in friends:
+
+                #    new_author.friends.add(friend)
+
+
+                new_author.displayName = data2["displayName"]
+
+                try:
+                    new_author.firstname = data2["firstName"]
+                    new_author.lastname = data2["lastName"]
+                except:
+                    pass # Their server doesn't include lastname, firstname
+                
 
         return data
 
-    def updateAuthors(self):
+    def updateAuthors(self,data):
         
-        data = self.retrieveAuthors()
+        data = self.retrieveAuthors(data)
 
         #async_task(retrieveAuthors, hook = createAuthors)
 
@@ -127,15 +154,21 @@ class Server(models.Model):
 
         for post in data['posts']:
 
+            self.updateAuthors(data)
+            
+
             try:
 
-                ForeignPost.objects.get(id = post['id'])
+                db_post = Posts.models.Post.objects.get(id = post['id'])
 
-            except ForeignPost.DoesNotExist:
+            except :
 
-                ForeignPost.objects.create(
+                foreign_author = Authors.models.Author.objects.get(url = post["author"]["id"])
+
+
+                Posts.models.Post.objects.create(
                     id = post['id'],
-                    author=post["author"],
+                    author=foreign_author,
                     title = post["title"],
                     source = post["source"],
                     origin = post["origin"],
@@ -195,5 +228,13 @@ class Server(models.Model):
         data = self.retrievePosts()
 
         self.createPosts(data)
+
+        self.isActive = False # Already retrieved data
+
+        print(self.isActive)
+        self.save()
+
+        print("Done retrieving Data..")
+
         #self.createPosts(data)
         #async_task(self.retrievePosts, hook = self.createPosts)

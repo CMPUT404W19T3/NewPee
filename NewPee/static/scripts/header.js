@@ -32,13 +32,7 @@ function grabFriendRequest(){
         headers:{"X-CSRFToken": csrftoken},
         success : function(json) {
             data = json;
-<<<<<<< HEAD
             //print(data, "our friend data")         
-=======
-
-            //print(data, "our friend data")
-
->>>>>>> master
             badge_number.innerHTML = data["size"];
             $("#request-access").hide();
         },
@@ -67,13 +61,8 @@ function grabUser(){
 const badge_number = document.querySelector("#badge_number");
 var csrftoken = getCookie('csrftoken');
 grabUser();
-<<<<<<< HEAD
-grabFriendRequest();
-});
-=======
 //grabFriendRequest();
 
 
 
 });
->>>>>>> master

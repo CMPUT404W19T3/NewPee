@@ -56,12 +56,14 @@ class AuthorDetail(APIView):
 
             for x in servers:
 
-                print(x.isServerActive(), x)
+                print(x.isServerActive(), x, "\n\n\n\n\n\n\n")
 
                 if x.isServerActive():
 
-                    x.updateAuthors()
+                    #x.updateAuthors()
                     x.updatePosts()
+
+
 
             author = self.get_object(pk)
             author_serializer = AuthorSerializer(author, context = {'request': request})
