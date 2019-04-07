@@ -489,7 +489,7 @@ function makePost(post_title,post_content, post_description, content_type){
     $.ajax({
         type: "POST", // HTTP Method
         //async: false,
-        url: "/api/posts/",
+        url: "/api/posts",
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
         data : data,
@@ -715,7 +715,7 @@ elementPullGithub.addEventListener('submit', async event => {
     $.ajax({
         type: "POST", // HTTP Method
         //async: false,
-        url: "/api/posts/",
+        url: "/api/posts",
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
         data : data,

@@ -134,7 +134,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = "/static/"
 
 APPEND_SLASH = False
-trailing_slash=False
+trailing_slash = False
 
 HOSTNAME = "newpee.herokuapp.com/"
 

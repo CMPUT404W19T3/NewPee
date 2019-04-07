@@ -52,7 +52,7 @@ urlpatterns = [
     path('api/authors/<uuid:pk>', api_views.Author_detail, name="api-author"),
 
     # Post API
-    path('api/posts/', api_views.post_list),
+    path('api/posts', api_views.post_list),
     path('api/posts/<uuid:pk>', api_views.post_detail, name="edit_author"),
     path('api/foreignposts/', api_views.foreignpost_list),
     path('api/image/', api_views.image_detail),
@@ -81,7 +81,7 @@ urlpatterns = [
     path('posts/<uuid:pk>', PostDetail.as_view(), name="post_page"),
 
     # Comment API
-    path('api/comments/', api_views.comment_list),
+    path('api/comments', api_views.comment_list),
 
     # Home
     path('home/', AuthorList.as_view(), name="home"),

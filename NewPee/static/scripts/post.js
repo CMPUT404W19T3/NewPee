@@ -22,11 +22,6 @@ console.log(post_uuid)
 
 $(document).ready(function(){
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> master
     const elementMakeComment = document.getElementById("comment_creation_submit");
     var userID = document.getElementById("userID").value;
     var userUUID = userID.split("/")[5];
@@ -34,8 +29,6 @@ $(document).ready(function(){
     const deletePostButton = document.querySelector("#remove_post_submit");
     const editPostButton = document.querySelector("#edit_Post_Button");
     var author;
-<<<<<<< HEAD
-=======
 
 
 
@@ -47,19 +40,14 @@ $(document).ready(function(){
     });
 
 
->>>>>>> master
 
     deletePostButton.addEventListener('click', event =>{
         //event.preventDefault();
         console.log(userUUID);
         console.log(userID);
         console.log("DELETING");
-<<<<<<< HEAD
-        
-=======
 
 
->>>>>>> master
         $.ajax({
             type: "GET",
             url: userID,
@@ -93,13 +81,7 @@ $(document).ready(function(){
             }
         });
 
-<<<<<<< HEAD
-=======
 
-
-
-
->>>>>>> master
         $.ajax({
             type: "DElETE",
             async: false,
@@ -114,14 +96,6 @@ $(document).ready(function(){
                 console.log("ERROR: ", e);
             }
         });
-<<<<<<< HEAD
-        location.pathname = "/authors/" + userUUID;
-    });
-
-    elementMakeComment.addEventListener('submit', event => {        
-        //event.preventDefault();
-        // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
-=======
 
 
         //location.pathname = "/authors/" + userUUID;
@@ -133,7 +107,6 @@ $(document).ready(function(){
         //event.preventDefault();
         // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
 
->>>>>>> master
         var postID = location.pathname.split("/")[2];
         var comment = document.querySelector("#comment").value;
         var data = JSON.stringify({
@@ -147,14 +120,10 @@ $(document).ready(function(){
 
         // Goes to post_created
         // author.view post_created view
-<<<<<<< HEAD
-=======
-
->>>>>>> master
         $.ajax({
             type: "POST",
             async: false,
-            url: "/api/comments/",
+            url: "/api/comments",
             contentType: 'application/json',
             headers:{"X-CSRFToken": csrftoken},
             data : data,
@@ -167,10 +136,6 @@ $(document).ready(function(){
             }
         });
     });
-<<<<<<< HEAD
-});
-=======
 
 
 });
->>>>>>> master
