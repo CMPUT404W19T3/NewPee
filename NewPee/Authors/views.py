@@ -53,7 +53,7 @@ class AuthorDetail(APIView):
         if request.method == "GET":
 
             servers = Server.objects.all()
-            
+
             for x in servers:
 
                 print(x.isServerActive(), x)
@@ -62,7 +62,7 @@ class AuthorDetail(APIView):
 
                     x.updateAuthors()
                     x.updatePosts()
-            
+
             author = self.get_object(pk)
             author_serializer = AuthorSerializer(author, context = {'request': request})
             logged_in_author = Author.objects.get(user = request.user)
@@ -77,7 +77,7 @@ class AuthorDetail(APIView):
                 authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
 
                 print("This is the authors", logged_in_author_serializer)
-                
+
                 return Response({'logged_in_author':logged_in_author_serializer.data, 'authors': authors, 'form': form, 'search': search}, template_name='search.html')
 
             try:
@@ -99,7 +99,7 @@ class AuthorDetail(APIView):
                     temp_uuid = temp_author["id"].split("/")[-1]
 
                     print(temp_uuid, author.id)
-                    
+
                     if (uuid.UUID(temp_uuid) == author.id):
 
                         print("check")
@@ -113,7 +113,7 @@ class AuthorDetail(APIView):
                 allPosts = list(chain(post_serializer.data, foreignposts_serializer.data))
 
                 allPosts.sort(key=lambda x: x['post_date'], reverse=True)
-                
+
                 followers = author.get_followers()
                 following = author.get_following()
                 paginator = Paginator(allPosts, 5)
@@ -173,7 +173,7 @@ class AuthorDetail(APIView):
                 'uploaded_file_url': uploaded_file_url, \
                 'author': author_serializer.data, 'posts': post_serializer.data, \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data })
-            
+
             except:
 
                  return render(request, 'home.html', {
@@ -211,40 +211,6 @@ class AuthorList(APIView):
                 'posts': post_serializer.data,
             })
 
-    def post(self, request, format=None):
-
-        # we are posting with an image, store it usign FileSystemStorage in our media folder.
-        # if request.method == 'POST' and request.FILES['myfile']:
-
-        #     myfile = request.FILES['myfile']
-
-        #     # Future TODO: Possibly add it to the DB, but don't have too.
-        #     try:
-        #         Photo.objects.create(myfile)
-
-        #     except:
-        #         print("Not an image!")
-
-        #     print(myfile)
-
-        #     fs = FileSystemStorage()
-        #     filename = fs.save(myfile.name, myfile)
-        #     uploaded_file_url = fs.url(filename)
-        #     return render(request, 'homepage.html', {
-        #     'uploaded_file_url': uploaded_file_url
-        #     })
-
-        print("Posting the authors post")
-
-        serializer = AuthorSerializer(data=request.data,context={'request': request})
-
-        if serializer.is_valid():
-
-            serializer.save()
-
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #a reponse if friends or not
 #ask a service GET http://service/author/<authorid>/friends/
@@ -285,7 +251,7 @@ class AuthorfriendsView(APIView):
 
                     # Check they are friend
                     try:
-                        
+
                         if our_friends.get(id=request_author["id"]):
 
                             #print("appending author")
@@ -351,18 +317,19 @@ class AuthorFriendRequestsView(APIView):
         response_data['author'] = author.id
         response_data['size'] = 0
 
-        friend_requests = author.get_friend_requests()  
+        friend_requests = author.get_friend_requests()
+
         declinedrequest = author.get_declined_requests()
 
         for friend in declinedrequest:
 
             friend_requests = friend_requests.exclude(id = friend.id)
 
-        print(friend_requests, "???")
+        #print(friend_requests, "???")
 
         friend_serializer = AuthorSerializer(friend_requests, context={'request': request}, many=True)
-        
-        print(friend_serializer.data)
+
+        #print(friend_serializer.data)
 
         response_data['friend_requests'] = friend_serializer.data
         response_data['size'] = len(friend_serializer.data)
@@ -383,10 +350,12 @@ class AuthorUpdateFriendRequestsView(APIView):
         friend = request.data["friend"]             # friend being added to author.
         friend_uuid = friend["id"].split("/")[-1]
         recieving_author_uuid = recieving_author["id"].split("/")[-1]
+
         friend_uuid = friend_uuid.strip(" ")
         author = get_object_or_404(models.Author, id =  recieving_author_uuid)
 
         print("YEEE\n\n", author, "\n\n\n")
+        print("friend_uuid", friend_uuid)
 
         try:
 
@@ -398,12 +367,18 @@ class AuthorUpdateFriendRequestsView(APIView):
                 author.add_friend_request(friend)
                 return Response(status=status.HTTP_201_CREATED)
 
-            friend.add_friend(author)
-            
+
+            try:
+                friend.add_friend(author)
+            except:
+                print("adding friend failed")
+
+            print("?")
+
             return Response(status=status.HTTP_201_CREATED)
 
         except:
-            
+
             print("friend didn't exist")
 
             try:
@@ -413,12 +388,12 @@ class AuthorUpdateFriendRequestsView(APIView):
                                         id=friend["id"],
                                         host=friend["host"],
                                         displayName = friend["displayName"],
-                                        url = friend["url"]                 
+                                        url = friend["url"]
                 )
 
                 # add the friend
                 author.add_friend(foreign_author)
-                    
+
             except:
 
                 return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -72,7 +72,7 @@ def log_in(request, format=None):
         #         return render(request, 'registration/login.html', {'form': form}, status=401)
 
         #     else:
-                
+
         #         return render(request, 'registration/login.html', {'form': form})
 
         # # Not a POST?
@@ -114,7 +114,7 @@ def feed(request, format=None):
 
         exclude_author = Author.objects.filter(user = request.user)
         authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
-                
+
         return render(request, 'search.html', {'logged_in_author': serializer.data, 'author': author, 'authors': authors, 'form': form, 'search': search})
 
     print(response.data)
@@ -135,6 +135,13 @@ def respond_to_friends(request, format = None):
     friends_requests = current_author.get_friend_requests()
     declinedrequest = current_author.get_declined_requests()
 
+    friends = current_author.friends.all()
+
+    print(declinedrequest, "declinedrequest")
+    print(friends_requests, "my friend requests")
+    print(friends, "my friends")
+
+
     for friend in declinedrequest:
 
         friends_requests = friends_requests.exclude(id = friend.id)
@@ -147,14 +154,16 @@ def respond_to_friends(request, format = None):
 
         exclude_author = Author.objects.filter(user = request.user)
         authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
-                
+
         return render(request, 'search.html', {'logged_in_author': current_author, 'authors': authors, 'form': form, 'search': search})
 
     print(friends_requests, "xxxx")
 
     serializer_friends = AuthorSerializer(friends_requests, many=True, context={'request': request})
 
-    return render(request, 'friends.html', { 'authors':serializer_friends.data , 'current_author': serializer_current.data, 'form': form, 'logged_in_author': current_author })
+
+
+    return render(request, 'friends.html', { 'authors':serializer_friends.data , 'current_author': serializer_current.data, 'form': form, 'logged_in_author': current_author, 'friends':friends,  })
 
 def get_author(request, format=None):
 
@@ -162,7 +171,7 @@ def get_author(request, format=None):
 
         pariedAuthor = Author.objects.get(user = request.user)
         author_id = pariedAuthor.get_author_id()
-        
+
         print(author_id)
 
         return HttpResponseRedirect("/authors/" + str(pariedAuthor.get_author_id()))
@@ -185,7 +194,7 @@ def sign_up(request, format=None):
         Author.objects.create(user=new_user, displayName=new_user.username)
         return HttpResponseRedirect(reverse('login'), {'form': form})
     return render(request, 'signup.html', {'form': form})
-        
+
     # if request.method == 'POST':
 
     #     # form = UserCreateForm(request.POST)
