@@ -16,7 +16,7 @@ from rest_framework import status, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
+from django.contrib.auth.models import AnonymousUser
 import collections
 import json
 
@@ -170,10 +170,22 @@ def Author_detail(request, pk, format= None):
 @permission_classes((IsOwnerOrReadOnlyAuthor, ))
 @api_view(['GET', 'POST'])
 def post_list(request):
-
+    
     """
     List all Posts, or create anew new Post.
     """
+
+
+    if request.user.is_anonymous:
+
+        posts = Post.objects.filter(visibility = "PUBLIC")
+
+        #posts.exclude(visibility != "PUBLIC")
+
+        serializer = PostSerializer(posts, many=True, context={'request': request})
+
+        return Response(serializer.data)
+
 
     if request.method == 'GET':
 

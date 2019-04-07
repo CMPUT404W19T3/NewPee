@@ -92,9 +92,9 @@ DATABASES = {
 }
 
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
-}
+#REST_FRAMEWORK = {
+#    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
+#}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -132,6 +132,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = "/static/"
+
+APPEND_SLASH = False
+trailing_slash=False
 
 HOSTNAME = "newpee.herokuapp.com/"
 
