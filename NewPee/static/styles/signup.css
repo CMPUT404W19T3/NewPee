@@ -23,7 +23,7 @@ html, body {
 }
 
 .card{
-    height: 41rem;
+    max-height: 48rem;
     margin-top: 50px;
     margin-bottom: auto;
     width: 32rem;
@@ -47,8 +47,8 @@ html, body {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 29.7925rem;
-    height: 21.08rem;
+    width: 20rem;
+    height: 14.15rem;
 }
 
 .signup_btn{
@@ -57,7 +57,7 @@ html, body {
     width: 9rem;
     display: block;
     margin-top: 3rem;
-    margin-right: 3rem;;
+    margin-right: 3rem;
     margin-bottom: 1rem;
 }
 
@@ -85,9 +85,17 @@ html, body {
 
 .card-footer {
     border-top: 1px solid #36558f;
-    
 }
 
 input, label {
     display:block;
+}
+
+.alert-danger {
+    font-size: 0.75rem;
+    padding: 0px;
+    background: transparent;
+    border: transparent;
+    color: red;
+    margin: 1rem 2rem -1rem 1.4rem;
 }

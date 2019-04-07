@@ -8,7 +8,7 @@ from Posts.serializers import PostSerializer
 from rest_framework import status
 from Tests.factory import GeneralBuilding
 from urllib.parse import urlencode
-from views.forms import UserNameForm, UserLoginForm, PostTitleForm, PostInfoForm, PasswordLoginForm, SearchForm
+from views.forms import UserCreateForm, UserLoginForm, PostTitleForm, PostInfoForm, PasswordLoginForm, SearchForm
 
 import json 
 

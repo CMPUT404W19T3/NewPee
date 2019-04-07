@@ -7,6 +7,11 @@
 .custom-card:hover {
     border: 0.2rem solid #8bbeb2;
     cursor: pointer;
+    -o-transition:.3s;
+    -ms-transition:.3s;
+    -moz-transition:.3s;
+    -webkit-transition:.3s;
+    transition:.3s;
 }
 
 .card-header {
