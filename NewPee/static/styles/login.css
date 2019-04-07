@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css?family=Martel Sans');
 
 html, body {
@@ -95,4 +94,15 @@ html, body {
 
 i {
     size: 100%;
+}
+
+.alert-danger {
+    font-size: 0.75rem;
+    padding: 0px;
+    background: transparent;
+    border: transparent;
+    color: red;
+    display: block;
+    align-content: center;
+    margin: auto;
 }
