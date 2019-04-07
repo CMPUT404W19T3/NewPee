@@ -173,10 +173,17 @@ textarea {
     border-radius: 5px; */
   }
   
+/* https://stackoverflow.com/questions/6008324/fade-effect-on-link-hover */
 .change-profile-pic:hover {
     border-radius: 6px;
     color: #18314f;
     background: #8bbeb2;
+    opacity: 0.90;
+    -o-transition:.4s;
+    -ms-transition:.4s;
+    -moz-transition:.4s;
+    -webkit-transition:.4s;
+    transition:.4s;
   }
 
 .fa-upload {

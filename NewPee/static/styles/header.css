@@ -31,8 +31,16 @@ html, body{
   margin-left: 10%;
 }
 
+/* https://stackoverflow.com/questions/6008324/fade-effect-on-link-hover */
 .newPeeHeaderIcons i:hover {
-    color: #e6f9af;    
+    color: #e6f9af;
+    opacity: 0.90;
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition:.5s;
+    cursor: pointer;
 }
 
 /* Source: https://codepen.io/P1N2O/pen/pyBNzX */
