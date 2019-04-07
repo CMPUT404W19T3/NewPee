@@ -29,18 +29,19 @@ html, body{
   font-size: 28px;
   display: inline-block;
   margin-left: 10%;
+  margin-right: 10%;
 }
 
 /* https://stackoverflow.com/questions/6008324/fade-effect-on-link-hover */
 .newPeeHeaderIcons i:hover {
     color: #e6f9af;
-    opacity: 0.90;
-    -o-transition:.5s;
-    -ms-transition:.5s;
-    -moz-transition:.5s;
-    -webkit-transition:.5s;
-    transition:.5s;
+    -o-transition:.4s;
+    -ms-transition:.4s;
+    -moz-transition:.4s;
+    -webkit-transition:.4s;
+    transition:.4s;
     cursor: pointer;
+    text-shadow: -1px 0 #8bbeb2, 0 1px #8bbeb2, 1px 0 #8bbeb2, 0 -1px #8bbeb2;
 }
 
 /* Source: https://codepen.io/P1N2O/pen/pyBNzX */

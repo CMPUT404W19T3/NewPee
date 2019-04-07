@@ -54,7 +54,7 @@ p{
     height: auto;
     border:1px solid grey;
     border-radius: 8px;
-    background: #ffffff;
+    background: #000000;
     border: 0.2rem solid #36558f;
 }
 
@@ -193,9 +193,9 @@ textarea {
 .fade-scale {
     transform: scale(0);
     opacity: 0;
-    -webkit-transition: all .25s linear;
-    -o-transition: all .25s linear;
-    transition: all .25s linear;
+    -webkit-transition: all .3s linear;
+    -o-transition: all .3s linear;
+    transition: all .3s linear;
 }
   
 .fade-scale.in {
@@ -212,7 +212,7 @@ textarea {
 .modal-body {
     background-color: #18314f !important;
     border: 0.2rem solid #36558f;
-    height: 24rem;
+    height: 32rem;
     border-radius: 0px 0px 5px 5px;
 }
 
@@ -260,7 +260,30 @@ textarea {
     margin-right: 1.5rem;
 }
 
+#change-profile-pic-save {
+    width: 8rem;
+    height: 4rem;
+    background: #8bbeb2;
+    color: #36558f;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 1.5rem;
+    margin-right: 1.5rem;
+}
+
 #edit-profile-save:hover {
+    background: #e6f9af;
+    font-weight: 700;
+    opacity: 0.96;
+    -o-transition:.4s;
+    -ms-transition:.4s;
+    -moz-transition:.4s;
+    -webkit-transition:.4s;
+    transition:.4s;
+}
+
+#change-profile-pic-save:hover {
     background: #e6f9af;
     font-weight: 700;
     opacity: 0.96;
@@ -313,4 +336,16 @@ textarea {
 .pagination > .active > span {
     background-color: #36558f !important;
     color: #e6f9af !important;
+}
+
+#select-profile-pic {
+    margin-left: 13rem;
+    margin-right: auto;
+    margin-top: 10rem;
+    color: #8bbeb2;
+}
+
+#select-profile-pic:hover{
+    color: #e6f9af;
+    cursor: pointer;
 }
