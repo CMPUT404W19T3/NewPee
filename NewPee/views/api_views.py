@@ -2,6 +2,7 @@ from Authors.models import Author
 from Authors.permissions import IsOwnerOrReadOnlyAuthor
 from Authors.serializers import AuthorSerializer, UserSerializer
 from django.contrib.auth import authenticate
+from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.shortcuts import render
@@ -345,3 +346,27 @@ def comment_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def image_detail(request):
+
+    if request.method == 'POST' and request.FILES:
+        print(request.FILES['image'])
+
+        myfile = request.FILES['image']
+            # Future TODO: Possibly add it to the DB, but don't have too.
+        try:
+
+            Photo.objects.create(myfile)
+
+        except:
+
+            print("Not an image!")
+
+        print(myfile)
+
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+
+        return Response(uploaded_file_url, status=status.HTTP_201_CREATED)

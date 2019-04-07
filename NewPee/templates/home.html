@@ -50,6 +50,7 @@
         <div class="card-body">
             <ul class="nav nav-tabs">
                 <li class="active"><a class="tabb" data-toggle="tab" href="#posting">Post</a></li>
+                <li><a data-toggle="tab" class="tabb" href="#image">Image</a></li>
                 <li><a data-toggle="tab" class="tabb" href="#github">GitHub</a></li>
             </ul>
             <br>
@@ -70,33 +71,34 @@
                     <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="unlisted" value="unlisted">
                             <label class="form-check-label" for="friends-radio-option">Unlisted</label>
-                        </div>
-
-                    <!-- <div class="file_upload">
-                        <form method="post" enctype="multipart/form-data" data-ajax="false">
-                            {% csrf_token %}
-                            <input type="file" name="myfile" onchange="getFileData(this)">
-                            <button type="submit" id = "btnfileupload" class="btn btn-primary">upload file</button>
-                                    
-                        </form>
-                    </div> -->
-                            
-                    {% if uploaded_file_url %}
-                        <p>File uploaded at: <a class href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
-                    {% endif %}
+                    </div>
 
                     <!-- home.js handles form submission-->
                     <form id="post_creation_submit">
                         <button type="submit" id="post-btn" class ="btn btn-primary">Post</button>
                     </form>
                 </div>
+                
                 <div id="github" class="tab-pane fade">
-
                     {% include "radio_buttons.html" %}
-
                     <form id="github_api_pull">
                         <button type="submit" class="btn btn-primary">Github</button>
                     </form>
+                </div>
+
+                <div id="image" class="tab-pane fade ">    
+                    <input type="text" id="image-post-title" class="form-control mb-2" placeholder="Title">
+                    <textarea class="form-control mb-2" rows="2" id="image-post-comment-description" placeholder="Write your description here."></textarea>
+                    {% include "radio_buttons.html" %}
+
+                    <form id="imageupload" enctype="multipart/form-data" data-ajax="false">
+                        <input type="file" name="image">
+                    </form>
+
+                    <form id="btnfileupload">
+                        <button type="submit" class="btn btn-primary">Post</button>           
+                    </form>
+
                 </div>
             </div>
         </div>

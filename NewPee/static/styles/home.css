@@ -41,12 +41,6 @@ p{
     margin: auto;
 }
 
-.fileupload{
-    display: block;
-    float: left;
-    
-}
-
 .profile-pic{
     position: relative;
     padding: 0%;
@@ -139,11 +133,6 @@ p{
 .comment img{
     width: 30px;
     height: 30px;
-}
-
-#btnfileupload {
-    float: left;
-
 }
 
 .card{

@@ -38,11 +38,13 @@
   <p class="card-subtitle mb-2" style="font-weight: bolder; color: #e6f9af">Description: </p>
   <p class="card-text">{{posts.description}}</p><br>
   <p class="card-subtitle mb-2" style="font-weight: bolder; color: #e6f9af">Content: </p>
-  <p class="card-text">
-    {% if posts.content_type == "text/markdown"%}
-      {{ posts.content |apply_markup:"markdown"  }}
-  {% else %}
-    {{posts.content}}</p>
+  
+  {% if posts.content_type == "text/plain"%}
+    <p class="card-text">{{ posts.content }}</p>
+  {% elif posts.content_type == "text/markdown" %}
+    {{ posts.content |apply_markup:"markdown" }}
+  {% elif posts.content_type == "image" %}
+    <img class="img-fluid" src={{ posts.content }} >
   {% endif %}
 </div>
   {% include "comment.html" %}

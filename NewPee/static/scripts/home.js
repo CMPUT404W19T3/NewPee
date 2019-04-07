@@ -446,14 +446,13 @@ async function github_api() {
     return json;
 }
 
-function makePost(post_title,post_content, post_description){
+function makePost(post_title,post_content, post_description, content_type){
+    
     var radio_value;
     var radioButtons = document.getElementsByName("friends-radio-option");
-    var postType = document.getElementById("markdown");
     var unlistedBool = document.getElementById("unlisted")
     var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY"})
     var visible_to;
-
     for (var i = 0; i < radioButtons.length; i++) {
         if (radioButtons[i].checked){
             radio_value = radioButtons[i].value;
@@ -468,19 +467,13 @@ function makePost(post_title,post_content, post_description){
         csrfmidddlewaretoken: csrftoken,
         visibility : VisiblityEnum[radio_value],
         visible_to : visible_to,
-        content_type : "text/plain"
+        content_type : content_type
     };
-
-
      //update friends stuff here 
     if (radio_value==4){
         data["visible_to"] =  [page_author["id"]];
     }
 
-    if (postType.checked){
-        data["content_type"] = postType.value;
-    };
-    
     if (unlistedBool.checked){
         data["unlisted"] = true;
     }
@@ -499,7 +492,6 @@ function makePost(post_title,post_content, post_description){
         data : data,
         success : function(json) {
             $("#request-access").hide();
-            console.log("requested access complete");
             updateNumPostGet();
             location.reload();
         },
@@ -513,18 +505,52 @@ const elementMakePost = document.querySelector("#post_creation_submit");
 
 elementMakePost.addEventListener('submit', event => {
     event.stopImmediatePropagation();
-    //event.preventDefault();
-
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     console.log("button clicked");
-    var request_data = "Data"; // TODO: include all post data
     var post_title = document.querySelector("#post-title").value;
     var post_content = document.querySelector("#post-comment-content").value;
     var post_description = document.querySelector("#post-comment-description").value;
+    var postType = document.getElementById("markdown");
+    var post_type 
 
-    makePost(post_title,post_content, post_description);
+    if (postType.checked){
+        post_type = postType.value;
+    }else{
+        post_type = "text/plain";
+    };
+    makePost(post_title,post_content, post_description, post_type);
 
 });
+
+//Post picture first, then make post with picture
+const elementMakeImagePost = document.querySelector("#btnfileupload");
+elementMakeImagePost.addEventListener('submit', event => {
+    event.stopImmediatePropagation();
+
+    var post_title = document.querySelector("#image-post-title").value;
+    var post_description = document.querySelector("#image-post-comment-description").value;
+    var content_type = "image"
+    var form = document.getElementById('imageupload');
+
+    var formData = new FormData(form);
+    $.ajax({
+        url : "/api/image/",
+        type: "POST",
+        data : formData,
+        headers:{"X-CSRFToken": csrftoken},
+        processData: false,
+        contentType: false,
+        success : function(json) {
+            post_content =json ;
+            makePost(post_title, post_content, post_description, content_type);
+            $("#request-access").hide();
+        },
+        error: function (e) {
+            console.log("ERROR: ", e);
+        }
+    });
+});
+
 
 // const elementUpdateProfilePic = document.querySelector("#button");
 // elementUpdateProfilePic.addEventListener('click', uploadImage);
