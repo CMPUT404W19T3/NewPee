@@ -202,3 +202,32 @@ textarea {
     opacity: 1;
     transform: scale(1);
 }
+
+.pagination > .available > a {
+    background-color: #36558f !important;
+    color: #e6f9af !important;
+}
+
+.pagination > .available > a:hover {
+    background-color: #e6f9af !important;
+    color: #36558f !important;
+}
+
+.pagination > .able > a {
+    background-color: #8bbeb2 !important;
+    color: #36558f !important;
+}
+
+.pagination > .able > a:hover {
+    background-color: #e6f9af !important;
+    color: #36558f !important;
+}
+
+.pagination > .disabled > span {
+    background-color: #8bbeb2 !important;
+}
+
+.pagination > .active > span {
+    background-color: #36558f !important;
+    color: #e6f9af !important;
+}
