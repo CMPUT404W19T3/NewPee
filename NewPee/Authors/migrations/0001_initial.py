@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('displayName', models.CharField(max_length=15)),
                 ('bio', models.TextField(blank=True, max_length=500)),
                 ('posts_created', models.PositiveIntegerField(default=0)),
-                ('image', models.ImageField(blank=True, default='NewPee.png', upload_to='profile_image')),
+                ('image', models.ImageField(blank=True, upload_to='profile_image', default='NewPee.png')),
                 ('github_url', models.URLField(blank=True)),
                 ('isAuthorized', models.BooleanField(default=True)),
                 ('followers', models.ManyToManyField(blank=True, related_name='_followers', to='Authors.Author')),

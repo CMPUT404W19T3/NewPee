@@ -45,7 +45,7 @@ var user_api_url = user_id;
 
 function grabUser(){
     $.ajax({
-        type: "GET",
+        type: "GET", // HTTP Method
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -62,7 +62,7 @@ function grabUser(){
 }
  function grabAuthor(){
     $.ajax({
-        type: "GET",
+        type: "GET", // HTTP Method
         //async:false,    // wait till we have the author.
         url: author_api_url,
         contentType: 'application/json',
@@ -134,7 +134,7 @@ function subtractUserFriends(){
     data["friends"].shift();    // remove the [0]
     console.log(data, "user-subtract");
     $.ajax({
-        type: "PATCH",
+        type: "PATCH", // HTTP Method
         //async: false,
         url: user_api_url,
         contentType: 'application/json',
@@ -162,7 +162,7 @@ function subtractAuthorFriends(){
     data["friends"].shift();    // remove the [0]
     console.log(data, "author-subtract");
     $.ajax({
-        type: "PATCH",
+        type: "PATCH", // HTTP Method
         //async: false,
         url: author_api_url,
         contentType: 'application/json',
@@ -189,7 +189,7 @@ function addUserFriends(){
             }
         }
     $.ajax({
-        type: "PATCH",
+        type: "PATCH", // HTTP Method
         //async: false,
         url: user_api_url,
         contentType: 'application/json',
@@ -216,7 +216,7 @@ function addAuthorFriends(){
             }
         }
     $.ajax({
-        type: "PATCH",
+        type: "PATCH", // HTTP Method
         //async: false,
         url: author_api_url,
         contentType: 'application/json',
@@ -255,7 +255,7 @@ console.log(csrftoken);
 // Add the clicked author to your following list.
 function updatefollowingGet(enumType){
     $.ajax({
-        type: "GET",
+        type: "GET", // HTTP Method
         async: false,
         url: user_api_url,
         contentType: 'application/json',
@@ -276,7 +276,7 @@ function updatefollowingGet(enumType){
 // Add
 function updatefollowersGet(enumType){
     $.ajax({
-        type: "GET",
+        type: "GET", // HTTP Method
         async: false,
         url: author_api_url,
         contentType: 'application/json',
@@ -295,7 +295,7 @@ function updatefollowersGet(enumType){
 
 function updateNumPostGet(){
     $.ajax({
-        type: "GET",
+        type: "GET", // HTTP Method
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -318,7 +318,7 @@ function updateNumPostGet(){
 function updateNumPostPut(numOfPost){
     console.log(numOfPost);
     $.ajax({
-        type: "PATCH",
+        type: "PATCH", // HTTP Method
         //async: false,
         url: author_api_url,
         contentType: 'application/json',
@@ -387,7 +387,7 @@ function sendFriendRequest(){
     data["friend"] = recieving_author;
 
     $.ajax({
-        type: "POST",
+        type: "POST", // HTTP Method
         async: false,
         url: "/api/friendrequest",
         contentType: 'application/json',
@@ -491,7 +491,7 @@ function makePost(post_title,post_content, post_description){
     // Goes to post_created
     // author.view post_created view
     $.ajax({
-        type: "POST",
+        type: "POST", // HTTP Method
         //async: false,
         url: "/api/posts/",
         contentType: 'application/json',
@@ -546,7 +546,7 @@ elementUpdateProfilePic.addEventListener('submit', event => {
     }
 
     $.ajax({
-        type: "PUT",
+        type: "PUT", // HTTP Method
         url: author_api_url,
         contentType: "application/json",
         headers:{"X-CSRFToken": csrftoken},
@@ -585,7 +585,7 @@ elementUpdateProfile.addEventListener('submit', event => {
     console.log(JSON.stringify(data));
 
     $.ajax({
-        type: "PATCH",
+        type: "PATCH", // HTTP Method
         url: author_api_url,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -682,7 +682,7 @@ elementPullGithub.addEventListener('submit', async event => {
     // Goes to post_created
     // author.view post_created view
     $.ajax({
-        type: "POST",
+        type: "POST", // HTTP Method
         //async: false,
         url: "/api/posts/",
         contentType: 'application/json',

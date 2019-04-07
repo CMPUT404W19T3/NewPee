@@ -27,9 +27,10 @@
                     {% if author %}
                         {% if author == logged_in_author %}
                             <button id="button" type="button" class="change-profile-pic" data-toggle="modal" data-target="#change_profile_pic_modal"><i id="upload-icon" class="fas fa-upload" ></i></button>
-                            <img src="{{logged_in_author.image}}" alt="profile picture">
+                            <!-- <img src="{{logged_in_author.image}}" alt="profile picture"> -->
+                            <img src="{% static 'imgs/NewPee.png' %}">
                         {% else %}
-                            <img src="{{logged_in_author.image}}" alt="foreign author picture">
+                            <img src="{{author.image}}" alt="foreign author picture">
                         {% endif %}
                     {% else %}
                         <button id="button" type="button" class="change-profile-pic" data-toggle="modal" data-target="#change_profile_pic_modal"><i id="upload-icon" class="fas fa-upload" ></i></button>
