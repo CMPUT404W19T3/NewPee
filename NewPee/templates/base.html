@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{% static 'styles/home.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'styles/base.css' %}" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -110,7 +110,7 @@
     
                     {% if author%}
                         {% if logged_in_author == author %}
-                            <button type="button" id="btn-primary" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
+                            <button type="button" id="edit-profile-btn" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
                         {% else %}
                         <form id="follow_user_submit" method="Post">
                         <button type="submit" id="follow_user_submit_button" class="btn btn-primary col-12">Follow</button>
@@ -118,7 +118,7 @@
     
                         </form>
                     {% else %}
-                        <button type="button" id="btn-primary" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
+                        <button type="button" id="edit-profile-btn" class="btn btn-primary col-12" data-toggle="modal" data-target="#edit_profile_modal">Edit Profile</button>
                     {% endif %}
                     {% include "./edit_profile_modal.html" %}
                 </div>

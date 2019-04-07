@@ -1,0 +1,287 @@
+p{
+    margin: 0%;
+    padding: 0%;
+    color: #ffffff;
+}
+
+#ajax {
+    background-color: #e6f9af;
+    border: 2px solid #8bbeb2;
+}
+
+#ajax::placeholder {
+    color: #36558f;
+}
+
+.main-background {
+    background-color: #0d0630;
+}
+
+.container{
+    margin-top: 8rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+    margin-left: 0%;
+    margin-right: 0%;
+}
+
+.content{
+    display: inline-block;
+    box-sizing: border-box;
+    width: 900px;
+    height: 100%;
+    margin-top:2%;
+    margin: auto;
+}
+
+.fileupload{
+    display: block;
+    float: left;
+    
+}
+
+.profile-pic{
+    position: relative;
+    padding: 0%;
+    width:100%;
+    height: auto;
+    border:1px solid grey;
+    border-radius: 8px;
+    background: #ffffff;
+    border: 0.2rem solid #36558f;
+}
+
+#edit-profile-btn {
+    border: 0.2rem solid #36558f;
+    background-color: #8bbeb2;
+    color: #18314f;
+}
+
+#edit-profile-btn:hover {
+    background-color: #e6f9af;
+    color: #18314f;
+}
+
+.profile-pic img{
+    z-index: 1;
+    margin: 0%;
+    padding: 0%;
+    width:100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.profile-pic img:hover{
+    z-index: 1;
+    margin: 0%;
+    padding: 0%;
+    width:100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.profile-pic button{
+    margin: 0%;
+    padding: 0%;
+    width:100%;
+    height: 200px;
+    object-fit: cover;
+    position: absolute;
+}
+
+.username p{
+    color: #ffffff;
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    font-size: 24pt;
+}
+
+.other-info a{
+    width: 100%;
+    word-wrap: break-word;
+}
+.stats{
+    width: 100%;
+    margin-top: 5% ;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5%;  
+}
+
+.stat {
+    width: 30%;
+    float: none;
+    margin:0%;
+    word-wrap: break-word;
+    justify-content: space-between;
+}
+
+.stat p{
+    font-size: 12pt;
+    text-align: center;
+    margin: 0%;
+}
+
+.posting button{
+    display:block;
+    float: right;
+    width: 100px;
+}
+
+.comment img{
+    width: 30px;
+    height: 30px;
+}
+
+#btnfileupload {
+    float: left;
+
+}
+
+.card{
+    margin-bottom: 15px;
+}
+
+textarea {
+    resize: none;
+}
+
+.change-profile-pic {
+    border-radius: 8px 8px 8px 8px;
+    background-color: Transparent;
+    color: transparent;
+    border: transparent;
+    z-index: 1000;
+    /* top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #555;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px; */
+  }
+  
+/* https://stackoverflow.com/questions/6008324/fade-effect-on-link-hover */
+.change-profile-pic:hover {
+    border-radius: 6px;
+    color: #18314f;
+    background: #8bbeb2;
+    opacity: 0.96;
+    -o-transition:.4s;
+    -ms-transition:.4s;
+    -moz-transition:.4s;
+    -webkit-transition:.4s;
+    transition:.4s;
+  }
+
+.fa-upload {
+    font-size: 12rem;
+}
+
+.fade-scale {
+    transform: scale(0);
+    opacity: 0;
+    -webkit-transition: all .25s linear;
+    -o-transition: all .25s linear;
+    transition: all .25s linear;
+}
+  
+.fade-scale.in {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.modal-header {
+    background-color: #18314f !important;
+    border: 0.2rem solid #36558f;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.modal-body {
+    background-color: #18314f !important;
+    border: 0.2rem solid #36558f;
+    height: 24rem;
+    border-radius: 0px 0px 5px 5px;
+}
+
+#author-display-name {
+    background: #e6f9af;
+}
+
+#author-bio {
+    background: #e6f9af;
+    margin-top: 1.5rem;
+}
+
+#author-github {
+    background: #e6f9af;
+    margin-top: 1.5rem;
+}
+
+#author-display-name::placeholder {
+    color: #18314f;
+    opacity: 0.7;
+}
+
+#author-bio::placeholder {
+    color: #18314f;
+    opacity: 0.7;
+}
+
+#author-github::placeholder {
+    color: #18314f;
+    opacity: 0.7;
+}
+
+.modal-title {
+    color: #8bbeb2;
+}
+
+#edit-profile-save {
+    width: 8rem;
+    background: #8bbeb2;
+    color: #36558f;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 1.5rem;
+    margin-right: 1.5rem;
+}
+
+#edit-profile-save:hover {
+    background: #e6f9af;
+    font-weight: 700;
+    opacity: 0.96;
+    -o-transition:.4s;
+    -ms-transition:.4s;
+    -moz-transition:.4s;
+    -webkit-transition:.4s;
+    transition:.4s;
+}
+
+#edit-profile-close {
+    color: red;
+    font-size: 4rem;
+    margin-right: 0.5rem;
+    margin-top: 0rem;
+    padding: 0px;
+    float: right;
+    font-weight: bolder;
+    opacity: 0.5;
+}
+
+#edit-profile-close:hover {
+    opacity: 2;
+}

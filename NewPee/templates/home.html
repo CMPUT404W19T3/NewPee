@@ -4,43 +4,7 @@
 {% block baseHead %}
 
 <script src="{% static 'scripts/home.js' %}"></script>
-<style>
-    .card {
-        background: #36558f;
-        border: 0rem solid transparent;
-    }
-
-    .form-control {
-        background: #e6f9af;
-    }
-
-    .form-control::placeholder {
-        color: rgba(54, 85, 143, 0.75);
-    }
-
-    .btn-primary {
-        background: #8bbeb2;
-        color: #18314f;
-    }
-
-    .btn-primary:hover {
-        background: #e6f9af;
-        color: #18314f;
-    }
-
-    .nav a:hover {
-        background: #e6f9af;
-    }
-
-    .tabb {
-        background: #8bbeb2;
-        border-radius: 4px 4px 0px 0px;
-        border: 0px;
-        margin-right: 2px;
-        color: #18314f;
-    }
-
-</style>
+<link rel="stylesheet" type="text/css" href="{% static 'styles/home.css' %}" />
 
 {% endblock %}
 {% block rightColumn %}

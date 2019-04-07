@@ -1,204 +1,36 @@
-p{
-    margin: 0%;
-    padding: 0%;
-    color: #ffffff;
+.card {
+    background: #36558f;
+    border: 0rem solid transparent;
 }
 
-#ajax {
-    background-color: #e6f9af;
-    border: 2px solid #8bbeb2;
+.form-control {
+    background: #e6f9af;
 }
 
-#ajax::placeholder {
-    color: #36558f;
+.form-control::placeholder {
+    color: rgba(54, 85, 143, 0.75);
 }
 
-.main-background {
-    background-color: #0d0630;
-}
-
-.container{
-    margin-top: 8rem;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    height: 100%;
-}
-
-.col-centered{
-    float: none;
-    margin: 0 auto;
-    margin-left: 0%;
-    margin-right: 0%;
-}
-
-.content{
-    display: inline-block;
-    box-sizing: border-box;
-    width: 900px;
-    height: 100%;
-    margin-top:2%;
-    margin: auto;
-}
-
-.fileupload{
-    display: block;
-    float: left;
-    
-}
-
-.profile-pic{
-    position: relative;
-    padding: 0%;
-    width:100%;
-    height: auto;
-    border:1px solid grey;
-    border-radius: 8px;
-    background: #ffffff;
-    border: 0.2rem solid #36558f;
-}
-
-#btn-primary {
-    border: 0.2rem solid #36558f;
-    background-color: #8bbeb2;
-    color: #18314f;
-}
-
-#btn-primary:hover {
-    background-color: #e6f9af;
-    color: #18314f;
-}
-
-.profile-pic img{
-    z-index: 1;
-    margin: 0%;
-    padding: 0%;
-    width:100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.profile-pic img:hover{
-    z-index: 1;
-    margin: 0%;
-    padding: 0%;
-    width:100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.profile-pic button{
-    margin: 0%;
-    padding: 0%;
-    width:100%;
-    height: 200px;
-    object-fit: cover;
-    position: absolute;
-}
-
-.username p{
-    color: #ffffff;
-    display: block;
-    text-align: center;
-    font-weight: bold;
-    font-size: 24pt;
-}
-
-.other-info a{
-    width: 100%;
-    word-wrap: break-word;
-}
-.stats{
-    width: 100%;
-    margin-top: 5% ;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5%;  
-}
-
-.stat {
-    width: 30%;
-    float: none;
-    margin:0%;
-    word-wrap: break-word;
-    justify-content: space-between;
-}
-
-.stat p{
-    font-size: 12pt;
-    text-align: center;
-    margin: 0%;
-}
-
-.posting button{
-    display:block;
-    float: right;
-    width: 100px;
-}
-
-.comment img{
-    width: 30px;
-    height: 30px;
-}
-
-#btnfileupload {
-    float: left;
-
-}
-
-.card{
-    margin-bottom: 15px;
-}
-
-textarea {
-    resize: none;
-}
-
-.change-profile-pic {
-    border-radius: 8px 8px 8px 8px;
-    background-color: Transparent;
-    color: transparent;
-    border: transparent;
-    z-index: 1000;
-    /* top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    background-color: #555;
-    color: white;
-    font-size: 16px;
-    padding: 12px 24px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px; */
-  }
-  
-/* https://stackoverflow.com/questions/6008324/fade-effect-on-link-hover */
-.change-profile-pic:hover {
-    border-radius: 6px;
-    color: #18314f;
+.btn-primary {
     background: #8bbeb2;
-    opacity: 0.90;
-    -o-transition:.4s;
-    -ms-transition:.4s;
-    -moz-transition:.4s;
-    -webkit-transition:.4s;
-    transition:.4s;
-  }
-
-.fa-upload {
-    font-size: 12rem;
+    color: #18314f;
 }
 
-.fade-scale {
-    transform: scale(0);
-    opacity: 0;
-    -webkit-transition: all .25s linear;
-    -o-transition: all .25s linear;
-    transition: all .25s linear;
+.btn-primary:hover {
+    background: #e6f9af;
+    color: #18314f;
 }
-  
-.fade-scale.in {
-    opacity: 1;
-    transform: scale(1);
+
+.tabb {
+    background: #8bbeb2;
+    border-radius: 4px 4px 0px 0px;
+    border: 0px;
+    margin-right: 2px;
+    color: #18314f;
+}
+
+.nav>li>a.active,
+.nav>li>a:hover,
+.nav>li>a:focus {
+    background-color: #e6f9af;
 }
