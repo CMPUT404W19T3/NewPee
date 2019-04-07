@@ -2,14 +2,17 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from Authors.models import Author
 
 class UserCreateForm(UserCreationForm):
 
     first_name = forms.CharField(label="First Name", max_length=100, required=True, 
-        widget=forms.TextInput(attrs={'placeholder': 'First Name', 'class': 'form-control'}))
+        widget=forms.TextInput(attrs={'placeholder': 'First Name', 'class': 'form-control'}),
+        error_messages = {'required': "First Name is required."})
 
     last_name = forms.CharField(label="Last Name", max_length=100, required=True,
-        widget=forms.TextInput(attrs={'placeholder': 'Last name', 'class': 'form-control'}))
+        widget=forms.TextInput(attrs={'placeholder': 'Last name', 'class': 'form-control'}),
+        error_messages = {'required': "Last Name is required."})
 
     email = forms.EmailField(label="Email",
         widget=forms.TextInput(attrs={'placeholder': 'Email', 'class': 'form-control'}))
@@ -50,8 +53,14 @@ class UserLoginForm(forms.Form):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
+
         if not user or not user.is_active:
             raise forms.ValidationError("Invalid username or password. Please try again.")
+
+        validate_user = Author.objects.get(user=user)
+        if not validate_user.isAuthorized:
+            raise forms.ValidationError("User needs to be authorized by a Server Administrator.")
+
         return self.cleaned_data
 
     def login(self, request):
@@ -59,9 +68,7 @@ class UserLoginForm(forms.Form):
         password = self.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         return user
-    
-    def authorize_message(self):
-        raise forms.ValidationError("User needs to be authorized by a Server Administrator.")
+        
 
 class PostTitleForm(forms.Form):
 

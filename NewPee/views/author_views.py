@@ -40,8 +40,6 @@ def log_in(request, format=None):
             if (author.isAuthorized):
                 login(request, user)
                 return HttpResponseRedirect(reverse('get_author'), {'form': form})
-            else:
-                form.authorize_message()
     return render(request, 'registration/login.html', {'form': form})
 
         # if request.method == 'POST':
