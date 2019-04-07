@@ -253,7 +253,9 @@ let posts = getPosts();
 console.log(csrftoken);
 // Get the current followers of the Profile.
 // Add the clicked author to your following list.
-function updatefollowingGet(enumType){
+
+
+function getSenderAuthorData(enumType){
     $.ajax({
         type: "GET", // HTTP Method
         async: false,
@@ -274,7 +276,7 @@ function updatefollowingGet(enumType){
 
 // Get the current followers of the Profile.
 // Add
-function updatefollowersGet(enumType){
+function getrecivingAuthorData(enumType){
     $.ajax({
         type: "GET", // HTTP Method
         async: false,
@@ -388,7 +390,7 @@ function sendFriendRequest(){
 
     $.ajax({
         type: "POST", // HTTP Method
-        async: false,
+        //async: false,
         url: "/api/friendrequest",
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
@@ -396,6 +398,13 @@ function sendFriendRequest(){
         success : function(json) {
             $("#request-access").hide();
             console.log("requested access complete");
+
+            $("#follow_user_submit_button").html("Unfollow");
+
+            const followers_stat = document.querySelector("#follower_stat");
+            $("#follower_stat").html(Number(followers_stat.innerHTML) + 1) ;
+
+
         },
         error: function (e) {
             console.log("ERROR: ", e);
@@ -403,27 +412,85 @@ function sendFriendRequest(){
     });
 }
 
-// Functions for adding
-function callFollowers(){
-    updatefollowingGet(FriendsEnum.Add);
+
+
+function sendUnfollowRequest(){
+
+    data = {};
+
+    data["query"] = "unfollow";
+    data["author"] = sending_author;
+    data["friend"] = recieving_author;
+
+
+    console.log(recieving_author["id"]);
+    var split_uuid = recieving_author["id"].split("/")
+
+    url = "/api/author/" +  split_uuid[split_uuid.length-1] + "/decline-friend-request";
+
+
+
+    console.log(url, "sending to this url..");
+
+    $.ajax({
+        type: "POST", // HTTP Method
+        //async: false,
+        url: url,
+        contentType: 'application/json',
+        headers:{"X-CSRFToken": csrftoken},
+        data: JSON.stringify(data),
+        success : function(json) {
+            $("#request-access").hide();
+            console.log("requested access complete");
+            
+            const followers_stat = document.querySelector("#follower_stat");
+            $("#follower_stat").html(Number(followers_stat.innerHTML) -1 ) ;
+
+            $("#follow_user_submit_button").html("Follow");
+
+        },
+        error: function (e) {
+            console.log("ERROR: ", e);
+        }
+    });
 }
 
-function callFollowing(callback){
-    updatefollowersGet(FriendsEnum.Add);    // Call second, friends piggybacks off Followers
+
+
+// Functions for adding
+function callRecievingData(){
+    getrecivingAuthorData(FriendsEnum.Add);
+}
+
+function callSenderData(callback){
+    getSenderAuthorData(FriendsEnum.Add);    // Call second, friends piggybacks off Followers
     callback();
 
 }
 
 try {
 follow_submit_form.addEventListener('submit', event =>{
-    //event.preventDefault();
+    event.preventDefault();
     event.stopImmediatePropagation();
+
     var follow_unfollow_text = follow_submit_button.textContent || follow_submit_button.innerText;
+
+    callSenderData(callRecievingData);
+
     if(follow_unfollow_text === "Follow"){
-        callFollowing(callFollowers);
         sendFriendRequest();
 
     }
+    else{
+        sendUnfollowRequest();
+    }
+
+
+
+
+
+
+
 });
 }
 catch{

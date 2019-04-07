@@ -20,7 +20,7 @@ from rest_framework.views import APIView
 from Servers.models import Server
 from views import api_views
 from views.forms import SearchForm
-
+from django.urls import reverse_lazy
 import operator
 import uuid
 
@@ -118,6 +118,12 @@ class AuthorDetail(APIView):
 
                 followers = author.get_followers()
                 following = author.get_following()
+
+                if(logged_in_author not in followers):
+                    followingBool = True
+                else:
+                    followingBool = False
+
                 paginator = Paginator(allPosts, 5)
                 page = request.GET.get('page')
                 pages = paginator.get_page(page)
@@ -125,7 +131,7 @@ class AuthorDetail(APIView):
                 return Response({'author': author_serializer.data,  \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data, \
                 'allPosts': allPosts, \
-                'pages': pages, 'followers': followers, 'following': following})
+                'pages': pages, 'followers': followers, 'following': following, 'followingBool' : followingBool })
 
             except Post.DoesNotExist:
 
@@ -354,7 +360,7 @@ class AuthorUpdateFriendRequestsView(APIView):
         recieving_author_uuid = recieving_author["id"].split("/")[-1]
 
         friend_uuid = friend_uuid.strip(" ")
-        author = get_object_or_404(models.Author, id =  recieving_author_uuid)
+        author = get_object_or_404(Author, id =  recieving_author_uuid)
 
         print("YEEE\n\n", author, "\n\n\n")
         print("friend_uuid", friend_uuid)
@@ -362,7 +368,7 @@ class AuthorUpdateFriendRequestsView(APIView):
         try:
 
             # a local author we can just add them.
-            friend = get_object_or_404(models.Author, id = friend_uuid)
+            friend = get_object_or_404(Author, id = friend_uuid)
 
             if request.data["query"] == "declinerequest":
 
@@ -375,41 +381,31 @@ class AuthorUpdateFriendRequestsView(APIView):
             except:
                 print("adding friend failed")
 
-            print("?")
 
-            return Response(status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_200_OK)
 
         except:
 
-            print("friend didn't exist")
-
-            try:
-
-                # add the author since we now track them
-                foreign_author = Author.objects.create(
-                                        id=friend["id"],
-                                        host=friend["host"],
-                                        displayName = friend["displayName"],
-                                        url = friend["url"]
-                )
-
-                # add the friend
-                author.add_friend(foreign_author)
-
-            except:
-
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 # https://docs.djangoproject.com/en/2.1/ref/class-based-views/base/#redirectview
 class AuthorFriendRequestActionsView( RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
 
+
+        url = reverse_lazy('feed')
+
         target_pk = kwargs.get('pk')
         method = kwargs.get('method')
         sender = self.request.user
-        target_author = get_object_or_404(models.Author, pk= target_pk)
-        sender_author = get_object_or_404(models.Author, user=user)
+        target_author = get_object_or_404(Author, pk= target_pk)
+        sender_author = get_object_or_404(Author, user=sender)
+
+        print(sender_author, target_author, method)
+
+        #sender_author = get_object_or_404(Author, request.data["friend"])
+
 
         # Our sender is accepting the target author requests
         if method == "accept":
@@ -418,12 +414,17 @@ class AuthorFriendRequestActionsView( RedirectView):
 
         if method == "decline":
 
+            print("GOT HERE")
             sender_author.respond_to_friend_request(target_author, "decline")
+
 
         if method == "send-request":
 
-            sender.send_friend_request(target_author)   # target is sending request to the sender.
+            sender.send_friend_request(target_author,request,)   # target is sending request to the sender.
 
         if method == "unfriend":
 
-            sender_author.remove(target_author)
+            sender_author.remove(target_author,request, )
+
+        return url
+
