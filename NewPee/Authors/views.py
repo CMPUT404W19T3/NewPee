@@ -81,7 +81,7 @@ class AuthorDetail(APIView):
                 exclude_author = Author.objects.filter(user = request.user)
                 authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
 
-                print("This is the authors", logged_in_author_serializer)
+                print(authors)
 
                 return Response({'authors': authors, 'form': form, 'search': search}, template_name='search.html')
 
