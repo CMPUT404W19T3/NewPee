@@ -205,17 +205,13 @@ def post_list(request):
             xpost = Post.objects.get(id=post["id"])
 
             if( view_access(xpost, Author.objects.get(user=request.user), xpost.getUnlisted())):
-
-                print("Can see", post)
                 pass
 
             else:
 
                 non_visible_filtered_post = posts.exclude(id = post["id"])
                 posts = posts & non_visible_filtered_post
-                print("can't see", post)
 
-        print("made it past view")
 
         #serializer2 = PostSerializer(posts, many=True, context={'request': request})
         serializer = PostSerializer(public_posts, many=True, context={'request': request})
@@ -224,7 +220,6 @@ def post_list(request):
 
         combined = list(chain(serializer.data, serializer2.data))
 
-        print("made it past view")
 
 
         #json = serializers.serialize('json', combined)

@@ -75,6 +75,9 @@ class Server(models.Model):
             foreign_author = post["author"]
             foreign_author_uuid = foreign_author["id"].split("/")[-1]
 
+            # only pull data from that particular server.
+            if(self.host not in foreign_author["id"]):
+                continue
 
             try:
 
