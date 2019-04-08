@@ -505,8 +505,7 @@ function makePost(post_title,post_content, post_description, content_type){
      //update friends stuff here
     if (radio_value==4){
         data["visible_to"] =  [page_author["id"]];
-        
-
+        data["other_author"] =  other_author_text.innerHTML;        
     }
     if (unlistedBool.checked){
         data["unlisted"] = true;
@@ -552,6 +551,15 @@ elementMakePost.addEventListener('submit', event => {
         post_type = "text/plain";
     };
     makePost(post_title,post_content, post_description, post_type);
+    var radioButtons = document.getElementsByName("friends-radio-option");
+    radioButtons[0].checked = true;
+
+    document.getElementById("post-title").value = "";
+    document.getElementById("post-comment-description").value = "";
+    document.getElementById("post-comment-content").value = "";
+
+
+
 });
 
 //Post picture first, then make post with picture
@@ -600,8 +608,30 @@ $('input[type="radio"]').click(function(){
     }
     else{
         private_author_text.hidden = true;
+        other_author_text.hidden = true;
+        other_author_start_text.hidden = true;
     }
 });
+
+
+const other_author_text = document.getElementById("other_author");
+const other_author_start_text = document.getElementById("other_author_start_text");
+
+other_author_start_text
+function tog(v){return v?'addClass':'removeClass';} 
+$(document).on('input', '.clearable', function(){
+    $(this)[tog(this.value)]('x');
+}).on('mousemove', '.x', function( e ){
+    $(this)[tog(this.offsetWidth-18 < e.clientX-this.getBoundingClientRect().left)]('onX');
+}).on('touchstart click', '.onX', function( ev ){
+    ev.preventDefault();
+    other_author_text.innerHTML = this.value;
+    other_author_text.hidden = false;
+    other_author_start_text.hidden = false;
+
+    $(this).removeClass('x onX').val('').change();
+});
+
 
 
 const elementUpdateProfilePic = document.getElementById("change_profile_pic_submit");

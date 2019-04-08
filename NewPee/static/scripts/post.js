@@ -68,19 +68,6 @@ $(document).ready(function(){
             } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
         });
         $.ajax({
-<<<<<<< HEAD
-            type: "DElETE",
-            //async: false,
-            url: "/api/posts/"+post_uuid,
-            contentType: 'application/json',
-            headers:{"X-CSRFToken": csrftoken},
-            success : function(json) {
-                $("#request-access").hide();
-                console.log("requested access complete");
-                window.location = "/authors/";
-            
-            },
-=======
             method: "DElETE", // type --> method, the HTTP method used for the request.
             async: false, // Synchronous request.
             url: "/api/posts/"+post_uuid, // URL to which the request is sent.
@@ -90,7 +77,6 @@ $(document).ready(function(){
                 $("#request-access").hide();
                 console.log("requested access complete");
             }, // This function is called if the request is successful. Data is returned from the server.
->>>>>>> c0ec6f675ae93f90384e592affe4f2a2326065f1
             error: function (e) {
                 console.log("ERROR: ", e);
             } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.

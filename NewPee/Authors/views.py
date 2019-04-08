@@ -124,16 +124,6 @@ class AuthorDetail(APIView):
                 #posts = posts.filter(author=author["id"])
 
 
-                print(response.data, "Our Data")
-
-
-                for x in response.data:
-                    print(x, "\n\n\n\n")
-
-
-
-                print (len(response.data))
-
 
 
                 response_list = list(response.data)

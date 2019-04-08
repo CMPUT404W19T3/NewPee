@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from itertools import chain
@@ -19,6 +19,8 @@ from rest_framework.response import Response
 from django.contrib.auth.models import AnonymousUser
 import collections
 import json
+
+
 
 # https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
 def view_access(post, author, unlisted=False):
@@ -237,6 +239,18 @@ def post_list(request):
 
             visible_to = request.data["visible_to"]
 
+
+            
+            try:
+                other_vis_author =  Author.objects.get( displayName = request.data["other_author"])
+                visible_to.append(other_vis_author)
+                print("found author")
+
+            except:
+                pass
+
+
+
             del request.data["visible_to"]
 
             update_vis = True
@@ -252,8 +266,10 @@ def post_list(request):
             serializer.save()
 
             if(update_vis):
+                
+                for vis_author in visible_to:
+                    Post.objects.get(id=serializer.data["id"]).set_visible_to(vis_author)
 
-                Post.objects.get(id=serializer.data["id"]).set_visible_to(visible_to[0])
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
