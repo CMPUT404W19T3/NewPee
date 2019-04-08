@@ -69,7 +69,7 @@ class Post(models.Model):
     def get_image(self):
 
         return self.image
-
+    
     def get_post_date(self):
 
         return self.published
