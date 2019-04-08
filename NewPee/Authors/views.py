@@ -80,7 +80,7 @@ class AuthorDetail(APIView):
 
                 print("This is the authors", logged_in_author_serializer)
 
-                return Response({'logged_in_author':logged_in_author_serializer.data, 'authors': authors, 'form': form, 'search': search}, template_name='search.html')
+                return Response({'authors': authors, 'form': form, 'search': search}, template_name='search.html')
 
             try:
 
@@ -120,54 +120,7 @@ class AuthorDetail(APIView):
                 return Response({'author': author_serializer.data, 'form': form, \
                     'foreignposts': foreignposts_serializer.data})
 
-    # Clean Up After
-    def post(self, request, pk, *args, **kwargs):
-
-        print(">")
-
-        if request.method == 'POST' and request.FILES['myfile']:
-
-            author = self.get_object(pk)
-            author_serializer = AuthorSerializer(author,context={'request': request})
-            logged_in_author = Author.objects.get(user = request.user)
-            logged_in_author_serializer = AuthorSerializer(logged_in_author,context={'request': request})
-            form = SearchForm()
-            myfile = request.FILES['myfile']
-
-            # Future TODO: Possibly add it to the DB, but don't have too.
-            try:
-
-                Photo.objects.create(myfile)
-
-            except:
-
-                print("Not an image!")
-
-            print(myfile)
-
-            fs = FileSystemStorage()
-            filename = fs.save(myfile.name, myfile)
-            uploaded_file_url = fs.url(filename)
-
-            #return redirect('/authors',  uploaded_file_url= uploaded_file_url)
-
-            try:
-
-                posts = Post.objects.filter(author=pk)
-                post_serializer = PostSerializer(posts, many=True)
-
-                return render(request, 'home.html', {
-                'uploaded_file_url': uploaded_file_url, \
-                'author': author_serializer.data, 'posts': post_serializer.data, \
-                'form': form, 'logged_in_author':logged_in_author_serializer.data })
-
-            except:
-
-                 return render(request, 'home.html', {
-                'uploaded_file_url': uploaded_file_url, \
-                'author': author_serializer.data,  \
-                'form': form, 'logged_in_author':logged_in_author_serializer.data })
-
+    
 class AuthorList(APIView):
 
     """
