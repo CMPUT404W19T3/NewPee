@@ -33,7 +33,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = Post
-        fields = ('id', 'author', 'title', 'source', 'origin', 'description', 'content', 'contentType', 'post_date', 'visibility', 'visible_to', 'unlisted')
+        fields = ('id', 'author', 'title', 'source', 'origin', 'description', 'content', 'contentType', 'published', 'visibility', 'visible_to', 'unlisted')
         lookup_field = 'id'
 
     # custom save method to work with visible_To

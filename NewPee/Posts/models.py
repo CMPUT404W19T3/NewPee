@@ -31,7 +31,7 @@ class Post(models.Model):
     # image = models.URLField(null=True,blank=True)
     # image = models.ImageField(upload_to = images)
     image = models.ImageField(upload_to = 'media/', default = 'media/None/no-img.jpg')
-    post_date = models.DateTimeField(auto_now_add=True)
+    published = models.DateTimeField(auto_now_add=True)
     #Types of visibility
     visibility_choices = (
                         ( 'PUBLIC', 'PUBLIC'),
