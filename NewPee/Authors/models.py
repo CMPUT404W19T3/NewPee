@@ -146,6 +146,9 @@ class Author(models.Model):
 
 
 
+        print(self, "author with host")
+        print(author, "the author being sent")
+
         if(author.host != HOSTNAME):
                 try:
                     self.send_foreign_request(author) # send a friend request to another serve

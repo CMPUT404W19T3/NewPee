@@ -116,7 +116,7 @@ class AuthorDetail(APIView):
                     followingBool = False
 
 
-                return Response({'author': author_serializer.data,  \
+                return Response({'author': author_serializer.data, 'current_author':logged_in_author_serializer.data, \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data, \
                 'pages': pages, 'followers': followers, 'following': following, 'followingBool' : followingBool })
 
@@ -343,31 +343,29 @@ class AuthorUpdateFriendRequestsView(APIView):
         friend_uuid = friend_uuid.strip(" ")
         author = get_object_or_404(Author, id =  recieving_author_uuid)
 
-        print("YEEE\n\n", author, "\n\n\n")
-        print("friend_uuid", friend_uuid)
 
-        try:
+        #try:
 
             # a local author we can just add them.
-            friend = get_object_or_404(Author, id = friend_uuid)
+        friend = get_object_or_404(Author, id = friend_uuid)
 
-            if request.data["query"] == "declinerequest":
+        if request.data["query"] == "declinerequest":
 
-                author.add_friend_request(friend)   # add them into our friend requests, used to hide notifications.
-                return Response(status=status.HTTP_201_CREATED)
-
-
-            try:
-                friend.add_friend(author)
-            except:
-                print("adding friend failed")
+            author.add_friend_request(friend)   # add them into our friend requests, used to hide notifications.
+            return Response(status=status.HTTP_201_CREATED)
 
 
-            return Response(status=status.HTTP_200_OK)
+       
+        friend.add_friend(author)
+            
+                
 
-        except:
 
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_200_OK)
+
+        #except:
+
+        #    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 # https://docs.djangoproject.com/en/2.1/ref/class-based-views/base/#redirectview
 class AuthorFriendRequestActionsView( RedirectView):

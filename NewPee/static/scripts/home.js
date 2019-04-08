@@ -312,6 +312,26 @@ $(document).ready(function(){
     });
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function sendFriendRequest(){
 
     data = {};
@@ -329,6 +349,9 @@ function sendFriendRequest(){
         headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
+
+            console.log("Friend request sent");
+            
             $("#request-access").hide();
             $("#follow_user_submit_button").html("Unfollow");
             const followers_stat = document.querySelector("#follower_stat");
