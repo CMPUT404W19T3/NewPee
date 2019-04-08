@@ -39,6 +39,7 @@ class Post(models.Model):
                         ( 'PRIVATE', 'PRIVATE'),
                         ( 'SERVERONLY', 'SERVERONLY'),
                         ( 'FRIENDS', 'FRIENDS'),
+                        ( 'SERVERFRIENDS', 'SERVERFRIENDS')
     )
     visibility = models.CharField(max_length=10, choices=visibility_choices, default="PUBLIC")
     # which viewers are allowed to see it.

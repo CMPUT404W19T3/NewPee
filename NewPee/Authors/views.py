@@ -23,7 +23,7 @@ from views.forms import SearchForm
 from django.urls import reverse_lazy
 import operator
 import uuid
-
+from views.api_views import post_list
 class AuthorDetail(APIView):
 
     """
@@ -84,21 +84,28 @@ class AuthorDetail(APIView):
 
             try:
 
-                posts = Post.objects.filter(author=pk)
-                post_serializer = PostSerializer(posts, many=True,context={'request': request})
-                foreignposts = ForeignPost.objects.all()
-                foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True, context={'request': request})
-                posts = api_views.post_list(request._request)
+                response = post_list(request._request)
+
+                #print(response.data)
+
+                #posts= response.data.filter(author=pk)
+
+                #posts = Post.objects.filter(author=pk)
+
+                #post_serializer = PostSerializer(response.data, many=True,context={'request': request})
+                #foreignposts = ForeignPost.objects.all()
+                #foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True, context={'request': request})
+
+                '''
+                posts = post_list(request._request)
 
                 #posts.data.exclude(id=author["id"])
-                print("\n", posts.data, "\n")
 
                 filtered = {}
 
                 for post in posts.data:
 
                     temp_author = post["author"]
-                    temp_uuid = temp_author["id"].split("/")[-1]
 
                     print(temp_uuid, author.id)
 
@@ -107,14 +114,33 @@ class AuthorDetail(APIView):
                         print("check")
 
                         filtered.update({'posts':post})
+                '''
+                
+                #print(filtered)
 
-                print(filtered)
+                #filtered = [filtered]
 
-                #filtered_serializer = PostSerializer(filtered, many=True,context={'request': request})
 
-                allPosts = list(chain(post_serializer.data, foreignposts_serializer.data))
+                #posts = posts.filter(author=author["id"])
 
-                allPosts.sort(key=lambda x: x['post_date'], reverse=True)
+
+                print(response.data, "Our Data")
+
+
+                for x in response.data:
+                    print(x, "\n\n\n\n")
+
+
+
+                print (len(response.data))
+
+
+
+                response_list = list(response.data)
+                response_list.sort(key=lambda x: x['post_date'], reverse=True)
+                paginator = Paginator(response_list, 5)
+                page = request.GET.get('page')
+                pages = paginator.get_page(page)
 
                 followers = author.get_followers()
                 following = author.get_following()
@@ -124,13 +150,9 @@ class AuthorDetail(APIView):
                 else:
                     followingBool = False
 
-                paginator = Paginator(allPosts, 5)
-                page = request.GET.get('page')
-                pages = paginator.get_page(page)
 
                 return Response({'author': author_serializer.data,  \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data, \
-                'allPosts': allPosts, \
                 'pages': pages, 'followers': followers, 'following': following, 'followingBool' : followingBool })
 
             except Post.DoesNotExist:

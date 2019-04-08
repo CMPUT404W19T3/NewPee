@@ -7,11 +7,20 @@
 }
 
 .card-header {
+
    border-bottom: 0.2rem solid #36558f;
    background: #36558f;
    border-radius: 8px 8px 0px 0px;
- }
+   vertical-align: text-bottom;
 
+ }
+ #remove_post_submit {
+  float: right;
+  background: #e6f9af;
+  color: #18314f;
+  border: #8bbeb2;
+
+ }
  #edit_Post_Button {
    background: #8bbeb2;
    position: relative;
@@ -30,9 +39,11 @@
   right: 0; 
  }
 
+
  p {
    color: #e6f9af;
    font: 900;
+   float: center;
  }
 
  .card-subtitle {

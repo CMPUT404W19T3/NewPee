@@ -27,23 +27,45 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework_swagger.views import get_swagger_view
 from rest_framework.urlpatterns import format_suffix_patterns
 from views import api_views
-from views.author_views import log_in, sign_up, logout_view, get_author, get_authors,redirect, feed, respond_to_friends
+from views.author_views import api_login, api_logout, check_auth, log_in, sign_up, logout_view, get_author, get_authors,redirect, feed, respond_to_friends
 
-API_TITLE = "API Documentation"
-API_DESCRIPTION = 'Built-in interactive API documentation for NewPee.'
+# https://www.django-rest-framework.org/topics/documenting-your-api/
+# https://docs.djangoproject.com/en/2.1/topics/http/urls/
+# https://www.django-rest-framework.org/api-guide/format-suffixes/
 
-schema_view = get_swagger_view(title='Documentation')
+schema_url_patterns = [
+    path('api/authors', api_views.Author_list, name="api-author"),
+    path('api/authors/<uuid:pk>', api_views.Author_detail, name="api-author"),
+
+    path('api/posts', api_views.post_list),
+    path('api/posts/<uuid:pk>', api_views.post_detail, name="edit_author"),
+    path('api/comments', api_views.comment_list),
+    path('api/image/', api_views.image_detail),
+
+    path('friends/<uuid:pk>', AuthorDetail.as_view()),
+
+    path('api/friendrequest', AuthorUpdateFriendRequestsView.as_view(), name = "api-friendrequest"),
+    path('api/author/<uuid:pk>/friends/', AuthorfriendsView.as_view(), name="api-friendlist"),      
+    path('api/author/<uuid:pk>/friends/<uuid:pk2>', AuthorIsfriendsView.as_view(), name="api-checkfriends"), 
+    path('api/author/<uuid:pk>/friendrequest' , AuthorFriendRequestsView.as_view(), name="api-returnfriendrequests"), 
+    path('api/author/<uuid:pk>/decline-friend-request', AuthorFriendRequestActionsView.as_view(),{'method': "decline"}, name="decline-friend", ),
+]
+
+schema_view = get_swagger_view(
+    title='NewPee API Documentation',
+    patterns=schema_url_patterns
+)
 
 urlpatterns = [
 
-    # Login, Signup and Logout
-    # path('',log_in), Root should be home if user is logged in
-    #path('login/', log_in),
-    url( r'^login/$', log_in, name="login"),
-    path('signup/', sign_up),
-    path('', log_in),
-
+    # Root will redirect to home if user is logged in
+    # Otherwise it will redirect to login page
+    path('', check_auth, name="check_auth"),
+    path('login/', log_in, name="login"),
+    path('api_login/', api_login, name="api_login"),
+    path('signup/', sign_up, name="signup"),
     path('feed/', feed, name="feed"),
+
     # Admin
     path('admin/', admin.site.urls),
 
@@ -86,6 +108,7 @@ urlpatterns = [
     # Home
     path('home/', AuthorList.as_view(), name="home"),
     path('logout/', logout_view, name="logout"),
+    path('api_logout/', api_logout, name="api_logout"),
 
     path('authors/', get_author, name="get_author"),
 
@@ -103,14 +126,8 @@ urlpatterns = [
     path('api/author/<uuid:pk>/send-friend-request', AuthorFriendRequestActionsView.as_view(), {'method': "send-request"}, name="send-request", ),
     path('api/author/<uuid:pk>/unfriend', AuthorFriendRequestActionsView.as_view(),{'method': "unfriend"}, name="unfriend",  ),
 
-    url(r'^docs/', schema_view)
+    path('docs/', schema_view, name="docs")
 ]
 
-# https://www.django-rest-framework.org/topics/documenting-your-api/
-# https://docs.djangoproject.com/en/2.1/topics/http/urls/
-# https://www.django-rest-framework.org/api-guide/format-suffixes/
-#urlpatterns = format_suffix_patterns(urlpatterns)
-
 if settings.DEBUG:
-    
     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
