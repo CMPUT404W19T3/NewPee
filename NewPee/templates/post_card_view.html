@@ -10,13 +10,15 @@
 
  <div class="card custom-card" data-toggle="modal" id="posts/{{ post.id }}" >
     <div class="card-header">
-        {{ post.title }}
+        <span id="post-date">{{ post.title }}</span>
+        <span style="margin-left:1rem; margin-right:1rem; color: #8bbeb2">|</span>
+        <span class="card-subtitle mb-2" id="post-date">{{ post.post_date|parse_iso }}</span>
     </div>  
-        <div class="card-body">
+    <div class="card-body">
         <h6 class="card-subtitle mb-2" id="display-name">{{ post.author.displayName }}</h6>
-        <h6 class="card-subtitle mb-2" id="post-date">{{ post.post_date|parse_iso }}</h6><br>
-        <p class="card-text" id="description">Description: <br>{{post.description}}</p>
-  </div>
+        <p class="card-text" id="description-title">Description:</p>
+        <p class="card-text" id="description">{{post.description}}</p>
+    </div>
    
 </div>
 

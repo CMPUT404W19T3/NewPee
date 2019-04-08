@@ -26,6 +26,7 @@
     color: #e6f9af;
 }
 
-.card-text {
+#description-title {
     font-weight: bold;
+    color: #e6f9af;
 }

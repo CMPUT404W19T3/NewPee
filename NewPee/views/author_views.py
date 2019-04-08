@@ -134,7 +134,6 @@ def respond_to_friends(request, format = None):
     current_author = Author.objects.get(user = request.user)
     friends_requests = current_author.get_friend_requests()
     declinedrequest = current_author.get_declined_requests()
-
     friends = current_author.friends.all()
 
     print(declinedrequest, "declinedrequest")
