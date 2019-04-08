@@ -66,6 +66,11 @@ def log_in(request, format=None):
             if (author.isAuthorized):
                 login(request, user)
                 return HttpResponseRedirect(reverse('get_author'), {'form': form})
+
+    if request.POST:
+        return render(request, 'registration/login.html', {'form': form}, status=status.HTTP_401_UNAUTHORIZED)
+
+
     return render(request, 'registration/login.html', {'form': form})
 
         # if request.method == 'POST':
