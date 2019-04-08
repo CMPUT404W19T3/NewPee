@@ -17,9 +17,7 @@ function getCookie(name) {
 var csrftoken = getCookie('csrftoken');
 var post_url = location.pathname;
 var post_uuid = post_url.split("/")[2];
-
 console.log(post_uuid)
-
 $(document).ready(function(){
 
     const elementMakeComment = document.getElementById("comment_creation_submit");
@@ -29,31 +27,20 @@ $(document).ready(function(){
     const deletePostButton = document.querySelector("#remove_post_submit");
     const editPostButton = document.querySelector("#edit_Post_Button");
     var author;
-
-
-
-
-
-
     editPostButton.addEventListener('click', event =>{
-
     });
-
-
 
     deletePostButton.addEventListener('click', event =>{
         //event.preventDefault();
         console.log(userUUID);
         console.log(userID);
         console.log("DELETING");
-
-
         $.ajax({
-            type: "GET",
-            url: userID,
-            contentType: 'application/json',
-            headers:{"X-CSRFToken": csrftoken},
-            success : function(json) {
+            method: "GET", // type --> method, the HTTP method used for the request.
+            url: userID, // URL to which the request is sent.
+            contentType: 'application/json', // The MIME type being sent to the server.
+            headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+            success : function(json) {  // This function is called if the request is successful. Data is returned from the server.
                 author = json;
                 console.log(author.posts_created);
                 var data = {};
@@ -61,28 +48,27 @@ $(document).ready(function(){
                 console.log(JSON.stringify(data));
 
                 $.ajax({
-                    type: "PATCH",
-                    url: userID,
-                    contentType: 'application/json',
-                    headers:{"X-CSRFToken": csrftoken},
-                    data: JSON.stringify(data),
+                    method: "PATCH", // type --> method, the HTTP method used for the request.
+                    url: userID, // URL to which the request is sent.
+                    contentType: 'application/json', // The MIME type being sent to the server.
+                    headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+                    data: JSON.stringify(data),  // Data to be sent to the server. Transoformed to query string if not one yet.
                     success : function(json) {
                         console.log(json);
                         $("#request-access").hide();
-                    },
+                    },  // This function is called if the request is successful. Data is returned from the server.
                     error: function (e) {
                         console.log("ERROR: ", e);
-                    }
+                    } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
                 });
                 $("#request-access").hide();
             },
             error: function (e) {
                 console.log("ERROR: ", e);
-            }
+            } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
         });
-
-
         $.ajax({
+<<<<<<< HEAD
             type: "DElETE",
             //async: false,
             url: "/api/posts/"+post_uuid,
@@ -94,21 +80,26 @@ $(document).ready(function(){
                 window.location = "/authors/";
             
             },
+=======
+            method: "DElETE", // type --> method, the HTTP method used for the request.
+            async: false, // Synchronous request.
+            url: "/api/posts/"+post_uuid, // URL to which the request is sent.
+            contentType: 'application/json', // The MIME type being sent to the server.
+            headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+            success : function(json) {
+                $("#request-access").hide();
+                console.log("requested access complete");
+            }, // This function is called if the request is successful. Data is returned from the server.
+>>>>>>> c0ec6f675ae93f90384e592affe4f2a2326065f1
             error: function (e) {
                 console.log("ERROR: ", e);
-            }
+            } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
         });
-
-
         //location.pathname = "/authors/" + userUUID;
     });
-
-
     elementMakeComment.addEventListener('submit', event => {
-
         //event.preventDefault();
         // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
-
         var postID = location.pathname.split("/")[2];
         var comment = document.querySelector("#comment").value;
         var data = JSON.stringify({
@@ -117,27 +108,23 @@ $(document).ready(function(){
             content: comment,
             csrfmidddlewaretoken: csrftoken,
         });
-
         console.log(data);
-
         // Goes to post_created
         // author.view post_created view
         $.ajax({
-            type: "POST",
-            async: false,
-            url: "/api/comments",
-            contentType: 'application/json',
-            headers:{"X-CSRFToken": csrftoken},
-            data : data,
+            method: "POST", // type --> method, the HTTP method used for the request.
+            async: false, // Synchronous request.
+            url: "/api/comments", // URL to which the request is sent.
+            contentType: 'application/json', // The MIME type being sent to the server.
+            headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+            data : data, // data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
             success : function(json) {
                 $("#request-access").hide();
                 console.log("requested access complete");
-            },
+            }, // This function is called if the request is successful. Data is returned from the server.
             error: function (e) {
                 console.log("ERROR: ", e);
-            }
+            } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
         });
     });
-
-
 });
