@@ -54,13 +54,13 @@ class FrontEndTests(TestCase):
     #     print(response)
     #     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_author_sign_in_fail(self):
-
-        url = "/login/"
-        data = urlencode({"username": "fake_user", "password":"not_a_real_password"})
-        response = self.client.post(url, data , content_type="application/x-www-form-urlencoded")
-
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    #def test_author_sign_in_fail(self):
+    #
+    #    url = "/login/"
+    #    data = urlencode({"username": "fake_user", "password":"not_a_real_password"})
+    #    response = self.client.post(url, data , content_type="application/x-www-form-urlencoded")
+    #
+    #    self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     # Test an author can create a post with the api
     def test_author_create_post(self):
