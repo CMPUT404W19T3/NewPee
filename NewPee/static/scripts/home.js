@@ -415,6 +415,7 @@ function sendUnfollowRequest(){
     data["friend"] = recieving_author;
     console.log(recieving_author["id"]);
     var split_uuid = recieving_author["id"].split("/")
+
     url = "/api/author/" +  split_uuid[split_uuid.length-1] + "/decline-friend-request";
     console.log(url, "sending to this url..");
 
