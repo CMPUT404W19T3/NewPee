@@ -23,11 +23,37 @@ import json
 # The post is now created.
 # TODO : May need some work? on handling the body content.
 
+def check_auth(request):
+
+    if request.user.is_authenticated:
+        return redirect(reverse('get_author'))
+    else:
+        return redirect(reverse('login'))
+
 def logout_view(request):
 
     logout(request)
 
-    return redirect(reverse('logout'))
+    return redirect(reverse('login'))
+
+def api_logout(request):
+
+    logout(request)
+
+    return redirect(reverse('docs'))
+
+def api_login(request):
+
+    form = UserLoginForm(request.POST or None)
+
+    if request.POST and form.is_valid():
+        user = form.login(request)
+        if user:
+            author = Author.objects.get(user=user)
+            if (author.isAuthorized):
+                login(request, user)
+                return redirect(reverse('docs'))
+    return render(request, 'registration/login.html', {'form': form})
 
 def log_in(request, format=None):
 
@@ -82,20 +108,20 @@ def log_in(request, format=None):
 
         #     return render(request, 'registration/login.html', {'form': form})
 
-def redirect(request, format=None):
+# def redirect(request, format=None):
 
-    try:
+#     try:
 
-        if (not request.user.is_anonymous):
+#         if (not request.user.is_anonymous):
 
-            return HttpResponseRedirect("/authors/")
+#             return HttpResponseRedirect("/authors/")
 
-        else:
+#         else:
 
-            return HttpResponseRedirect("/login/")
-    except:
+#             return HttpResponseRedirect("/login/")
+#     except:
 
-        return HttpResponseRedirect("/login/")
+#         return HttpResponseRedirect("/login/")
 
 def feed(request, format=None):
 
