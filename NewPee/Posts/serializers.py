@@ -68,7 +68,7 @@ class ForeignPostSerializer(serializers.ModelSerializer):
     origin = models.URLField(null=True,blank=True)
     description = models.CharField(max_length=150, default="No Description", null=False, blank=False)
     content = models.TextField(null=False,blank=False)
-    post_date = models.DateTimeField(auto_now_add=True)
+     = models.DateTimeField(auto_now_add=True)
     visibility = models.CharField(max_length=10, choices=visibility_choices, default="PUBLIC")
     unlisted = models.BooleanField(default=False)
     '''
@@ -78,7 +78,7 @@ class ForeignPostSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = ForeignPost
-        fields = ('id', 'author', 'title', 'source', 'origin', 'description', 'content', 'post_date', 'visibility', 'unlisted')
+        fields = ('id', 'author', 'title', 'source', 'origin', 'description', 'content', '', 'visibility', 'unlisted')
         lookup_field = 'id'
 
     # def create(self, validated_data):
