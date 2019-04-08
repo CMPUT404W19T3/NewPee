@@ -5,7 +5,9 @@ import NewPee.settings
 import requests
 import Servers.models
 import uuid
-import Authors.serializers 
+
+
+
 #from Servers.models import Server
 
 HOSTNAME = NewPee.settings.HOSTNAME
@@ -150,13 +152,11 @@ class Author(models.Model):
         print(author, "the author being sent")
 
 
-        print(author.host, HOSTNAME)
-        if(author.host == HOSTNAME):
-                try:
-                    #self.send_foreign_request(author) # send a friend request to another serve
-                    print("sending a foreign friend request.")
-                except:
-                    print("can't connect to foriegn host or local link.")
+        if(author.host != HOSTNAME):
+            try:
+                self.send_foreign_request(author) # send a friend request to another serve
+            except:
+                pass
 
 
         # if they are following us, add them to our friends.
@@ -186,16 +186,17 @@ class Author(models.Model):
     def send_foreign_request(self, author ):
 
 
-        print("looking")
-
-        print(self.host)
         #foreignServer = Servers.models.Server.objects.get(host=self.host)
 
         self_author = Author.objects.get(id=self.id)        # Is there a better way?
 
 
+        from .serializers import AuthorSerializer
+
+        request = None
         author_serializer = AuthorSerializer(author, context={'request': request})
         self_serializer = AuthorSerializer(self_author, context={'request': request})
+        print(author_serializer.data, self_serializer.data, "my serializers")
 
 
         PARAMS = {
@@ -205,11 +206,12 @@ class Author(models.Model):
         }
 
         # send a request to foreign server
+        
         session = requests.Session()
-        #session.auth = (foreignServer.getUsername, foreignServer.getPassword)
-        session.auth = ("jwidney", "starlite")
-        #request = session.post(url = foreignServer.friend_endpoint, data= PARAMS)
-        request = session.post(url = "http://127.0.0.1:8000/api/friendrequest", data= PARAMS)
+        session.auth = (foreignServer.getUsername, foreignServer.getPassword)
+        request = session.post(url = foreignServer.friend_endpoint, data= PARAMS)
+
+        #request = session.post(url = "http://127.0.0.1:8000/api/friendrequest", data=  PARAMS )
 
 
         

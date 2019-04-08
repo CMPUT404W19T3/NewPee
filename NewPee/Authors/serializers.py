@@ -1,5 +1,6 @@
-from Authors.models import *
+from Authors.models import Author
 from rest_framework import serializers
+from django.contrib.auth.models import User
 
 # https://medium.freecodecamp.org/nested-relationships-in-serializers-for-onetoone-fields-in-django-rest-framework-bdb4720d81e6
 
