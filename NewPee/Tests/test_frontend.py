@@ -45,16 +45,13 @@ class FrontEndTests(TestCase):
         # self.assertNotEqual(old_display_Name, new_Display_name)
 
     # Test that you can sign in.
-    # def test_author_sign_in(self):
-    #     user = User.objects.create(username="temp_user", password="password", email="email@email.com")
-    #     user.save()
-    #     url = "/login/"
-    #     data = urlencode({"username": user.username, "password":user.password})
-    #     response = self.client.post(url, data , content_type="application/x-www-form-urlencoded")
-    #     print(response)
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_author_sign_in(self):
+        user = User.objects.create_user(username="temp_user", password="secretPass", email="email@email.com")
+        user.save()
+        logged_in = self.client.login(username="temp_user", password="secretPass")
+        self.assertEqual(logged_in, True)
 
-    def test_author_sign_in_fail(self):
+    def test_unknown_sign_in_fail(self):
     
         url = "/login/"
         data = urlencode({"username": "fake_user", "password":"not_a_real_password"})
