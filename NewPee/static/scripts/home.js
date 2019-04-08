@@ -670,10 +670,15 @@ elementUpdateProfile.addEventListener('submit', event => {
 
 try {
     const elementPullGithub = document.querySelector("#github_api_pull");
-elementPullGithub.addEventListener('submit', async event => {
+    elementPullGithub.addEventListener('submit', async event => {
     event.stopImmediatePropagation();
     event.preventDefault();
     var github_data = await github_api();
+
+    if (github_data.message === "Not Found"){
+        alert("Github URL is invalid.");
+        return;
+    }
 
     // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     var post_title;

@@ -111,7 +111,7 @@
 
 
 
-                {% endif %}
+            {% endif %}
 
                 </form>
             {% else %}
@@ -123,7 +123,7 @@
     </div>
 
 <div class="col-9 mx-auto">
-    {% if author%}
+    {% if author %}
         {% if logged_in_author == author %}
         <div class="card posting">
         <div class="card-body">
@@ -138,7 +138,7 @@
                     <input type="text" id="post-title" class="form-control mb-2" placeholder="Title">
                     <textarea class="form-control mb-2" rows="2" id="post-comment-description" placeholder="Write your description here."></textarea>
                     <textarea class="form-control mb-2" rows="4" id="post-comment-content" placeholder="Write your content here."></textarea>  
-
+                    {%  %}
                     {% include "radio_buttons.html" %}
 
                     <input hidden=true class="clearable" type="text" value="" id="private-author" class="form-control mb-2" placeholder="uuid for another author?"> 
