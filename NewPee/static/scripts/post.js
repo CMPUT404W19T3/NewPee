@@ -84,13 +84,15 @@ $(document).ready(function(){
 
         $.ajax({
             type: "DElETE",
-            async: false,
+            //async: false,
             url: "/api/posts/"+post_uuid,
             contentType: 'application/json',
             headers:{"X-CSRFToken": csrftoken},
             success : function(json) {
                 $("#request-access").hide();
                 console.log("requested access complete");
+                window.location = "/authors/";
+            
             },
             error: function (e) {
                 console.log("ERROR: ", e);

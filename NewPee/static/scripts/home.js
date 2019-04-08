@@ -518,7 +518,7 @@ function makePost(post_title,post_content, post_description, content_type){
     var radio_value;
     var radioButtons = document.getElementsByName("friends-radio-option");
     var unlistedBool = document.getElementById("unlisted")
-    var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY"})
+    var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY", 6:"SERVERFRIENDS"})
     var visible_to;
     for (var i = 0; i < radioButtons.length; i++) {
         if (radioButtons[i].checked){
