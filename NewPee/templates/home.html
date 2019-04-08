@@ -123,7 +123,9 @@
     </div>
 
 <div class="col-9 mx-auto">
-    <div class="card posting">
+    {% if author%}
+        {% if logged_in_author == author %}
+        <div class="card posting">
         <div class="card-body">
             <ul class="nav nav-tabs">
                 <li class="active"><a class="tabb" data-toggle="tab" href="#posting">Post</a></li>
@@ -185,7 +187,9 @@
                 </div>
             </div>
         </div>
-    </div>
+        </div>
+        {% endif %}
+    {% endif %}
 
             {% if pages %}
             {% for page in pages %}
@@ -226,7 +230,7 @@
                 {% endif %}
             </ul>
         </div>
-</div>
+    </div>
 </div>
 
 {% endblock %}
