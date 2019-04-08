@@ -426,16 +426,14 @@ function sendUnfollowRequest(){
     console.log(recieving_author["id"]);
     var split_uuid = recieving_author["id"].split("/")
 
-    url = "/api/author/" +  split_uuid[split_uuid.length-1] + "/decline-friend-request";
+    unfollowURL = "/api/author/" +  split_uuid[split_uuid.length-1] + "/decline-friend-request";
 
-
-
-    console.log(url, "sending to this url..");
+    console.log(unfollowURL, "sending to this url..");
 
     $.ajax({
         type: "POST", // HTTP Method
         //async: false,
-        url: url,
+        url: unfollowURL,
         contentType: 'application/json',
         headers:{"X-CSRFToken": csrftoken},
         data: JSON.stringify(data),
