@@ -385,8 +385,6 @@ class AuthorFriendRequestActionsView( RedirectView):
         target_author = get_object_or_404(Author, pk= target_pk)
         sender_author = get_object_or_404(Author, user=sender)
 
-        print(sender_author, target_author, method)
-
         #sender_author = get_object_or_404(Author, request.data["friend"])
 
 
@@ -399,6 +397,10 @@ class AuthorFriendRequestActionsView( RedirectView):
 
             print("GOT HERE")
             sender_author.respond_to_friend_request(target_author, "decline")
+            if (sender_author.is_friend(target_author.id)):
+                sender_author.remove_friend(target_author)
+                target_author.remove_friend(sender_author)
+
 
 
         if method == "send-request":
@@ -407,7 +409,8 @@ class AuthorFriendRequestActionsView( RedirectView):
 
         if method == "unfriend":
 
-            sender_author.remove(target_author,request, )
+            sender_author.remove_friend(target_author, request)
+            target_author.remove_friend(sender_author, request)
 
         return url
 

@@ -58,7 +58,6 @@ class Author(models.Model):
         """
 
         friends_ids = self.friends.all().values('id')
-
         try:
 
             if(friends_ids.get(id=author_id)):
@@ -244,9 +243,9 @@ class Author(models.Model):
         self.save()
 
     # Remove an existing friend
-    def remove_friend(self):
-
+    def remove_friend(self,author):
         self.friends.remove(author)
+        self.save()
 
 #TODO: FIX
 
@@ -347,6 +346,7 @@ class ForeignAuthor(models.Model):
         self.save()
 
     # Remove an existing friend
-    def remove_friend(self):
-
+    def remove_friend(self,author):
         self.friends.remove(author)
+        self.save()
+
