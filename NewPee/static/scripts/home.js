@@ -227,7 +227,7 @@ function updateFriends(enumType) {
 
 grabAuthor();
 grabUser();
-let posts = getPosts();
+//let posts = getPosts();
 // In The future, we should keep these, then every ajax call just updates them depending.
 // Get the current followers of the Profile.
 // Add the clicked author to your following list.
@@ -458,18 +458,11 @@ async function makePost(post_title,post_content, post_description, content_type)
     });
 }
 
-const elementMakePost = document.querySelector("#post-btn");
+try {
+    const elementMakePost = document.querySelector("#post-btn");
 
 
-$("post-btn").unbind('click').click(
-    function(){
-        alert("YES");
-    }
-);
-
-
-
-elementMakePost.addEventListener('click', event => {
+    elementMakePost.addEventListener('click', event => {
     event.stopImmediatePropagation();
     event.preventDefault();
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
@@ -493,11 +486,10 @@ elementMakePost.addEventListener('click', event => {
     document.getElementById("post-comment-description").value = "";
     document.getElementById("post-comment-content").value = "";
 
-});
 
-//Post picture first, then make post with picture
-const elementMakeImagePost = document.querySelector("#btnfileupload");
-elementMakeImagePost.addEventListener('submit', event => {
+
+    const elementMakeImagePost = document.querySelector("#btnfileupload");
+    elementMakeImagePost.addEventListener('submit', event => {
     event.preventDefault();
     event.stopImmediatePropagation();
     var post_title = document.querySelector("#image-post-title").value;
@@ -522,7 +514,18 @@ elementMakeImagePost.addEventListener('submit', event => {
             console.log("ERROR: ", e);
         } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
+    });
+
+
 });
+
+} catch (error) {
+    console.log("on another users profile.");
+}
+
+
+
+//Post picture first, then make post with picture
 
 // const elementUpdateProfilePic = document.querySelector("#button");
 // elementUpdateProfilePic.addEventListener('click', uploadImage);
@@ -634,7 +637,8 @@ elementUpdateProfile.addEventListener('submit', event => {
     });
 });
 
-const elementPullGithub = document.querySelector("#github_api_pull");
+try {
+    const elementPullGithub = document.querySelector("#github_api_pull");
 elementPullGithub.addEventListener('submit', async event => {
     event.stopImmediatePropagation();
     event.preventDefault();
@@ -717,4 +721,8 @@ elementPullGithub.addEventListener('submit', async event => {
     });
     return false;
 });
+} catch (error) {
+    console.log("github hidden on others profile");
+}
+
 });
