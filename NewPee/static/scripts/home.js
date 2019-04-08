@@ -436,7 +436,7 @@ async function github_api() {
     return json;
 }
 
-async function makePost(post_title,post_content, post_description, content_type){
+async function makePost(post_title,post_content, post_description, contentType){
     var radio_value;
     var radioButtons = document.getElementsByName("friends-radio-option");
     var unlistedBool = document.getElementById("unlisted");
@@ -455,7 +455,7 @@ async function makePost(post_title,post_content, post_description, content_type)
         csrfmidddlewaretoken: csrftoken,
         visibility : VisiblityEnum[radio_value],
         visible_to : visible_to,
-        content_type : content_type
+        contentType : contentType
     };
      //update friends stuff here
     if (radio_value==4){
@@ -527,7 +527,7 @@ try {
     event.stopImmediatePropagation();
     var post_title = document.querySelector("#image-post-title").value;
     var post_description = document.querySelector("#image-post-comment-description").value;
-    var content_type = "image"
+    var contentType = "image"
     var form = document.getElementById('imageupload');
     var formData = new FormData(form);
     $.ajax({
@@ -539,7 +539,7 @@ try {
         contentType: false, // The MIME type being sent to the server.
         success : function(json) {
             post_content = json ;
-            makePost(post_title, post_content, post_description, content_type);
+            makePost(post_title, post_content, post_description, contentType);
             //location.reload()
             $("#request-access").hide();
         }, // This function is called if the request is successful. Data is returned from the server.
@@ -727,16 +727,14 @@ try {
         csrfmidddlewaretoken: csrftoken,
         visibility : VisiblityEnum[radio_value],
         visible_to : visible_to,
-        content_type : "text/markdown"
+        contentType : "text/markdown"
     };
 
     if (radio_value==4){
         data["visible_to"] = [user_id];
     }
 
-    // if (postType.checked){
-    //     data["content_type"] = postType.value;
-    // };
+  
     data= JSON.stringify(data);
     // Goes to post_created
     // author.view post_created view
