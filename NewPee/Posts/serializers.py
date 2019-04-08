@@ -56,7 +56,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = Comment
-        fields = ('id', 'parent', 'author', 'content', 'published')
+        fields = ('id', 'parent', 'author', 'displayName', 'content', 'published')
 
 class ForeignPostSerializer(serializers.ModelSerializer):
 

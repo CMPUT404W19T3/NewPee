@@ -23,11 +23,12 @@ $(document).ready(function(){
     const elementMakeComment = document.getElementById("comment_creation_submit");
     var userID = document.getElementById("userID").value;
     var userUUID = userID.split("/")[5];
+    var displayName = document.getElementById("displayName").value;
     var user_api_url = "/api/authors/" + userID;
     const deletePostButton = document.querySelector("#remove_post_submit");
     var author;
    
-
+if (deletePostButton != null) {
     deletePostButton.addEventListener('click', event =>{
         //event.preventDefault();
         console.log(userUUID);
@@ -81,6 +82,7 @@ $(document).ready(function(){
         });
         //location.pathname = "/authors/" + userUUID;
     });
+}
     elementMakeComment.addEventListener('submit', event => {
         //event.preventDefault();
         // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
@@ -89,6 +91,7 @@ $(document).ready(function(){
         var data = JSON.stringify({
             parent: postID,
             author : userID,
+            displayName : displayName,
             content: comment,
             csrfmidddlewaretoken: csrftoken,
         });

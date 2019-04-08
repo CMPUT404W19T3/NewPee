@@ -47,8 +47,16 @@
     <img class="img-fluid" src={{ posts.content }} >
   {% endif %}
 </div>
-  {% include "comment.html" %}
+<hr>
+<form id="comment_creation_submit" style="margin: 10px; color: white;">
+    {% csrf_token %}
+    {{ comment_form }}
+    <button type="submit" style="margin-top: 10px;"class ="btn btn-primary mr-0">Post</button>
+</form>
   {% include "add_private_modal.html" %}
-</div> 
+</div>
+<br>
+
+{% include "comment.html" %} 
 
 {% endblock %}
