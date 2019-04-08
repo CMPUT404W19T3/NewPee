@@ -24,7 +24,7 @@
 {% block rightColumn %}
 
 <div class="col-9 mx-auto">
-    <h1 class="friends-page-title"> Friends </h1>
+    <h1 class="friends-page-title"> Friends </h1><hr>
 
     {% for author in friends %}
 
@@ -34,14 +34,13 @@
         {{ author.displayName }}
 
       </h2>
-        <hr>
     </div>
 
     {% endfor %}
     {% if authors %}
 
     <span >{{ user_author }}</span>
-    <h1 style="color: #8bbeb2"> Friend requests</h1>
+    <h1 style="color: #8bbeb2;"> Friend requests</h1><hr>
 
     {% for author in authors %}
 
@@ -53,7 +52,7 @@
         </div>
         <h2 class="authorDisplayName">{{ author.displayName }} sent a friend request.</h2>
         <span id="author_id"> {{ author.id }} </span>
-        <a href="/authors/{{author.id}}" style="color: #36558f">{{ author.user.first_name }} {{ author.user.last_name }}</a>
+        <a href="/authors/{{author.id}}" style="color: #36558f;">{{ author.user.first_name }} {{ author.user.last_name }}</a>
     </div>
 
     {% endfor %}
