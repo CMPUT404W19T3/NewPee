@@ -343,8 +343,8 @@ class AuthorUpdateFriendRequestsView(APIView):
         # we are sending data through our api
         sending = False
         try:
-            type_of_req = request.data["datatype"]
-            if type_of_req == "localadd":
+            type_of_req = request.data["type"]
+            if type_of_req == "local_add":
                 sending = True  
         except:
             pass
@@ -352,7 +352,7 @@ class AuthorUpdateFriendRequestsView(APIView):
         recieving_author = request.data["author"]   # author recieving request
         friend = request.data["friend"]             # friend being added to author.
 
-        print(friend["id"])
+        print(friend["id"], "this friend")
         
         friend_uuid = friend["id"].split("/")[-1]
         recieving_author_uuid = recieving_author["id"].split("/")[-1]

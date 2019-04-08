@@ -154,7 +154,6 @@ class Author(models.Model):
         # we want to send data
         if(sending):    
             if(author.host != HOSTNAME):
-            
                 self.send_foreign_request(author) # send a friend request to another serve
 
 
