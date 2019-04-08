@@ -15,8 +15,6 @@ function getCookie(name) {
 }
 
 var csrftoken = getCookie('csrftoken');
-
-
 $(document).ready(function(){
     console.log("JS Working");
     var reject_button = document.querySelectorAll("#decline_Post_Button");
@@ -72,19 +70,19 @@ $(document).ready(function(){
         data["author"] = author;
         data["friend"] = friend;
         $.ajax({
-            type: "POST",
-            url: "/api/friendrequest",
-            contentType: 'application/json',
-            headers:{"X-CSRFToken": csrftoken},
-            data: JSON.stringify(data),
+            method: "POST", // type --> method, the HTTP method used for the request.
+            url: "/api/friendrequest", // URL to which the request is sent.
+            contentType: 'application/json', // The MIME type being sent to the server.
+            headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+            data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
             success : function(json) {
                 $("#request-access").hide();
                 console.log("requested access complete");
                 location.reload()
-            },
+            }, // This function is called if the request is successful. Data is returned from the server.
             error: function (e) {
                 console.log("ERROR: ", e);
-            }
+            } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
         });
     }
 
@@ -103,22 +101,20 @@ $(document).ready(function(){
         data["author"] = author;
         data["friend"] = friend;
         $.ajax({
-            type: "POST",
-            url: "/api/friendrequest",
-            contentType: 'application/json',
-            headers:{"X-CSRFToken": csrftoken},
-            data: JSON.stringify(data),
+            method: "POST", // type --> method, the HTTP method used for the request.
+            url: "/api/friendrequest", // URL to which the request is sent.
+            contentType: 'application/json', // The MIME type being sent to the server.
+            headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+            data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
             success : function(json) {
                 $("#request-access").hide();
                 console.log("requested access complete");
-            },
+            }, // This function is called if the request is successful. Data is returned from the server.
             error: function (e) {
                 console.log("ERROR: ", e);
-            }
+            } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
         });
     }
-
-
 
     // LOOP Through our accept buttons
     for (let j = 0; j < accept_button.length; j++) {
@@ -135,10 +131,6 @@ $(document).ready(function(){
             declineRequest(j);
         });
       }
-
-
-
-
 
     /*
     reject_button[i].addEventListener('click', event => {
@@ -162,9 +154,6 @@ $(document).ready(function(){
         });
     });
     accept_button[i].addEventListener('click', event => {
-
-
-
 
     });
     }

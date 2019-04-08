@@ -45,28 +45,28 @@ var user_api_url = user_id;
 
 function grabUser(){
     $.ajax({
-        type: "GET", // HTTP Method
-        url: author_api_url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
+        method: "GET", // type --> method, the HTTP method used for the request.
+        url: author_api_url, // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         success : function(json) {
           stripped_user_id=  json["id"].split("/")[5] ;
             user_author = json;
             user_author["id"] = stripped_user_id;
             $("#request-access").hide();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 }
  function grabAuthor(){
     $.ajax({
-        type: "GET", // HTTP Method
+        method: "GET", // type --> method, the HTTP method used for the request.
         //async:false,    // wait till we have the author.
-        url: author_api_url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
+        url: author_api_url, // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         success : function(json) {
             page_author = json;
             stripped_user_id=  json["id"].split("/")[5] ;
@@ -77,10 +77,10 @@ function grabUser(){
                 follow_submit_button.innerHTML = "Unfollow";
             }
             $("#request-access").hide();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
     }
 
@@ -134,18 +134,18 @@ function subtractUserFriends(){
     data["friends"].shift();    // remove the [0]
     console.log(data, "user-subtract");
     $.ajax({
-        type: "PATCH", // HTTP Method
+        method: "PATCH", // type --> method, the HTTP method used for the request.
         //async: false,
-        url: user_api_url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
-        data: JSON.stringify(data),
+        url: user_api_url, // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+        data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             $("#request-access").hide();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 }
 
@@ -162,19 +162,19 @@ function subtractAuthorFriends(){
     data["friends"].shift();    // remove the [0]
     console.log(data, "author-subtract");
     $.ajax({
-        type: "PATCH", // HTTP Method
+        method: "PATCH", // type --> method, the HTTP method used for the request.
         //async: false,
-        url: author_api_url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
-        data: JSON.stringify(data),
+        url: author_api_url, // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+        data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             //console.log(json);
             $("#request-access").hide();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 }
 
@@ -189,19 +189,19 @@ function addUserFriends(){
             }
         }
     $.ajax({
-        type: "PATCH", // HTTP Method
+        method: "PATCH", // type --> method, the HTTP method used for the request.
         //async: false,
-        url: user_api_url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
-        data: JSON.stringify(data),
+        url: user_api_url, // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+        data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             console.log("User friends added")
             $("#request-access").hide();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 }
 
@@ -216,20 +216,20 @@ function addAuthorFriends(){
             }
         }
     $.ajax({
-        type: "PATCH", // HTTP Method
+        method: "PATCH", // type --> method, the HTTP method used for the request.
         //async: false,
-        url: author_api_url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
-        data: JSON.stringify(data),
+        url: author_api_url, // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+        data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             //console.log(json);
             console.log("Author friends added")
             $("#request-access").hide();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 }
 
@@ -257,20 +257,19 @@ console.log(csrftoken);
 
 function getSenderAuthorData(enumType){
     $.ajax({
-        type: "GET", // HTTP Method
-        async: false,
-        url: user_api_url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
+        method: "GET", // type --> method, the HTTP method used for the request.
+        async: false, // Synchronous request.
+        url: user_api_url, // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         success : function(json) {
            sending_author = json;
-
             //updatefollowingPOST(JSON.stringify(data),enumType); // update the follower list
             $("#request-access").hide();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 };
 
@@ -278,29 +277,29 @@ function getSenderAuthorData(enumType){
 // Add
 function getrecivingAuthorData(enumType){
     $.ajax({
-        type: "GET", // HTTP Method
-        async: false,
-        url: author_api_url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
+        method: "GET", // type --> method, the HTTP method used for the request.
+        async: false, // Synchronous request.
+        url: author_api_url, // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         success : function(json) {
            recieving_author = json;
            console.log(recieving_author);
            // updatefollowersPOST(JSON.stringify(data),enumType); // update the follower list
             $("#request-access").hide();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 };
 
 function updateNumPostGet(){
     $.ajax({
-        type: "GET", // HTTP Method
-        url: author_api_url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
+        method: "GET", // type --> method, the HTTP method used for the request.
+        url: author_api_url, // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         success : function(json) {
             author = json;
             console.log(author);
@@ -310,29 +309,29 @@ function updateNumPostGet(){
             updateNumPostPut(JSON.stringify(numOfPost));
             console.log(author);
             $("#request-access").hide();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 };
 
 function updateNumPostPut(numOfPost){
     console.log(numOfPost);
     $.ajax({
-        type: "PATCH", // HTTP Method
+        method: "PATCH", // type --> method, the HTTP method used for the request.
         //async: false,
-        url: author_api_url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
-        data: (numOfPost),
+        url: author_api_url, // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+        data: (numOfPost), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             console.log(json);
             $("#request-access").hide();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 };
 
@@ -389,73 +388,55 @@ function sendFriendRequest(){
     data["friend"] = recieving_author;
 
     $.ajax({
-        type: "POST", // HTTP Method
+        method: "POST", // type --> method, the HTTP method used for the request.
         //async: false,
-        url: "/api/friendrequest",
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
-        data: JSON.stringify(data),
+        url: "/api/friendrequest", // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+        data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             $("#request-access").hide();
             console.log("requested access complete");
-
             $("#follow_user_submit_button").html("Unfollow");
-
             const followers_stat = document.querySelector("#follower_stat");
             $("#follower_stat").html(Number(followers_stat.innerHTML) + 1) ;
-
-
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 }
-
-
 
 function sendUnfollowRequest(){
 
     data = {};
-
     data["query"] = "unfollow";
     data["author"] = sending_author;
     data["friend"] = recieving_author;
-
-
     console.log(recieving_author["id"]);
     var split_uuid = recieving_author["id"].split("/")
-
     url = "/api/author/" +  split_uuid[split_uuid.length-1] + "/decline-friend-request";
-
-
-
     console.log(url, "sending to this url..");
 
     $.ajax({
-        type: "POST", // HTTP Method
+        method: "POST", // type --> method, the HTTP method used for the request.
         //async: false,
-        url: url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
-        data: JSON.stringify(data),
+        url: url, // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+        data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             $("#request-access").hide();
             console.log("requested access complete");
-            
             const followers_stat = document.querySelector("#follower_stat");
             $("#follower_stat").html(Number(followers_stat.innerHTML) -1 ) ;
-
             $("#follow_user_submit_button").html("Follow");
-
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 }
-
-
 
 // Functions for adding
 function callRecievingData(){
@@ -465,32 +446,20 @@ function callRecievingData(){
 function callSenderData(callback){
     getSenderAuthorData(FriendsEnum.Add);    // Call second, friends piggybacks off Followers
     callback();
-
 }
 
 try {
 follow_submit_form.addEventListener('submit', event =>{
     event.preventDefault();
     event.stopImmediatePropagation();
-
     var follow_unfollow_text = follow_submit_button.textContent || follow_submit_button.innerText;
-
     callSenderData(callRecievingData);
-
     if(follow_unfollow_text === "Follow"){
         sendFriendRequest();
-
     }
     else{
         sendUnfollowRequest();
     }
-
-
-
-
-
-
-
 });
 }
 catch{
@@ -499,22 +468,17 @@ catch{
 // Determine which data we would like to display.
 async function github_api() {
     grabAuthor();
-
         // const response = await fetch('some-url', {});
         // const json = await response.json();
-
         // return json.first_name.concat(' ').concat(json.last_name);
-
     console.log("This is it: ", page_author.github_url);
     let github_user = page_author.github_url.split('/').pop();
     const response = await fetch('https://api.github.com/users/' + github_user + '/events', {});
     const json = await response.json();
-
     return json;
 }
 
 function makePost(post_title,post_content, post_description, content_type){
-    
     var radio_value;
     var radioButtons = document.getElementsByName("friends-radio-option");
     var unlistedBool = document.getElementById("unlisted")
@@ -525,7 +489,6 @@ function makePost(post_title,post_content, post_description, content_type){
             radio_value = radioButtons[i].value;
         }
     }
-
     var data = {
         title : post_title,
         author : page_author["id"],
@@ -536,14 +499,10 @@ function makePost(post_title,post_content, post_description, content_type){
         visible_to : visible_to,
         content_type : content_type
     };
-
-
      //update friends stuff here
     if (radio_value==4){
         data["visible_to"] =  [page_author["id"]];
     }
-
-
     if (unlistedBool.checked){
         data["unlisted"] = true;
     }
@@ -554,29 +513,27 @@ function makePost(post_title,post_content, post_description, content_type){
     // Goes to post_created
     // author.view post_created view
     $.ajax({
-        type: "POST", // HTTP Method
+        method: "POST", // type --> method, the HTTP method used for the request.
         //async: false,
-        url: "/api/posts",
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
-        data : data,
+        url: "/api/posts", // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+        data : data, // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             $("#request-access").hide();
             updateNumPostGet();
             location.reload();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 }
 
 const elementMakePost = document.querySelector("#post_creation_submit");
-
 elementMakePost.addEventListener('submit', event => {
     event.stopImmediatePropagation();
     event.preventDefault();
-
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     console.log("button clicked");
     var post_title = document.querySelector("#post-title").value;
@@ -584,49 +541,43 @@ elementMakePost.addEventListener('submit', event => {
     var post_description = document.querySelector("#post-comment-description").value;
     var postType = document.getElementById("markdown");
     var post_type 
-
     if (postType.checked){
         post_type = postType.value;
     }else{
         post_type = "text/plain";
     };
     makePost(post_title,post_content, post_description, post_type);
-
 });
 
 //Post picture first, then make post with picture
 const elementMakeImagePost = document.querySelector("#btnfileupload");
 elementMakeImagePost.addEventListener('submit', event => {
     event.stopImmediatePropagation();
-
     var post_title = document.querySelector("#image-post-title").value;
     var post_description = document.querySelector("#image-post-comment-description").value;
     var content_type = "image"
     var form = document.getElementById('imageupload');
-
     var formData = new FormData(form);
     $.ajax({
-        url : "/api/image/",
-        type: "POST",
-        data : formData,
-        headers:{"X-CSRFToken": csrftoken},
-        processData: false,
-        contentType: false,
+        url : "/api/image/", // URL to which the request is sent.
+        method: "POST", // type --> method, the HTTP method used for the request.
+        data : formData, // Data to be sent to the server. Transoformed to query string if not one yet.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+        processData: false, // For non-processed data, like a DOMDocument or something which is not a string (i.e. image).
+        contentType: false, // The MIME type being sent to the server.
         success : function(json) {
             post_content =json ;
             makePost(post_title, post_content, post_description, content_type);
             $("#request-access").hide();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 });
 
-
 // const elementUpdateProfilePic = document.querySelector("#button");
 // elementUpdateProfilePic.addEventListener('click', uploadImage);
-
 // function uploadImage() {
 //     $('#select-profile-pic').trigger('click');
 // }
@@ -642,20 +593,19 @@ elementUpdateProfilePic.addEventListener('submit', event => {
     var data = {
         "image": newProfilePic
     }
-
     $.ajax({
-        type: "PUT", // HTTP Method
-        url: author_api_url,
-        contentType: "application/json",
-        headers:{"X-CSRFToken": csrftoken},
-        data: data,
+        method: "PUT", // type --> method, the HTTP method used for the request.
+        url: author_api_url, // URL to which the request is sent.
+        contentType: "application/json", // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+        data: data, // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             console.log(json);
             $("#request-access").hide();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
 });
 
@@ -683,32 +633,27 @@ elementUpdateProfile.addEventListener('submit', event => {
     console.log(JSON.stringify(data));
 
     $.ajax({
-        type: "PATCH", // HTTP Method
-        url: author_api_url,
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
-        data: JSON.stringify(data),
+        method: "PATCH", // type --> method, the HTTP method used for the request.
+        url: author_api_url, // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+        data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             console.log(json);
             $("#request-access").hide();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
-
 });
 
 const elementPullGithub = document.querySelector("#github_api_pull");
-
 elementPullGithub.addEventListener('submit', async event => {
     event.stopImmediatePropagation();
     event.preventDefault();
-
     var github_data = await github_api();
-
     console.log("This is the data", github_data);
-
     // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     var post_title;
     var post_content = '<ul>';
@@ -765,7 +710,6 @@ elementPullGithub.addEventListener('submit', async event => {
     };
 
     console.log(user_id);
-
     if (radio_value==4){
         data["visible_to"] = [user_id];
     }
@@ -773,27 +717,25 @@ elementPullGithub.addEventListener('submit', async event => {
     // if (postType.checked){
     //     data["content_type"] = postType.value;
     // };
-
     data= JSON.stringify(data);
     console.log(data, "OUR DATA FOR POST");
-
     // Goes to post_created
     // author.view post_created view
     $.ajax({
-        type: "POST", // HTTP Method
+        method: "POST", // type --> method, the HTTP method used for the request.
         //async: false,
-        url: "/api/posts",
-        contentType: 'application/json',
-        headers:{"X-CSRFToken": csrftoken},
-        data : data,
+        url: "/api/posts", // URL to which the request is sent.
+        contentType: 'application/json', // The MIME type being sent to the server.
+        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
+        data : data, // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             $("#request-access").hide();
             console.log("requested access complete");
             updateNumPostGet();
-        },
+        }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
-        }
+        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
     return false;
 });
