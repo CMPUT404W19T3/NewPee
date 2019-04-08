@@ -83,7 +83,7 @@ class AuthorDetail(APIView):
 
                 print("This is the authors", logged_in_author_serializer)
 
-                return Response({'logged_in_author':logged_in_author_serializer.data, 'authors': authors, 'form': form, 'search': search}, template_name='search.html')
+                return Response({'authors': authors, 'form': form, 'search': search}, template_name='search.html')
 
             try:
 
@@ -92,12 +92,15 @@ class AuthorDetail(APIView):
                 cursor = response.data
 
 
+                print(response)
                 
                 if(len(cursor) > 0):
-                    for index in range(len(cursor)-1, 0, -1):
+
+                    for index in range(len(cursor)-1, -1, -1):
                         if uuid.UUID(cursor[index]["author"]["id"].split("/")[-1]) != author.id:
                             print(cursor[index]["author"]["id"].split("/")[-1], "?")
                             cursor.pop(index)
+
 
                 
 
@@ -233,6 +236,7 @@ class AuthorfriendsView(APIView):
 
             author = get_object_or_404(models.Author, id= pk)
 
+            print("?")
             # good request with array of authors
             try:
 

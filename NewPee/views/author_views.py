@@ -128,7 +128,6 @@ def feed(request, format=None):
     response = post_list(request)
     
     author = Author.objects.get(user=request.user)
-    serializer =  AuthorSerializer(author, context={'request': request})
     followers = author.get_followers()
     following = author.get_following()
 
@@ -142,7 +141,7 @@ def feed(request, format=None):
         exclude_author = Author.objects.filter(user = request.user)
         authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
 
-        return render(request, 'search.html', {'logged_in_author': serializer.data, 'authors': authors, 'form': form, 'search': search})
+        return render(request, 'search.html', { 'authors': authors, 'form': form, 'search': search})
 
     print(response.data)
 
@@ -153,7 +152,7 @@ def feed(request, format=None):
     page = request.GET.get('page')
     pages = paginator.get_page(page)
 
-    return render(request, 'feed.html', {'posts':response.data, 'logged_in_author': serializer.data, 'form': form, 'pages': pages, 'following':following, 'followers': followers})
+    return render(request, 'feed.html', {'posts':response.data, 'form': form, 'pages': pages, 'following':following, 'followers': followers})
 
 def respond_to_friends(request, format = None):
 
@@ -171,8 +170,6 @@ def respond_to_friends(request, format = None):
     for friend in declinedrequest:
 
         friends_requests = friends_requests.exclude(id = friend.id)
-
-    serializer_current = AuthorSerializer(current_author, context={'request': request})
     form = SearchForm()
     search = request.GET.get('search')
 
@@ -181,15 +178,13 @@ def respond_to_friends(request, format = None):
         exclude_author = Author.objects.filter(user = request.user)
         authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
 
-        return render(request, 'search.html', {'logged_in_author': serializer_current.data, 'authors': authors, 'form': form, 'search': search})
+        return render(request, 'search.html', { 'authors': authors, 'form': form, 'search': search})
 
     print(friends_requests, "xxxx")
 
     serializer_friends = AuthorSerializer(friends_requests, many=True, context={'request': request})
 
-
-
-    return render(request, 'friends.html', { 'authors':serializer_friends.data , 'form': form, 'logged_in_author': serializer_current.data, 'friends':friends,  })
+    return render(request, 'friends.html', { 'authors':serializer_friends.data , 'form': form, 'friends':friends,  })
 
 def get_author(request, format=None):
 
