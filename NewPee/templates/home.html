@@ -84,7 +84,7 @@
                         <p>{{logged_in_author.bio}}</p>
                     {% endif %}
                     {% if logged_in_author.github_url %}
-                        <a href="{{.github_url}}">{{logged_in_author.github_url}}</a>
+                        <a href="{{logged_in_author.github_url}}">{{logged_in_author.github_url}}</a>
                     {% endif %}
                 {% else %}
                     {% if author.bio %}
