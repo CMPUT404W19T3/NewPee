@@ -110,6 +110,8 @@ $(document).ready(function(){
             success : function(json) {
                 $("#request-access").hide();
                 console.log("requested access complete");
+                location.reload()
+
             }, // This function is called if the request is successful. Data is returned from the server.
             error: function (e) {
                 console.log("ERROR: ", e);

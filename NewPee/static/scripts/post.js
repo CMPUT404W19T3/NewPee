@@ -25,10 +25,8 @@ $(document).ready(function(){
     var userUUID = userID.split("/")[5];
     var user_api_url = "/api/authors/" + userID;
     const deletePostButton = document.querySelector("#remove_post_submit");
-    const editPostButton = document.querySelector("#edit_Post_Button");
     var author;
-    editPostButton.addEventListener('click', event =>{
-    });
+   
 
     deletePostButton.addEventListener('click', event =>{
         //event.preventDefault();

@@ -246,8 +246,8 @@ function updateFriends(enumType) {
     }
 }
 
-//grabAuthor();
-//grabUser();
+grabAuthor();
+grabUser();
 let posts = getPosts();
 // In The future, we should keep these, then every ajax call just updates them depending.
 console.log(csrftoken);
@@ -527,7 +527,7 @@ function makePost(post_title,post_content, post_description, content_type){
         data : data, // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             $("#request-access").hide();
-            updateNumPostGet();
+            //updateNumPostGet();
             location.reload();
         }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
@@ -536,8 +536,18 @@ function makePost(post_title,post_content, post_description, content_type){
     });
 }
 
-const elementMakePost = document.querySelector("#post_creation_submit");
-elementMakePost.addEventListener('submit', event => {
+const elementMakePost = document.querySelector("#post-btn");
+
+
+$("post-btn").unbind('click').click(
+    function(){
+        alert("YES");
+    }
+);
+
+
+
+elementMakePost.addEventListener('click', event => {
     event.stopImmediatePropagation();
     event.preventDefault();
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
@@ -559,8 +569,6 @@ elementMakePost.addEventListener('submit', event => {
     document.getElementById("post-title").value = "";
     document.getElementById("post-comment-description").value = "";
     document.getElementById("post-comment-content").value = "";
-
-
 
 });
 

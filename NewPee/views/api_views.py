@@ -269,8 +269,6 @@ def post_list(request):
 
         if serializer.is_valid():
 
-            print(serializer.errors)
-
             serializer.save()
 
             if(update_vis):
@@ -347,7 +345,7 @@ def post_detail(request, pk):
 
     elif request.method == 'DELETE':
 
-        print(request.user)
+        print(request.user, "checking")
 
 
         post = Post.objects.get(pk=pk)
