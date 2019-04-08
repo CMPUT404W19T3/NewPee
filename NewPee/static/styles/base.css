@@ -349,3 +349,7 @@ textarea {
     color: #e6f9af;
     cursor: pointer;
 }
+
+li {
+    color: white;
+}

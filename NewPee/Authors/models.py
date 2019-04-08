@@ -5,10 +5,22 @@ import NewPee.settings
 import requests
 import Servers.models
 import uuid
+import json
+from uuid import UUID
+
 
 #from Servers.models import Server
 
 HOSTNAME = NewPee.settings.HOSTNAME
+
+
+class UUIDEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, UUID):
+            # if the obj is uuid, we simply return the value of uuid
+            return obj.hex
+        return json.JSONEncoder.default(self, obj)
+
 # Author represents a user that creates posts
 class Author(models.Model):
 
@@ -136,7 +148,15 @@ class Author(models.Model):
         return friend_requests
 
     # add a friend
-    def add_friend(self, author):
+    def add_friend(self, author, sending):
+
+
+        # we want to send data
+        if(sending):    
+            if(author.host != HOSTNAME):
+                self.send_foreign_request(author) # send a friend request to another serve
+
+
 
         author.following.add(self)  # we are now following the reciever
 
@@ -146,12 +166,12 @@ class Author(models.Model):
 
 
 
-        if(author.host != HOSTNAME):
-                try:
-                    self.send_foreign_request(author) # send a friend request to another serve
-                    print("sending a foreign friend request.")
-                except:
-                    print("can't connect to foriegn host or local link.")
+        print(self, "author with host")
+        print(author, "the author being sent")
+
+    
+            
+            
 
 
         # if they are following us, add them to our friends.
@@ -160,7 +180,9 @@ class Author(models.Model):
             # add author locally and then send a request to their server
             self.friends.add(author)    
             self.save()
-            
+        
+        print("finished request?")
+
         return
 
     # adding a friend to our request so we don't have notification but they are our still following us
@@ -179,20 +201,40 @@ class Author(models.Model):
     def send_foreign_request(self, author ):
 
 
-        foreignServer = Servers.models.Server.objects.get(host=self.host)
+        try:
+            foreignServer = Servers.models.Server.objects.get(host=self.host)
+        except:
+            print("we are on local")
 
         self_author = Author.objects.get(id=self.id)        # Is there a better way?
 
-        PARAMS = {
-            'query' : "friendrequest",
-            'author': author,
-            'friend': self_author
-        }
 
+        from .serializers import AuthorSerializer
+
+        request = None
+        author_serializer = AuthorSerializer(author, context={'request': request})
+        self_serializer = AuthorSerializer(self_author, context={'request': request})
+
+        PARAMS = {}
+
+        PARAMS['query'] = "friendrequest"
+        PARAMS['author'] =  author_serializer.data
+        PARAMS['friend'] =  self_serializer.data
+        
+        headers = {
+            'Content-Type': 'application/json'
+        }
         # send a request to foreign server
+        
         session = requests.Session()
         session.auth = (foreignServer.getUsername, foreignServer.getPassword)
-        request = session.post(url = foreignServer.friend_endpoint, data= PARAMS)
+        request = session.post(url = foreignServer.friend_endpoint, data=  json.dumps(PARAMS, cls=UUIDEncoder), headers=headers )
+
+        #request = session.post(url = "http://127.0.0.1:8000/api/friendrequest", data=  json.dumps(PARAMS, cls=UUIDEncoder), headers=headers )
+
+        return
+
+        
 
 
 

@@ -21,17 +21,17 @@ class Post(models.Model):
     # author = models.ForeignKey(User)
     title = models.CharField(max_length=100, null=False, blank=False)
     #source = lastplaceigotthisfrom, origin = whereitcamefrom
-    source = models.URLField(null=True,blank=True)
-    origin = models.URLField(null=True,blank=True)
+    source = models.URLField(default = "https://newpee.herokuapp.com/")
+    origin = models.URLField(default = "https://newpee.herokuapp.com/")
     description = models.CharField(max_length=150, default="No Description", null=False, blank=False)
     #text/markdown, text/plain, (application/base64, image/png;base64, image/jpeg;base64)???
-    content_type = models.TextField(null=False,blank=False, default="text/plain")
+    contentType = models.TextField(null=False,blank=False, default="text/plain")
     content = models.TextField(null=False,blank=False)
     github_id = models.TextField(null=True, blank=True)
     # image = models.URLField(null=True,blank=True)
     # image = models.ImageField(upload_to = images)
     image = models.ImageField(upload_to = 'media/', default = 'media/None/no-img.jpg')
-    post_date = models.DateTimeField(auto_now_add=True)
+    published = models.DateTimeField(auto_now_add=True)
     #Types of visibility
     visibility_choices = (
                         ( 'PUBLIC', 'PUBLIC'),
@@ -69,10 +69,10 @@ class Post(models.Model):
     def get_image(self):
 
         return self.image
-
+    
     def get_post_date(self):
 
-        return self.post_date
+        return self.published
 
     def set_visible_to(self,visible_to):
 
@@ -152,7 +152,7 @@ class Comment(models.Model):
     parent = models.ForeignKey('Post', on_delete=models.CASCADE , null=False, blank=False)
     author = models.CharField(max_length=140, null=False, blank=False)
     content = models.CharField(max_length=140, null=False, blank=False)
-    post_date = models.DateTimeField(auto_now_add=True)
+    published = models.DateTimeField(auto_now_add=True)
 
     def get_id(self):
 
@@ -172,7 +172,7 @@ class Comment(models.Model):
 
     def get_post_date(self):
 
-        return self.post_date
+        return self.published
 
 '''
 Possible future addon
@@ -202,7 +202,7 @@ class ForeignPost(models.Model):
     origin = models.URLField(null=True,blank=True)
     description = models.CharField(max_length=150, default="No Description", null=False, blank=False)
     #text/markdown, text/plain, (application/base64, image/png;base64, image/jpeg;base64)???
-    #content_type = models.TextField(null=False,blank=False, default="text/plain")
+    #contet_type = models.TextField(null=False,blank=False, default="text/plain")
     content = models.TextField(null=False,blank=False)
     # image = models.URLField(null=True,blank=True)
     # image = models.ImageField(upload_to = images)

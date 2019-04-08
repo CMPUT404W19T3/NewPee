@@ -137,7 +137,8 @@ STATIC_ROOT = "/static/"
 APPEND_SLASH = False
 trailing_slash = False
 
-HOSTNAME = "newpee.herokuapp.com/"
+HOSTNAME = "https://newpee.herokuapp.com/"
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

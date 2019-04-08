@@ -39,11 +39,11 @@
   <p class="card-text">{{posts.description}}</p><br>
   <p class="card-subtitle mb-2" style="font-weight: bolder; color: #e6f9af">Content: </p>
   
-  {% if posts.content_type == "text/plain"%}
+  {% if posts.contentType == "text/plain"%}
     <p class="card-text">{{ posts.content }}</p>
-  {% elif posts.content_type == "text/markdown" %}
+  {% elif posts.contentType == "text/markdown" %}
     {{ posts.content |apply_markup:"markdown" }}
-  {% elif posts.content_type == "image" %}
+  {% elif posts.contentType == "image" %}
     <img class="img-fluid" src={{ posts.content }} >
   {% endif %}
 </div>
