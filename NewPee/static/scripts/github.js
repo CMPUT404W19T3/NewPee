@@ -35,7 +35,7 @@ elementPullGithub.addEventListener('submit', event => {
         csrfmidddlewaretoken: csrftoken,
         visibility : VisiblityEnum[radio_value],
         visible_to : visible_to,
-        content_type : "text/plain"
+        contentType : "text/plain"
     };
 
     console.log(user_id);
@@ -45,7 +45,7 @@ elementPullGithub.addEventListener('submit', event => {
     }
 
     if (postType.checked){
-        data["content_type"] = postType.value;
+        data["contentType"] = postType.value;
     };
 
     data= JSON.stringify(data);
