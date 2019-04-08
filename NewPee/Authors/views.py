@@ -81,7 +81,7 @@ class AuthorDetail(APIView):
                 exclude_author = Author.objects.filter(user = request.user)
                 authors = Author.objects.filter(displayName__icontains = search).exclude(pk__in=exclude_author)
 
-                print("This is the authors", logged_in_author_serializer)
+                print(authors)
 
                 return Response({'authors': authors, 'form': form, 'search': search}, template_name='search.html')
 
@@ -89,7 +89,10 @@ class AuthorDetail(APIView):
 
                 response = post_list(request._request)
 
-                cursor = response.data
+                print(response, "\n\n\n\n\n\n\n")
+
+                cursor = response.data["posts"]
+
 
                 for index in range(len(cursor)-1, -1, -1):
                     if uuid.UUID(cursor[index]["author"]["id"].split("/")[-1]) != author.id:
@@ -113,7 +116,7 @@ class AuthorDetail(APIView):
                     followingBool = False
 
 
-                return Response({'author': author_serializer.data,  \
+                return Response({'author': author_serializer.data, 'current_author':logged_in_author_serializer.data, \
                 'form': form, 'logged_in_author':logged_in_author_serializer.data, \
                 'pages': pages, 'followers': followers, 'following': following, 'followingBool' : followingBool })
 
@@ -227,7 +230,6 @@ class AuthorfriendsView(APIView):
 
             author = get_object_or_404(models.Author, id= pk)
 
-            print("?")
             # good request with array of authors
             try:
 
@@ -235,18 +237,13 @@ class AuthorfriendsView(APIView):
                 friends = []
 
                 for request_author in authors:
-
                     our_friends = author.get_friends().values('id')
-
-                    #print(our_friends, "page friends")
-                    #print(our_friends.get(id=request_author["id"]), "IS A FRIEND")
 
                     # Check they are friend
                     try:
 
                         if our_friends.get(id=request_author["id"]):
 
-                            #print("appending author")
                             friends.append(request_author)
                     except:
 
@@ -346,31 +343,33 @@ class AuthorUpdateFriendRequestsView(APIView):
         friend_uuid = friend_uuid.strip(" ")
         author = get_object_or_404(Author, id =  recieving_author_uuid)
 
-        print("YEEE\n\n", author, "\n\n\n")
-        print("friend_uuid", friend_uuid)
 
-        try:
+        print("\n\n", recieving_author, "\n\n")
+        print(friend, "\n\n")
+
+
+        #try:
 
             # a local author we can just add them.
-            friend = get_object_or_404(Author, id = friend_uuid)
+        friend = get_object_or_404(Author, id = friend_uuid)
 
-            if request.data["query"] == "declinerequest":
+        if request.data["query"] == "declinerequest":
 
-                author.add_friend_request(friend)
-                return Response(status=status.HTTP_201_CREATED)
-
-
-            try:
-                friend.add_friend(author)
-            except:
-                print("adding friend failed")
+            author.add_friend_request(friend)   # add them into our friend requests, used to hide notifications.
+            return Response(status=status.HTTP_201_CREATED)
 
 
-            return Response(status=status.HTTP_200_OK)
+       
+        friend.add_friend(author)
+            
+                
 
-        except:
 
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_200_OK)
+
+        #except:
+
+        #    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 # https://docs.djangoproject.com/en/2.1/ref/class-based-views/base/#redirectview
 class AuthorFriendRequestActionsView( RedirectView):

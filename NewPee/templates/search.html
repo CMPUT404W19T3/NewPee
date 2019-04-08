@@ -22,13 +22,12 @@
 {% for author in authors %}
 <div class="authorPost">
     <hr>
-    <h2 class="authorDisplayName">
-        {{ author.displayName }}
-    </h2>
+    <span id = "search_author_list" class="authorDisplayName">
+        {{ author.displayName }} 
+    </span>          
+    <a href="/authors/{{author.id}}">  <i class="fas fa-user fa-lg fa-fw" ></i>
+
     
-    <a href="/authors/{{author.id}}"> 
-    {{ author.user.first_name }} {{ author.user.last_name }}
-    </a>
         
 </div>
 {% endfor %}

@@ -34,3 +34,7 @@ hr {
     color: #e6f9af;
     font: 700;
 }
+
+#search_author_list {
+    font-size: 25px;
+}
