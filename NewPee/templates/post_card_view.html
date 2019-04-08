@@ -12,7 +12,7 @@
     <div class="card-header">
         <span id="post-date">{{ post.title }}</span>
         <span style="margin-left:1rem; margin-right:1rem; color: #8bbeb2">|</span>
-        <span class="card-subtitle mb-2" id="post-date">{{ post.post_date|parse_iso }}</span>
+        <span class="card-subtitle mb-2" id="post-date">{{ post.published|parse_iso }}</span>
     </div>  
     <div class="card-body">
         <h6 class="card-subtitle mb-2" id="display-name">{{ post.author.displayName }}</h6>
