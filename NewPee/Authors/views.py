@@ -99,7 +99,7 @@ class AuthorDetail(APIView):
                         cursor.pop(index)
 
                 response_list = list(cursor)
-                response_list.sort(key=lambda x: x['post_date'], reverse=True)
+                response_list.sort(key=lambda x: x['published'], reverse=True)
                 paginator = Paginator(response_list, 5)
                 page = request.GET.get('page')
                 pages = paginator.get_page(page)
