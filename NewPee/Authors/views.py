@@ -227,7 +227,6 @@ class AuthorfriendsView(APIView):
 
             author = get_object_or_404(models.Author, id= pk)
 
-            print("?")
             # good request with array of authors
             try:
 
@@ -235,18 +234,13 @@ class AuthorfriendsView(APIView):
                 friends = []
 
                 for request_author in authors:
-
                     our_friends = author.get_friends().values('id')
-
-                    #print(our_friends, "page friends")
-                    #print(our_friends.get(id=request_author["id"]), "IS A FRIEND")
 
                     # Check they are friend
                     try:
 
                         if our_friends.get(id=request_author["id"]):
 
-                            #print("appending author")
                             friends.append(request_author)
                     except:
 
@@ -356,7 +350,7 @@ class AuthorUpdateFriendRequestsView(APIView):
 
             if request.data["query"] == "declinerequest":
 
-                author.add_friend_request(friend)
+                author.add_friend_request(friend)   # add them into our friend requests, used to hide notifications.
                 return Response(status=status.HTTP_201_CREATED)
 
 

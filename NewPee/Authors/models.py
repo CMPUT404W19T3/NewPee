@@ -138,38 +138,29 @@ class Author(models.Model):
     # add a friend
     def add_friend(self, author):
 
+        author.following.add(self)  # we are now following the reciever
 
 
-        author.following.add(self)  # we are now following
-
-
-        if(author not in self.followers.all()):
-
+        if(author not in self.followers.all()): # make sure we are in reciever followers.
             self.followers.add(author)
 
 
 
         if(author.host != HOSTNAME):
-
                 try:
-                    self.send_foreign_request(author)
+                    self.send_foreign_request(author) # send a friend request to another serve
                     print("sending a foreign friend request.")
                 except:
                     print("can't connect to foriegn host or local link.")
 
 
-        print("adding friend", author)
-        # we are already following the user.
+        # if they are following us, add them to our friends.
         if (author in self.following.all()):
 
-            print("")
             # add author locally and then send a request to their server
-            self.friends.add(author)
-            #author.add_friend(self)
+            self.friends.add(author)    
             self.save()
-            # we are adding an author from a different server.
             
-
         return
 
     # adding a friend to our request so we don't have notification but they are our still following us
@@ -225,20 +216,11 @@ class Author(models.Model):
     # Accept or Decline friend request based on choice
     def respond_to_friend_request(self, author, choice):
 
-        #self.friend_requests.remove(author) # no longer in our friend requests either way.
-        print("Done unfollowing..")
-
-
         if( choice == "decline"):
-            self.following.remove(author)
-            author.followers.remove(self)
+            author.followers.remove(self)   # 
 
-
-            if( author in self.friends.all()):
-                #self.remove_friend(author)
-                pass
-
-
+            if( author in self.friends.all()):  # remove friends.
+                self.remove_friend(author)
 
 
         if( choice == "accept"):
@@ -250,7 +232,7 @@ class Author(models.Model):
 
     # Remove an existing friend
     def remove_friend(self,author):
-        #self.friends.remove(author)
+        self.friends.remove(author)
         self.save()
 
 #TODO: FIX
