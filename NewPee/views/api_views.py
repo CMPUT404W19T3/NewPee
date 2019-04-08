@@ -27,65 +27,47 @@ def view_access(post, author, unlisted=False):
 
         returnStatement = True
 
+        print(post, post.visibility)
+
+
         # Admin can see all posts.
         if author.Admin:
-
+            print("Author is Admin")
             return True
 
-        #post = Post.objects.get(id=xpost["id"])
 
         if unlisted == True:
-
             return False
 
         if post.visibility == "PUBLIC":
-
             returnStatement = True
 
         elif post.visibility == "PRIVATE":
-
             if post.privateViewAccess(author):
-
                 returnStatement = True
-
             else:
-
                 returnStatement = False
 
         elif post.visibility == "FRIENDS":
-
             if post.friendViewAccess(author):
-
                 returnStatement = True
-
             else:
-
                 returnStatement = False
 
         elif post.visibility == "FOAF":
-
             if post.FOAFViewAccess(author):
-
                 returnStatement = True
-
             else:
-
                 returnStatement = False
 
         elif post.visibility == "SERVER":
-
             if post.ServerViewAcces(author):
-
                 returnStatement = True
-
             else:
-
                 returnStatement = False
                 
         elif post.visibility == "SERVERFRIEND":
-        
             if post.ServerFriendsViewAcces(author):
-
                 returnStatement = True
             else:
                 returnStatement = False
@@ -93,7 +75,7 @@ def view_access(post, author, unlisted=False):
 
 
 
-
+        print("retuning", returnStatement)
         return returnStatement
 
 
@@ -206,8 +188,13 @@ def post_list(request):
     if request.method == 'GET':
 
         posts = Post.objects.filter(unlisted=False)
-        foreignposts = ForeignPost.objects.filter(unlisted=False)
-        foreignserializer = ForeignPostSerializer(foreignposts, many=True, context={'request': request})
+
+        public_posts = Post.objects.filter(visibility="PUBLIC")
+
+        posts = posts.exclude(visibility="PUBLIC")
+
+        
+
         serializer = PostSerializer(posts, many=True, context={'request': request})
         non_visible_filtered_post = posts
 
@@ -217,17 +204,24 @@ def post_list(request):
 
             if( view_access(xpost, Author.objects.get(user=request.user), xpost.getUnlisted())):
 
-                #print("Can see", post)
+                print("Can see", post)
                 pass
 
             else:
 
                 non_visible_filtered_post = posts.exclude(id = post["id"])
                 posts = posts & non_visible_filtered_post
+                print("can't see", post)
 
-        serializer2 = PostSerializer(posts, many=True, context={'request': request})
+        print("made it past view")
 
-        combined = list(chain(foreignserializer.data, serializer2.data))
+        #serializer2 = PostSerializer(posts, many=True, context={'request': request})
+        serializer = PostSerializer(public_posts, many=True, context={'request': request})
+
+        combined = list(chain(serializer.data, serializer.data))
+
+        print("made it past view")
+
 
         #json = serializers.serialize('json', combined)
 
@@ -366,7 +360,6 @@ def post_detail(request, pk):
             post.delete()
 
 
-        print("\n\n\n\n\n")
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 #@permission_classes((IsAuthenticated,IsOwnerOrReadOnlyAuthor, ))

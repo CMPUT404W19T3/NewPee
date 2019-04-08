@@ -80,12 +80,12 @@ class Post(models.Model):
 
     def privateViewAccess(self, viewing_author):
 
-        print(viewing_author)
-        print(self.visible_to.all())
-        print("\n\n")
+        #print(viewing_author, "?")
+        #print(self.visible_to.all())
 
+        
         if(viewing_author in self.visible_to.all()):
-            
+
             return True
             
         else:
@@ -105,7 +105,7 @@ class Post(models.Model):
     def FriendServerViewAcess(self, viewing_author):
 
         pass
-        
+
 
     def FOAFViewAccess(self, viewing_author):
 

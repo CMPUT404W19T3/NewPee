@@ -15,14 +15,14 @@ function getCookie(name) {
 }
 
 $(document).ready(function(){
-    var user_id = document.getElementById("userIDSpan");
-    var user_id = document.getElementById("userID").value; // grabbing from hidden value through django context
+    var user_id = document.getElementById("userIDSpan").innerHTML;
+    //var user_id = document.getElementById("userID").value; // grabbing from hidden value through django context
     var user_id_spliced = user_id.split("/");
-    console.log(user_id);
+    console.log(user_id, "?");
     var user_api_url = "/api/authors/" + user_id_spliced[user_id_spliced.length-1];
     var friend_api_url =   "/api/author/"+ user_id_spliced[user_id_spliced.length-1] +  "/friendrequest"
     console.log(friend_api_url);
-    console.log(user_api_url);
+    console.log(user_api_url, "user api");
 
     function grabFriendRequest(){
         $.ajax({

@@ -17,6 +17,7 @@
         {% block head %}{% endblock %}
 
     </head>
+    <span hidden = "true" id= userIDSpan>{{ current_author.id }}</span> 
     <body>
       <nav class="navbar bg-color justify-content-center navbar-fixed-top" id="header-borders">
         <a class="newPeeHeaderImg mr-auto" href="{% url 'feed' %}">

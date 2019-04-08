@@ -246,8 +246,8 @@ function updateFriends(enumType) {
     }
 }
 
-grabAuthor();
-grabUser();
+//grabAuthor();
+//grabUser();
 let posts = getPosts();
 // In The future, we should keep these, then every ajax call just updates them depending.
 console.log(csrftoken);
@@ -346,6 +346,7 @@ var delay = (function(){
     timer = setTimeout(callback, ms);
    };
 })();
+
 
 $(input).keyup(function() {
     delay(function(){

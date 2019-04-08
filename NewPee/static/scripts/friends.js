@@ -65,6 +65,7 @@ $(document).ready(function(){
         console.log(  i );
         friend["id"] = author_ids[i].innerHTML;
         console.log(friend)
+        console.log(author)
         data["query"] = "friendrequest";
         data["type"] = "local_add";
         data["author"] = author;

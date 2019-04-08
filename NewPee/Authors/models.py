@@ -142,15 +142,11 @@ class Author(models.Model):
 
         author.following.add(self)  # we are now following
 
-        #self.following.add(author)
 
         if(author not in self.followers.all()):
 
             self.followers.add(author)
-            #print(author, self)
-            #print("added follower")
 
-        #print(self.followers.all(), self)
 
 
         if(author.host != HOSTNAME):
@@ -162,13 +158,15 @@ class Author(models.Model):
                     print("can't connect to foriegn host or local link.")
 
 
+        print("adding friend", author)
         # we are already following the user.
         if (author in self.following.all()):
 
+            print("")
             # add author locally and then send a request to their server
             self.friends.add(author)
             #author.add_friend(self)
-
+            self.save()
             # we are adding an author from a different server.
             
 
@@ -239,7 +237,7 @@ class Author(models.Model):
             if( author in self.friends.all()):
                 #self.remove_friend(author)
                 pass
-                
+
 
 
 

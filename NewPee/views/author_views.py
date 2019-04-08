@@ -184,7 +184,7 @@ def respond_to_friends(request, format = None):
 
     serializer_friends = AuthorSerializer(friends_requests, many=True, context={'request': request})
 
-    return render(request, 'friends.html', { 'authors':serializer_friends.data , 'form': form, 'friends':friends,  })
+    return render(request, 'friends.html', { 'authors':serializer_friends.data , 'form': form, 'friends':friends, 'current_author': current_author   })
 
 def get_author(request, format=None):
 
