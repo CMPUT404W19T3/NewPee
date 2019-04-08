@@ -24,6 +24,7 @@ from django.urls import reverse_lazy
 import operator
 import uuid
 from views.api_views import post_list
+
 class AuthorDetail(APIView):
 
     """
@@ -63,18 +64,12 @@ class AuthorDetail(APIView):
                     #x.updateAuthors()
                     x.updatePosts()
 
-
-
-
             author = self.get_object(pk)
             author_serializer = AuthorSerializer(author, context = {'request': request})
             logged_in_author = Author.objects.get(user = request.user)
             logged_in_author_serializer = AuthorSerializer(logged_in_author, context= {'request': request})
             form = SearchForm()
             search = request.GET.get('search')
-
-            
-
 
             if search:
 
@@ -93,7 +88,6 @@ class AuthorDetail(APIView):
 
                 cursor = response.data["posts"]
 
-
                 for index in range(len(cursor)-1, -1, -1):
                     if uuid.UUID(cursor[index]["author"]["id"].split("/")[-1]) != author.id:
                         cursor.pop(index)
@@ -106,9 +100,6 @@ class AuthorDetail(APIView):
 
                 followers = author.get_followers()
                 following = author.get_following()
-
-
-
 
                 if(logged_in_author not in followers):
                     followingBool = True
@@ -130,7 +121,6 @@ class AuthorDetail(APIView):
 
     # Clean Up After
     def post(self, request, pk, *args, **kwargs):
-
 
         if request.method == 'POST' and request.FILES['myfile']:
 
@@ -205,12 +195,22 @@ class AuthorList(APIView):
                 'posts': post_serializer.data,
             })
 
-
 #a reponse if friends or not
 #ask a service GET http://service/author/<authorid>/friends/
 
 # WORKS
 class AuthorfriendsView(APIView):
+
+    """
+    get:
+        Retrieve list of Friends.
+
+    post:
+        Post a list of Friends.
+    """
+
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
 
     @csrf_exempt
     def get(self, request, pk, *args, **kwargs):
@@ -264,6 +264,14 @@ class AuthorfriendsView(APIView):
 # WORKS
 class AuthorIsfriendsView(APIView):
 
+    """
+    get:
+        Retrieve friendship status with another user.
+    """
+    
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
     @csrf_exempt
     def get(self, request, pk, pk2, *args, **kwargs):
 
@@ -297,6 +305,14 @@ class AuthorIsfriendsView(APIView):
 
 class AuthorFriendRequestsView(APIView):
 
+    """
+    get:
+        Retrieve a list of Friend Requests.
+    """
+
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
     def get(self, request, pk, *args, **kwargs):
 
         author = get_object_or_404(models.Author, id= pk)
@@ -328,6 +344,17 @@ class AuthorFriendRequestsView(APIView):
 # api for friendrequest
 # upon recieiving the author that send the friend request add them
 class AuthorUpdateFriendRequestsView(APIView):
+
+    """
+    get:
+        Retrieve Friend Request.
+    
+    post:
+        Submit a Friend Request.
+    """
+
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
 
     def get(self, request):
 
@@ -374,17 +401,13 @@ class AuthorFriendRequestActionsView( RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
 
-
         url = reverse_lazy('feed')
-
         target_pk = kwargs.get('pk')
         method = kwargs.get('method')
         sender = self.request.user
         target_author = get_object_or_404(Author, pk= target_pk)
         sender_author = get_object_or_404(Author, user=sender)
-
         #sender_author = get_object_or_404(Author, request.data["friend"])
-
 
         # Our sender is accepting the target author requests
         if method == "accept":
@@ -394,12 +417,12 @@ class AuthorFriendRequestActionsView( RedirectView):
         if method == "decline":
 
             print("GOT HERE")
+
             sender_author.respond_to_friend_request(target_author, "decline")
+
             if (sender_author.is_friend(target_author.id)):
                 sender_author.remove_friend(target_author)
                 target_author.remove_friend(sender_author)
-
-
 
         if method == "send-request":
 
@@ -411,4 +434,3 @@ class AuthorFriendRequestActionsView( RedirectView):
             target_author.remove_friend(sender_author, request)
 
         return url
-
