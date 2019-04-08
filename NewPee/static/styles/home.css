@@ -46,7 +46,7 @@ span {
 /* Clearable text inputs */
 .clearable{
     content:'H';    
-    background: #e6f9af url(https://findicons.com/files/icons/1156/fugue/16/tick_white.png) no-repeat right  center;
+    background: #e6f9af url(https://findicons.com/files/icons/1018/pixelicious/32/add.png) no-repeat right --5px center;
     border: 1px solid #999;
     padding: 3px 18px 3px 4px;     /* Use the same right padding (18) in jQ! */
     border-radius: 3px;

@@ -94,6 +94,9 @@ class Post(models.Model):
 
     def friendViewAccess(self,viewing_author):
 
+        print(self.author, "?")
+        print(viewing_author)
+
         if (viewing_author in self.author.friends.all()):
             
             return True
@@ -104,7 +107,12 @@ class Post(models.Model):
 
     def FriendServerViewAcess(self, viewing_author):
 
-        pass
+        if (viewing_author in self.author.friend.all()):
+
+            if(viewing_author.host != settings.HOSTNAME):
+                return True
+
+        return False
 
 
     def FOAFViewAccess(self, viewing_author):

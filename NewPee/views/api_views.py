@@ -219,15 +219,17 @@ def post_list(request):
 
         #serializer2 = PostSerializer(posts, many=True, context={'request': request})
         serializer = PostSerializer(public_posts, many=True, context={'request': request})
+        serializer2 = PostSerializer(posts, many=True, context={'request': request})
 
-        #combined = list(chain(serializer.data, serializer.data))
+
+        combined = list(chain(serializer.data, serializer2.data))
 
         print("made it past view")
 
 
         #json = serializers.serialize('json', combined)
 
-        return Response(serializer.data)
+        return Response(combined)
 
     elif request.method == 'POST':
 
