@@ -19,20 +19,21 @@
     <div class="card-header">
 
       <p>{{ posts.title }}</p>
+      <h6 class="card-subtitle mb-2">{{ posts.post_date|parse_iso }}</h6>
 
       <div class ="text-right">
 
-        <div class="btn-group dropright">
-            <button id="edit_Post_Button" type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#add_private_modal">
-              Edit
-            </button>
-        <button id="remove_post_submit" type="submit" class="btn btn-danger btn-sm"> Delete</button>
+            
+            <form action="/authors/" >
+            <button id="remove_post_submit" type="submit" class="btn btn-danger btn-sm"> Delete</button>
+            </form>
 
-      </div>
+
     </div>
   </div>
+
+  
   <div class="card-body">
-  <h6 class="card-subtitle mb-2">Posted by {{ posts.author.displayName }} from {{ posts.author.host }} at {{ posts.post_date|parse_iso }}</h6><br>
   <p class="card-subtitle mb-2" style="font-weight: bolder; color: #e6f9af">Description: </p>
   <p class="card-text">{{posts.description}}</p><br>
   <p class="card-subtitle mb-2" style="font-weight: bolder; color: #e6f9af">Content: </p>

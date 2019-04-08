@@ -67,22 +67,33 @@ class PostDetail(APIView):
 
             post = self.get_object(pk)
             post_serializer = PostSerializer(post, context={'request': request})
-
-            print(post)
-
             post_date = post.post_date
-            logged_in_author = Author.objects.get(user = request.user)
-            logged_in_author_serializer = AuthorSerializer(logged_in_author, context={'request': request})
             form = SearchForm()
             comment_form = CommentForm()
 
-            try:
+            if request.user.is_anonymous:
+                if (post_serializer.data["visibility"] == "PUBLIC"):
+                    try:
+                        comments = Comment.objects.filter(parent=pk)
+                        comment_serializer = CommentSerializer(comments, many=True)
+                        #if user is anooymous and comments exist
+                        return Response({'posts': post_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
 
-                comments = Comment.objects.filter(parent=pk)
-                comment_serializer = CommentSerializer(comments, many=True)
+                    except Comment.DoesNotExist:
 
-                return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
+                        return Response({'posts': post_serializer.data, 'form': form, 'comment_form': comment_form})
 
-            except Comment.DoesNotExist:
+            else: 
+                logged_in_author = Author.objects.get(user = request.user)
+                logged_in_author_serializer = AuthorSerializer(logged_in_author, context={'request': request})
 
-                return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'form': form, 'comment_form': comment_form})
+                try:
+
+                    comments = Comment.objects.filter(parent=pk)
+                    comment_serializer = CommentSerializer(comments, many=True)
+
+                    return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
+
+                except Comment.DoesNotExist:
+
+                    return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'form': form, 'comment_form': comment_form})

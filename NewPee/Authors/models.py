@@ -139,16 +139,29 @@ class Author(models.Model):
     # add a friend
     def add_friend(self, author):
 
+
+
         author.following.add(self)  # we are now following
 
         #self.following.add(author)
 
         if(author not in self.followers.all()):
 
-            print(author, self)
-            print("added follower")
+            self.followers.add(author)
+            #print(author, self)
+            #print("added follower")
 
-        print(self.following.all(), self)
+        #print(self.followers.all(), self)
+
+
+        if(author.host != HOSTNAME):
+
+                try:
+                    self.send_foreign_request(author)
+                    print("sending a foreign friend request.")
+                except:
+                    print("can't connect to foriegn host or local link.")
+
 
         # we are already following the user.
         if (author in self.following.all()):
@@ -158,12 +171,7 @@ class Author(models.Model):
             #author.add_friend(self)
 
             # we are adding an author from a different server.
-            if(author.host != HOSTNAME):
-
-                try:
-                    self.send_foreign_request(author)
-                except:
-                    print("can't connect to foriegn host or local link.")
+            
 
         return
 
@@ -182,7 +190,9 @@ class Author(models.Model):
     # send a friend request to foreign server
     def send_foreign_request(self, author ):
 
-        foreignServer = Server.objects.get(host=author["host"])
+
+        foreignServer = Servers.models.Server.objects.get(host=self.host)
+
         self_author = Author.objects.get(id=self.id)        # Is there a better way?
 
         PARAMS = {
@@ -194,6 +204,12 @@ class Author(models.Model):
         # send a request to foreign server
         session = requests.Session()
         session.auth = (foreignServer.getUsername, foreignServer.getPassword)
+        #request = session.post(url = foreignServer.friend_endpoint, data= PARAMS)
+
+
+
+
+
 
     # we have recieved a friend request from the author
     def send_friend_request(self, author):
@@ -212,7 +228,13 @@ class Author(models.Model):
     # Accept or Decline friend request based on choice
     def respond_to_friend_request(self, author, choice):
 
-        self.friend_requests.remove(author) # no longer in our friend requests either way.
+        #self.friend_requests.remove(author) # no longer in our friend requests either way.
+        print("Done unfollowing..")
+
+        self.following.remove(author)
+        author.followers.remove(self)
+
+
 
         if( choice == "accept"):
 
@@ -309,7 +331,13 @@ class ForeignAuthor(models.Model):
     # Accept or Decline friend request based on choice
     def respond_to_friend_request(self, author, choice):
 
-        self.friend_requests.remove(author) # no longer in our friend requests either way.
+        #self.friend_requests.remove(author) # no longer in our friend requests either way.
+        print("Done unfollowing..")
+
+        self.following.remove(author)
+        author.follower.remove(self)
+
+
 
         if( choice == "accept"):
 

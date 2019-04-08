@@ -70,7 +70,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Author API
-    path('api/authors/', api_views.Author_list, name="api-author"),
+    path('api/authors', api_views.Author_list, name="api-author"),
     path('api/authors/<uuid:pk>', api_views.Author_detail, name="api-author"),
 
     # Post API
@@ -121,10 +121,10 @@ urlpatterns = [
     path('api/author/<uuid:pk>/friendrequest' , AuthorFriendRequestsView.as_view(), name="api-returnfriendrequests"), # Returns all the authors current friend requests.
 
     # Friend actions
-    path('api/author/<uuid:pk>/accept-friend-request/', AuthorFriendRequestActionsView.as_view(), {'method': "accept"}, name="accept-friend", ),
-    path('api/author/<uuid:pk>/decline-friend-request/', AuthorFriendRequestActionsView.as_view(),{'method': "decline"}, name="decline-friend", ),
-    path('api/author/<uuid:pk>/send-friend-request/', AuthorFriendRequestActionsView.as_view(), {'method': "send-request"}, name="send-request", ),
-    path('api/author/<uuid:pk>/unfriend/', AuthorFriendRequestActionsView.as_view(),{'method': "unfriend"}, name="unfriend",  ),
+    path('api/author/<uuid:pk>/accept-friend-request', AuthorFriendRequestActionsView.as_view(), {'method': "accept"}, name="accept-friend", ),
+    path('api/author/<uuid:pk>/decline-friend-request', AuthorFriendRequestActionsView.as_view(),{'method': "decline"}, name="decline-friend", ),
+    path('api/author/<uuid:pk>/send-friend-request', AuthorFriendRequestActionsView.as_view(), {'method': "send-request"}, name="send-request", ),
+    path('api/author/<uuid:pk>/unfriend', AuthorFriendRequestActionsView.as_view(),{'method': "unfriend"}, name="unfriend",  ),
 
     path('docs/', schema_view, name="docs")
 ]
