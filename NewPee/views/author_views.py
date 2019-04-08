@@ -100,6 +100,7 @@ def redirect(request, format=None):
 def feed(request, format=None):
 
     response = post_list(request)
+    
     author = Author.objects.get(user=request.user)
     serializer =  AuthorSerializer(author, context={'request': request})
     followers = author.get_followers()

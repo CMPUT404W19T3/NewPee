@@ -517,7 +517,10 @@ function makePost(post_title,post_content, post_description, content_type){
     
     var radio_value;
     var radioButtons = document.getElementsByName("friends-radio-option");
-    var unlistedBool = document.getElementById("unlisted")
+    var unlistedBool = document.getElementById("unlisted");
+
+
+
     var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY", 6:"SERVERFRIENDS"})
     var visible_to;
     for (var i = 0; i < radioButtons.length; i++) {
@@ -541,6 +544,8 @@ function makePost(post_title,post_content, post_description, content_type){
      //update friends stuff here
     if (radio_value==4){
         data["visible_to"] =  [page_author["id"]];
+        
+
     }
 
 
@@ -630,6 +635,23 @@ elementMakeImagePost.addEventListener('submit', event => {
 // function uploadImage() {
 //     $('#select-profile-pic').trigger('click');
 // }
+
+
+const private_author_share = document.querySelector("#PrivatePrivacy");
+const private_author_text = document.querySelector("#private-author");
+
+
+$('input[type="radio"]').click(function(){
+    var demovalue = $(this).val(); 
+
+    if (demovalue == 4){
+        private_author_text.hidden = false;
+    }
+    else{
+        private_author_text.hidden = true;
+    }
+});
+
 
 const elementUpdateProfilePic = document.getElementById("change_profile_pic_submit");
 elementUpdateProfilePic.addEventListener('submit', event => {
