@@ -271,42 +271,6 @@ function getrecivingAuthorData(enumType){
     });
 };
 
-function updateNumPostGet(){
-    $.ajax({
-        method: "GET", // type --> method, the HTTP method used for the request.
-        url: author_api_url, // URL to which the request is sent.
-        contentType: 'application/json', // The MIME type being sent to the server.
-        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
-        success : function(json) {
-            author = json;
-            author.posts_created += 1;
-            var numOfPost = {posts_created : author.posts_created.toString()};
-            updateNumPostPut(JSON.stringify(numOfPost));
-            $("#request-access").hide();
-        }, // This function is called if the request is successful. Data is returned from the server.
-        error: function (e) {
-            console.log("ERROR: ", e);
-        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
-    });
-};
-
-function updateNumPostPut(numOfPost){
-    $.ajax({
-        method: "PATCH", // type --> method, the HTTP method used for the request.
-        //async: false,
-        url: author_api_url, // URL to which the request is sent.
-        contentType: 'application/json', // The MIME type being sent to the server.
-        headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
-        data: (numOfPost), // Data to be sent to the server. Transoformed to query string if not one yet.
-        success : function(json) {
-            $("#request-access").hide();
-        }, // This function is called if the request is successful. Data is returned from the server.
-        error: function (e) {
-            console.log("ERROR: ", e);
-        } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
-    });
-};
-
 // https://blog.teamtreehouse.com/creating-autocomplete-dropdowns-datalist-element
 // Get the <datalist> and <input> elements.
 var dataList = document.getElementById('ajax_authors');
@@ -442,13 +406,10 @@ async function github_api() {
     return json;
 }
 
-function makePost(post_title,post_content, post_description, content_type){
+async function makePost(post_title,post_content, post_description, content_type){
     var radio_value;
     var radioButtons = document.getElementsByName("friends-radio-option");
     var unlistedBool = document.getElementById("unlisted");
-
-
-
     var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY", 6:"SERVERFRIENDS"})
     var visible_to;
     for (var i = 0; i < radioButtons.length; i++) {
@@ -479,7 +440,7 @@ function makePost(post_title,post_content, post_description, content_type){
 
     // Goes to post_created
     // author.view post_created view
-    $.ajax({
+    await $.ajax({
         method: "POST", // type --> method, the HTTP method used for the request.
         //async: false,
         url: "/api/posts", // URL to which the request is sent.
@@ -488,7 +449,6 @@ function makePost(post_title,post_content, post_description, content_type){
         data : data, // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             $("#request-access").hide();
-            updateNumPostGet();
             location.reload();
         }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
@@ -512,7 +472,9 @@ elementMakePost.addEventListener('submit', event => {
     }else{
         post_type = "text/plain";
     };
+
     makePost(post_title,post_content, post_description, post_type);
+
     var radioButtons = document.getElementsByName("friends-radio-option");
     radioButtons[0].checked = true;
 
@@ -728,7 +690,7 @@ elementPullGithub.addEventListener('submit', async event => {
     data= JSON.stringify(data);
     // Goes to post_created
     // author.view post_created view
-    $.ajax({
+    await $.ajax({
         method: "POST", // type --> method, the HTTP method used for the request.
         //async: false,
         url: "/api/posts", // URL to which the request is sent.

@@ -172,12 +172,14 @@ def Author_detail(request, pk, format= None):
     elif request.method == 'PATCH':
         print("WE HAVE MADDDDDDDDDE IT")
         serializer = AuthorSerializer(author, data=request.data, partial=True, context={'request': request})
-
+        print(serializer)
         if serializer.is_valid():
             serializer.save()
             print("is saved")
             print(serializer.data)
             return Response(serializer.data)
+        else:
+            print(serializer.data)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -242,7 +244,10 @@ def post_list(request):
 
             author_id = author_id.split("/")[-1]
 
-        author = AuthorSerializer( Author.objects.get(id=author_id), context={'request': request})
+        unserialized_author = Author.objects.get(id=author_id)
+        unserialized_author.posts_created += 1
+        unserialized_author.save()
+        author = AuthorSerializer(unserialized_author, context={'request': request})
 
         request.data["author"] = author.data
 
