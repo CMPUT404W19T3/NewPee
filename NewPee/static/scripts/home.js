@@ -26,12 +26,6 @@ var recieving_author;
 var page_author;
 var user_author;
 
-function getFileData(myFile){
-    var file = myFile.files[0];
-    var filename = file.name;
-    console.log(filename);
- }
-
 var csrftoken = getCookie('csrftoken');
 var author_url = location.pathname;
 var author_uuid = author_url.split("/")[2];
@@ -71,9 +65,7 @@ function grabUser(){
             page_author = json;
             stripped_user_id=  json["id"].split("/")[5] ;
             page_author["id"] = stripped_user_id;
-            console.log(page_author, "This is the retrieved author.");
             if(page_author.followers.includes(user_id)){
-                console.log("Already following");
                 follow_submit_button.innerHTML = "Unfollow";
             }
             $("#request-access").hide();
@@ -88,11 +80,9 @@ function grabUser(){
 function getPosts() {
     fetch('../api/posts')
     .then(function(response) {
-        console.log("This is response", response);
         return response.json();
     })
     .then(function(responseJSON) {
-        console.log("This is the JSON: ", responseJSON);
         posts = responseJSON;
         temp_posts = posts;
         for (var post in posts){
@@ -114,25 +104,21 @@ function getPosts() {
             }
         }
         posts= temp_posts;
-        console.log(posts)
     })
 }
 
 function subtractUserFriends(){
     data = {};
     data["friends"] = [0];
-    console.log(user_author.friends, "Current user friend list")
     //Add all friends back except the current Authors page.
     if(user_author.friends.length != 0){
         for (var authors in user_author.friends){
             if(user_author.friends[authors] != author_uuid && user_author.friends[authors] != 0 && user_author.friends[authors] != user_id){
-                console.log(user_author.friends[authors], "pushing ___ user.");
                 data["friends"].push(user_author.friends[authors]);
                 }
             }
         }
     data["friends"].shift();    // remove the [0]
-    console.log(data, "user-subtract");
     $.ajax({
         method: "PATCH", // type --> method, the HTTP method used for the request.
         //async: false,
@@ -160,7 +146,6 @@ function subtractAuthorFriends(){
             }
         }
     data["friends"].shift();    // remove the [0]
-    console.log(data, "author-subtract");
     $.ajax({
         method: "PATCH", // type --> method, the HTTP method used for the request.
         //async: false,
@@ -169,7 +154,6 @@ function subtractAuthorFriends(){
         headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
-            //console.log(json);
             $("#request-access").hide();
         }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
@@ -196,7 +180,6 @@ function addUserFriends(){
         headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
-            console.log("User friends added")
             $("#request-access").hide();
         }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
@@ -223,8 +206,6 @@ function addAuthorFriends(){
         headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
-            //console.log(json);
-            console.log("Author friends added")
             $("#request-access").hide();
         }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
@@ -239,10 +220,8 @@ function updateFriends(enumType) {
     addAuthorFriends();
     }
     if (enumType===FriendsEnum.Subtract){
-    console.log("Remove Friends");
-    console.log(user_author.friends, "Current user friend list")
-    subtractUserFriends();
-    subtractAuthorFriends();
+        subtractUserFriends();
+        subtractAuthorFriends();
     }
 }
 
@@ -250,7 +229,6 @@ grabAuthor();
 grabUser();
 let posts = getPosts();
 // In The future, we should keep these, then every ajax call just updates them depending.
-console.log(csrftoken);
 // Get the current followers of the Profile.
 // Add the clicked author to your following list.
 
@@ -284,7 +262,6 @@ function getrecivingAuthorData(enumType){
         headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         success : function(json) {
            recieving_author = json;
-           console.log(recieving_author);
            // updatefollowersPOST(JSON.stringify(data),enumType); // update the follower list
             $("#request-access").hide();
         }, // This function is called if the request is successful. Data is returned from the server.
@@ -302,12 +279,9 @@ function updateNumPostGet(){
         headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         success : function(json) {
             author = json;
-            console.log(author);
             author.posts_created += 1;
             var numOfPost = {posts_created : author.posts_created.toString()};
-            console.log(JSON.stringify(numOfPost));
             updateNumPostPut(JSON.stringify(numOfPost));
-            console.log(author);
             $("#request-access").hide();
         }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
@@ -317,7 +291,6 @@ function updateNumPostGet(){
 };
 
 function updateNumPostPut(numOfPost){
-    console.log(numOfPost);
     $.ajax({
         method: "PATCH", // type --> method, the HTTP method used for the request.
         //async: false,
@@ -326,7 +299,6 @@ function updateNumPostPut(numOfPost){
         headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         data: (numOfPost), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
-            console.log(json);
             $("#request-access").hide();
         }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
@@ -370,7 +342,6 @@ $(input).keyup(function() {
 $(document).ready(function(){
     $(".card").click(function(evt){
         if ($(this).attr("id")){
-            console.log($(this).attr("id"));
             location.pathname =  $(this).attr("id");
         }
     });
@@ -381,8 +352,6 @@ function sendFriendRequest(){
     data = {};
     author = {};
     friend = {};
-    console.log(sending_author , "send");
-    console.log(recieving_author, "rec");
     data["query"] = "friendrequest";
     data["author"] = sending_author;
     data["friend"] = recieving_author;
@@ -396,7 +365,6 @@ function sendFriendRequest(){
         data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             $("#request-access").hide();
-            console.log("requested access complete");
             $("#follow_user_submit_button").html("Unfollow");
             const followers_stat = document.querySelector("#follower_stat");
             $("#follower_stat").html(Number(followers_stat.innerHTML) + 1) ;
@@ -413,11 +381,8 @@ function sendUnfollowRequest(){
     data["query"] = "unfollow";
     data["author"] = sending_author;
     data["friend"] = recieving_author;
-    console.log(recieving_author["id"]);
     var split_uuid = recieving_author["id"].split("/")
-
     url = "/api/author/" +  split_uuid[split_uuid.length-1] + "/decline-friend-request";
-    console.log(url, "sending to this url..");
 
     $.ajax({
         method: "POST", // type --> method, the HTTP method used for the request.
@@ -428,7 +393,6 @@ function sendUnfollowRequest(){
         data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             $("#request-access").hide();
-            console.log("requested access complete");
             const followers_stat = document.querySelector("#follower_stat");
             $("#follower_stat").html(Number(followers_stat.innerHTML) -1 ) ;
             $("#follow_user_submit_button").html("Follow");
@@ -472,7 +436,6 @@ async function github_api() {
         // const response = await fetch('some-url', {});
         // const json = await response.json();
         // return json.first_name.concat(' ').concat(json.last_name);
-    console.log("This is it: ", page_author.github_url);
     let github_user = page_author.github_url.split('/').pop();
     const response = await fetch('https://api.github.com/users/' + github_user + '/events', {});
     const json = await response.json();
@@ -513,7 +476,6 @@ function makePost(post_title,post_content, post_description, content_type){
     }
 
     data= JSON.stringify(data);
-    console.log(data, "OUR DATA FOR POST");
 
     // Goes to post_created
     // author.view post_created view
@@ -540,7 +502,6 @@ elementMakePost.addEventListener('submit', event => {
     event.stopImmediatePropagation();
     event.preventDefault();
   // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
-    console.log("button clicked");
     var post_title = document.querySelector("#post-title").value;
     var post_content = document.querySelector("#post-comment-content").value;
     var post_description = document.querySelector("#post-comment-description").value;
@@ -566,6 +527,7 @@ elementMakePost.addEventListener('submit', event => {
 //Post picture first, then make post with picture
 const elementMakeImagePost = document.querySelector("#btnfileupload");
 elementMakeImagePost.addEventListener('submit', event => {
+    event.preventDefault();
     event.stopImmediatePropagation();
     var post_title = document.querySelector("#image-post-title").value;
     var post_description = document.querySelector("#image-post-comment-description").value;
@@ -582,6 +544,7 @@ elementMakeImagePost.addEventListener('submit', event => {
         success : function(json) {
             post_content =json ;
             makePost(post_title, post_content, post_description, content_type);
+            location.reload()
             $("#request-access").hide();
         }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
@@ -637,7 +600,7 @@ $(document).on('input', '.clearable', function(){
 
 const elementUpdateProfilePic = document.getElementById("change_profile_pic_submit");
 elementUpdateProfilePic.addEventListener('submit', event => {
-
+    event.preventDefault()
     event.stopImmediatePropagation();
     $('#change_profile_pic_modal').modal('hide');
 
@@ -653,8 +616,8 @@ elementUpdateProfilePic.addEventListener('submit', event => {
         headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         data: data, // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
-            console.log(json);
             $("#request-access").hide();
+            location.reload();
         }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
@@ -664,12 +627,12 @@ elementUpdateProfilePic.addEventListener('submit', event => {
 
 const elementUpdateProfile = document.querySelector("#edit_profile_submit");
 elementUpdateProfile.addEventListener('submit', event => {
-    //event.preventDefault();
+    event.preventDefault();
     event.stopImmediatePropagation();
     $('#edit_profile_modal').modal('hide');
-    var newDisplayName = document.querySelector("#author-display-name").value;
-    var newBio = document.querySelector("#author-bio").value;
-    var newGitHubURL = document.querySelector("#author-github").value;
+    var newDisplayName = document.querySelector("#edit-author-display-name").value;
+    var newBio = document.querySelector("#edit-author-bio").value;
+    var newGitHubURL = document.querySelector("#edit-author-github").value;
     //var newProfilePic = document.querySelector("#author-profile-pic").value;
 
     var data = {}
@@ -683,17 +646,16 @@ elementUpdateProfile.addEventListener('submit', event => {
         data["github_url"] = newGitHubURL;
     }
 
-    console.log(JSON.stringify(data));
-
     $.ajax({
         method: "PATCH", // type --> method, the HTTP method used for the request.
         url: author_api_url, // URL to which the request is sent.
         contentType: 'application/json', // The MIME type being sent to the server.
         headers:{"X-CSRFToken": csrftoken}, // Key/Value pairs to send along with the request.
         data: JSON.stringify(data), // Data to be sent to the server. Transoformed to query string if not one yet.
+        cache: false,
         success : function(json) {
-            console.log(json);
             $("#request-access").hide();
+            location.reload();
         }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
@@ -706,7 +668,6 @@ elementPullGithub.addEventListener('submit', async event => {
     event.stopImmediatePropagation();
     event.preventDefault();
     var github_data = await github_api();
-    console.log("This is the data", github_data);
     // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     var post_title;
     var post_content = '<ul>';
@@ -740,13 +701,8 @@ elementPullGithub.addEventListener('submit', async event => {
         }
     }
 
-    // console.log(radio_value);
-    // if (postType.checked){
-
-    // };
 
     user_id=  user_id.split("/")[5] ;
-    console.log(page_author)
     var VisiblityEnum = Object.freeze({1:"PUBLIC", 2:"FOAF", 3:"FRIENDS", 4:"PRIVATE", 5:"SERVERONLY"})
     var visible_to;
 
@@ -762,7 +718,6 @@ elementPullGithub.addEventListener('submit', async event => {
         content_type : "text/markdown"
     };
 
-    console.log(user_id);
     if (radio_value==4){
         data["visible_to"] = [user_id];
     }
@@ -771,7 +726,6 @@ elementPullGithub.addEventListener('submit', async event => {
     //     data["content_type"] = postType.value;
     // };
     data= JSON.stringify(data);
-    console.log(data, "OUR DATA FOR POST");
     // Goes to post_created
     // author.view post_created view
     $.ajax({
@@ -783,8 +737,8 @@ elementPullGithub.addEventListener('submit', async event => {
         data : data, // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             $("#request-access").hide();
-            console.log("requested access complete");
             updateNumPostGet();
+            location.reload();
         }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);

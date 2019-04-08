@@ -170,13 +170,13 @@ def Author_detail(request, pk, format= None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'PATCH':
-
+        print("WE HAVE MADDDDDDDDDE IT")
         serializer = AuthorSerializer(author, data=request.data, partial=True, context={'request': request})
 
         if serializer.is_valid():
-
             serializer.save()
-
+            print("is saved")
+            print(serializer.data)
             return Response(serializer.data)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
