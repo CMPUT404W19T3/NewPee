@@ -102,6 +102,11 @@ class Post(models.Model):
 
             return False
 
+    def FriendServerViewAcess(self, viewing_author):
+
+        pass
+        
+
     def FOAFViewAccess(self, viewing_author):
 
         for friend in self.author.friends.all():

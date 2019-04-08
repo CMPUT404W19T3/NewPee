@@ -230,8 +230,14 @@ class Author(models.Model):
         #self.friend_requests.remove(author) # no longer in our friend requests either way.
         print("Done unfollowing..")
 
-        self.following.remove(author)
-        author.followers.remove(self)
+
+        if( choice == "decline"):
+            self.following.remove(author)
+            author.followers.remove(self)
+
+
+            if( author in self.friends.all()):
+                self.remove_friend(author)
 
 
 
