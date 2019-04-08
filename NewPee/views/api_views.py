@@ -81,8 +81,22 @@ def view_access(post, author, unlisted=False):
             else:
 
                 returnStatement = False
+                
+        elif post.visibility == "SERVERFRIEND":
+        
+            if post.ServerFriendsViewAcces(author):
+
+                returnStatement = True
+            else:
+                returnStatement = False
+
+
+
+
 
         return returnStatement
+
+
 
 @permission_classes((IsAuthenticated,IsOwnerOrReadOnlyAuthor, ))
 @api_view(['GET', 'POST'])
