@@ -89,7 +89,10 @@ class AuthorDetail(APIView):
 
                 response = post_list(request._request)
 
-                cursor = response.data
+                print(response, "\n\n\n\n\n\n\n")
+
+                cursor = response.data["posts"]
+
 
                 for index in range(len(cursor)-1, -1, -1):
                     if uuid.UUID(cursor[index]["author"]["id"].split("/")[-1]) != author.id:

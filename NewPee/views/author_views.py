@@ -146,7 +146,7 @@ def feed(request, format=None):
     print(response.data)
 
     #serializer = PostSerializer(response.data,many=True,context={'request': request})
-    response_list = list(response.data)
+    response_list = list(response.data["posts"])
     response_list.sort(key=lambda x: x['post_date'], reverse=True)
     paginator = Paginator(response_list, 5)
     page = request.GET.get('page')

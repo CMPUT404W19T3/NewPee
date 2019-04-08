@@ -223,8 +223,13 @@ def post_list(request):
 
 
         #json = serializers.serialize('json', combined)
+        api_response = {}
+        api_response["query"] = "posts"
+        api_response["posts"] = combined
+        
 
-        return Response(combined)
+
+        return Response(api_response)
 
     elif request.method == 'POST':
 
