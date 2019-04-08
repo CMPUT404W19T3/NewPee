@@ -67,7 +67,7 @@ class PostDetail(APIView):
 
             post = self.get_object(pk)
             post_serializer = PostSerializer(post, context={'request': request})
-            post_date = post.post_date
+            post_published = post.published
             form = SearchForm()
             comment_form = CommentForm()
 
