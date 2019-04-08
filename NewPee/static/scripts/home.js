@@ -344,6 +344,8 @@ function sendFriendRequest(){
     data["query"] = "friendrequest";
     data["author"] = sending_author;
     data["friend"] = recieving_author;
+    data["type"] = "local_add";
+
 
     $.ajax({
         method: "POST", // type --> method, the HTTP method used for the request.

@@ -25,7 +25,7 @@ class Post(models.Model):
     origin = models.URLField(null=True,blank=True)
     description = models.CharField(max_length=150, default="No Description", null=False, blank=False)
     #text/markdown, text/plain, (application/base64, image/png;base64, image/jpeg;base64)???
-    content_type = models.TextField(null=False,blank=False, default="text/plain")
+    contentType = models.TextField(null=False,blank=False, default="text/plain")
     content = models.TextField(null=False,blank=False)
     github_id = models.TextField(null=True, blank=True)
     # image = models.URLField(null=True,blank=True)

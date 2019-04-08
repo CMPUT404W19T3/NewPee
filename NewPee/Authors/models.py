@@ -148,7 +148,16 @@ class Author(models.Model):
         return friend_requests
 
     # add a friend
-    def add_friend(self, author):
+    def add_friend(self, author, sending):
+
+
+        # we want to send data
+        if(sending):    
+            if(author.host != HOSTNAME):
+            
+                self.send_foreign_request(author) # send a friend request to another serve
+
+
 
         author.following.add(self)  # we are now following the reciever
 
@@ -161,10 +170,7 @@ class Author(models.Model):
         print(self, "author with host")
         print(author, "the author being sent")
 
-
-        if(author.host != HOSTNAME):
-            
-            self.send_foreign_request(author) # send a friend request to another serve
+    
             
             
 
@@ -196,7 +202,10 @@ class Author(models.Model):
     def send_foreign_request(self, author ):
 
 
-        #foreignServer = Servers.models.Server.objects.get(host=self.host)
+        try:
+            foreignServer = Servers.models.Server.objects.get(host=self.host)
+        except:
+            print("we are on local")
 
         self_author = Author.objects.get(id=self.id)        # Is there a better way?
 
