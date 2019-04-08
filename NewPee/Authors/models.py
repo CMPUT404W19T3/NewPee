@@ -192,7 +192,7 @@ class Author(models.Model):
         # send a request to foreign server
         session = requests.Session()
         session.auth = (foreignServer.getUsername, foreignServer.getPassword)
-        #request = session.post(url = foreignServer.friend_endpoint, data= PARAMS)
+        request = session.post(url = foreignServer.friend_endpoint, data= PARAMS)
 
 
 
