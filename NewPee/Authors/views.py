@@ -335,8 +335,13 @@ class AuthorUpdateFriendRequestsView(APIView):
 
     def post(self, request, *args, **kwargs):
 
+
+        print(request.data)
+
         recieving_author = request.data["author"]   # author recieving request
         friend = request.data["friend"]             # friend being added to author.
+
+        
         friend_uuid = friend["id"].split("/")[-1]
         recieving_author_uuid = recieving_author["id"].split("/")[-1]
 

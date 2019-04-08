@@ -672,6 +672,7 @@ elementPullGithub.addEventListener('submit', async event => {
     event.stopImmediatePropagation();
     event.preventDefault();
     var github_data = await github_api();
+
     // https://stackoverflow.com/questions/31878960/calling-django-view-from-ajax
     var post_title;
     var post_content = '<ul>';

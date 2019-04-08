@@ -75,7 +75,11 @@ urlpatterns = [
 
     # Post API
     path('api/posts', api_views.post_list),
+    path('api/author/posts', api_views.post_list),  # for different groups
+
     path('api/posts/<uuid:pk>', api_views.post_detail, name="edit_author"),
+    path('api/author/posts/<uuid:pk>', api_views.post_detail, name="edit_author"),  # for different groups
+
     path('api/foreignposts/', api_views.foreignpost_list),
     path('api/image/', api_views.image_detail),
 
