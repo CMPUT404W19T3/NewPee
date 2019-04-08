@@ -333,10 +333,27 @@ class AuthorUpdateFriendRequestsView(APIView):
 
         return Response(status.HTTP_200_OK)
 
+
+    # Someone posted to our api.
     def post(self, request, *args, **kwargs):
+
+
+
+
+        # we are sending data through our api
+        sending = False
+        try:
+            type_of_req = request.data["type"]
+            if type_of_req == "local_add":
+                sending = True  
+        except:
+            pass
 
         recieving_author = request.data["author"]   # author recieving request
         friend = request.data["friend"]             # friend being added to author.
+
+        print(friend["id"], "this friend")
+        
         friend_uuid = friend["id"].split("/")[-1]
         recieving_author_uuid = recieving_author["id"].split("/")[-1]
 
@@ -360,7 +377,7 @@ class AuthorUpdateFriendRequestsView(APIView):
 
 
        
-        friend.add_friend(author)
+        friend.add_friend(author, sending)
             
                 
 

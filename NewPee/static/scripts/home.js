@@ -344,6 +344,8 @@ function sendFriendRequest(){
     data["query"] = "friendrequest";
     data["author"] = sending_author;
     data["friend"] = recieving_author;
+    data["type"] = "local_add";
+
 
     $.ajax({
         method: "POST", // type --> method, the HTTP method used for the request.
@@ -512,11 +514,15 @@ try {
     document.getElementById("post-title").value = "";
     document.getElementById("post-comment-description").value = "";
     document.getElementById("post-comment-content").value = "";
+})
+} catch (error) {
+    console.log("on another users profile.");
+};
 
 
-
+try {
     const elementMakeImagePost = document.querySelector("#btnfileupload");
-    elementMakeImagePost.addEventListener('submit', event => {
+    elementMakeImagePost.addEventListener('submit', async event => {
     event.preventDefault();
     event.stopImmediatePropagation();
     var post_title = document.querySelector("#image-post-title").value;
@@ -532,9 +538,9 @@ try {
         processData: false, // For non-processed data, like a DOMDocument or something which is not a string (i.e. image).
         contentType: false, // The MIME type being sent to the server.
         success : function(json) {
-            post_content =json ;
+            post_content = json ;
             makePost(post_title, post_content, post_description, content_type);
-            location.reload()
+            //location.reload()
             $("#request-access").hide();
         }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
@@ -542,13 +548,11 @@ try {
         } // This function is called if the request fails. Data is returned from the server. Returns a dscription of the error.
     });
     });
-
-
-});
-
 } catch (error) {
     console.log("on another users profile.");
 }
+
+
 
 
 
