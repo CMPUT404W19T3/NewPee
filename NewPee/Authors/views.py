@@ -24,11 +24,20 @@ from django.urls import reverse_lazy
 import operator
 import uuid
 from views.api_views import post_list
+
+
 class AuthorDetail(APIView):
 
     """
-    Retrieve, update or delete an Author.
+    get:
+        Retrieve an author.
+
+    post:
+        Create an author.
     """
+    
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
 
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'home.html'
@@ -44,11 +53,6 @@ class AuthorDetail(APIView):
             raise Http404
 
     def get(self, request, pk, *args, **kwargs):
-
-        """
-        title:
-        Return the current author.
-        """
 
         if request.method == "GET":
 

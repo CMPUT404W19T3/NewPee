@@ -20,8 +20,6 @@ from django.contrib.auth.models import AnonymousUser
 import collections
 import json
 
-
-
 # https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
 def view_access(post, author, unlisted=False):
 
@@ -167,8 +165,6 @@ def Author_detail(request, pk, format= None):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
 @permission_classes((IsOwnerOrReadOnlyAuthor, ))
 @api_view(['GET', 'POST'])
 def post_list(request):
@@ -176,7 +172,6 @@ def post_list(request):
     """
     List all Posts, or create anew new Post.
     """
-
 
     if request.user.is_anonymous:
 
@@ -221,7 +216,6 @@ def post_list(request):
 
     elif request.method == 'POST':
 
-
         author_id = request.data["author"]
 
         if("http" in author_id):
@@ -239,8 +233,6 @@ def post_list(request):
 
             visible_to = request.data["visible_to"]
 
-
-            
             try:
                 other_vis_author =  Author.objects.get( displayName = request.data["other_author"])
                 visible_to.append(other_vis_author)
@@ -248,8 +240,6 @@ def post_list(request):
 
             except:
                 pass
-
-
 
             del request.data["visible_to"]
 

@@ -4,7 +4,7 @@ from datetime import datetime
 from django.http import Http404
 from Posts.models import Post, Comment
 from Posts.serializers import PostSerializer, CommentSerializer, ForeignPostSerializer
-from rest_framework import status
+from rest_framework import status, viewsets, generics
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,7 +13,7 @@ from views.forms import SearchForm, CommentForm
 # from Posts.forms import ImageUploadForm
 
 # https://www.django-rest-framework.org/tutorial/3-class-based-views/
-class PostList(APIView):
+class PostList(viewsets.ModelViewSet):
 
     """
     List all Posts, or create a new Post.
@@ -38,11 +38,18 @@ class PostList(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class PostDetail(APIView):
+class PostDetail(generics.ListCreateAPIView):
 
     """
-    Retrieve, update or delete a Post.
+    get:
+        Retrieve post.
+
+    post:
+        Return a list of posts.
     """
+    
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'post.html'
@@ -62,6 +69,13 @@ class PostDetail(APIView):
         return datetime.datetime.strptime(datetime_str, '%b %d %Y %I:%M%p')
 
     def get(self, request, pk, *args, **kwargs):
+
+        """
+        Get post
+        ---
+        param1 -- A first parameter
+        param2 -- A second parameter
+        """ 
 
         if request.method == "GET":
 

@@ -24,6 +24,8 @@ from django.urls import path
 from Posts.views import PostList, PostDetail
 from rest_framework import routers
 from rest_framework.documentation import include_docs_urls
+from rest_framework.schemas import get_schema_view
+from rest_framework_swagger.renderers import JSONRenderer
 from rest_framework_swagger.views import get_swagger_view
 from rest_framework.urlpatterns import format_suffix_patterns
 from views import api_views
@@ -49,11 +51,13 @@ schema_url_patterns = [
     path('api/author/<uuid:pk>/friends/<uuid:pk2>', AuthorIsfriendsView.as_view(), name="api-checkfriends"), 
     path('api/author/<uuid:pk>/friendrequest' , AuthorFriendRequestsView.as_view(), name="api-returnfriendrequests"), 
     path('api/author/<uuid:pk>/decline-friend-request', AuthorFriendRequestActionsView.as_view(),{'method': "decline"}, name="decline-friend", ),
+
+    path('posts/<uuid:pk>', PostDetail.as_view(), name="post_page"),
 ]
 
 schema_view = get_swagger_view(
     title='NewPee API Documentation',
-    patterns=schema_url_patterns
+    patterns=schema_url_patterns,
 )
 
 urlpatterns = [
