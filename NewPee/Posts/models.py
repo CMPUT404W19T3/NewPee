@@ -72,7 +72,7 @@ class Post(models.Model):
 
     def get_post_date(self):
 
-        return self.post_date
+        return self.published
 
     def set_visible_to(self,visible_to):
 
