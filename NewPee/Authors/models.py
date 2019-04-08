@@ -250,7 +250,7 @@ class Author(models.Model):
 
     # Remove an existing friend
     def remove_friend(self,author):
-        self.friends.remove(author)
+        #self.friends.remove(author)
         self.save()
 
 #TODO: FIX
