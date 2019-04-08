@@ -72,15 +72,16 @@ class PostDetail(APIView):
             comment_form = CommentForm()
 
             if request.user.is_anonymous:
-                try:
-                    comments = Comment.objects.filter(parent=pk)
-                    comment_serializer = CommentSerializer(comments, many=True)
-                    #if user is anooymous and comments exist
-                    return Response({'posts': post_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
+                if (post_serializer.data["visibility"] == "PUBLIC"):
+                    try:
+                        comments = Comment.objects.filter(parent=pk)
+                        comment_serializer = CommentSerializer(comments, many=True)
+                        #if user is anooymous and comments exist
+                        return Response({'posts': post_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
 
-                except Comment.DoesNotExist:
+                    except Comment.DoesNotExist:
 
-                    return Response({'posts': post_serializer.data, 'form': form, 'comment_form': comment_form})
+                        return Response({'posts': post_serializer.data, 'form': form, 'comment_form': comment_form})
 
             else: 
                 logged_in_author = Author.objects.get(user = request.user)
