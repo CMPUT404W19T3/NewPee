@@ -21,8 +21,8 @@ class Post(models.Model):
     # author = models.ForeignKey(User)
     title = models.CharField(max_length=100, null=False, blank=False)
     #source = lastplaceigotthisfrom, origin = whereitcamefrom
-    source = models.URLField(null=True,blank=True)
-    origin = models.URLField(null=True,blank=True)
+    source = models.URLField(default = "https://newpee.herokuapp.com/")
+    origin = models.URLField(default = "https://newpee.herokuapp.com/")
     description = models.CharField(max_length=150, default="No Description", null=False, blank=False)
     #text/markdown, text/plain, (application/base64, image/png;base64, image/jpeg;base64)???
     contentType = models.TextField(null=False,blank=False, default="text/plain")

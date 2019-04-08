@@ -282,7 +282,14 @@ def post_list(request):
                 
                 for vis_author in visible_to:
                     Post.objects.get(id=serializer.data["id"]).set_visible_to(vis_author)
+            post = Post.objects.get(id=serializer.data["id"])
 
+            #origin = 
+            #source = 
+
+            #post.update({origin:})
+            #post.update({source:})
+                
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
