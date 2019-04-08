@@ -18,10 +18,8 @@
  <div class="card" style="margin:0" id="posts/{{ post.id }}">
     <div class="card-header">
 
-      <div class ="text-center">
-          <p>{{ posts.title }}</p>
-
-      </div>
+      <p>{{ posts.title }}</p>
+      <h6 class="card-subtitle mb-2">{{ posts.post_date|parse_iso }}</h6>
 
       <div class ="text-right">
 
@@ -36,7 +34,6 @@
 
   
   <div class="card-body">
-  <h6 class="card-subtitle mb-2">Posted by {{ posts.author.displayName }} from {{ posts.author.host }} at {{ posts.post_date|parse_iso }}</h6><br>
   <p class="card-subtitle mb-2" style="font-weight: bolder; color: #e6f9af">Description: </p>
   <p class="card-text">{{posts.description}}</p><br>
   <p class="card-subtitle mb-2" style="font-weight: bolder; color: #e6f9af">Content: </p>

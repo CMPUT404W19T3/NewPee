@@ -10,3 +10,14 @@
     color: #ffffff;
 }
 
+.friends-page-title {
+    color: #8bbeb2;
+}
+
+hr {
+    height: 1px;
+    color: #36558f;
+    background: #36558f;
+    font-size: 0;
+    border: 0;
+}
