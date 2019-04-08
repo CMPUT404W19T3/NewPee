@@ -344,6 +344,10 @@ class AuthorUpdateFriendRequestsView(APIView):
         author = get_object_or_404(Author, id =  recieving_author_uuid)
 
 
+        print("\n\n", recieving_author, "\n\n")
+        print(friend, "\n\n")
+
+
         #try:
 
             # a local author we can just add them.

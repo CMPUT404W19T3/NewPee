@@ -337,6 +337,10 @@ function sendFriendRequest(){
     data = {};
     author = {};
     friend = {};
+
+    console.log(sending_author, "sending");
+    console.log(recieving_author, "recieving");
+
     data["query"] = "friendrequest";
     data["author"] = sending_author;
     data["friend"] = recieving_author;
@@ -351,7 +355,7 @@ function sendFriendRequest(){
         success : function(json) {
 
             console.log("Friend request sent");
-            
+
             $("#request-access").hide();
             $("#follow_user_submit_button").html("Unfollow");
             const followers_stat = document.querySelector("#follower_stat");
