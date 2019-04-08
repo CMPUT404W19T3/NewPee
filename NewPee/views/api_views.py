@@ -189,8 +189,8 @@ def post_list(request):
 
     if request.method == 'GET':
 
-        posts = Post.objects.all()
-        foreignposts = ForeignPost.objects.all()
+        posts = Post.objects.filter(unlisted=False)
+        foreignposts = ForeignPost.objects.filter(unlisted=False)
         foreignserializer = ForeignPostSerializer(foreignposts, many=True, context={'request': request})
         serializer = PostSerializer(posts, many=True, context={'request': request})
         non_visible_filtered_post = posts
