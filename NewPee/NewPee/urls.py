@@ -63,7 +63,7 @@ urlpatterns = [
     path('', check_auth, name="check_auth"),
     path('login/', log_in, name="login"),
     path('api_login/', api_login, name="api_login"),
-    path('signup/', sign_up, name="signup"),
+    path('signup/', sign_up, name="sign_up"),
     path('feed/', feed, name="feed"),
 
     # Admin

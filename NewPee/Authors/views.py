@@ -86,57 +86,18 @@ class AuthorDetail(APIView):
 
                 response = post_list(request._request)
 
-                #print(response.data)
+                print("First element", response.data[6]["author"]["id"].split("/")[-1])
+                print("My User ID", author.id)
 
-                #posts= response.data.filter(author=pk)
+                cursor = response.data
 
-                #posts = Post.objects.filter(author=pk)
+                for index in range(len(cursor)-1, 0, -1):
+                    print("hello")
+                    if uuid.UUID(cursor[index]["author"]["id"].split("/")[-1]) != author.id:
+                        print(cursor[index]["author"]["id"].split("/")[-1])
+                        cursor.pop(index)
 
-                #post_serializer = PostSerializer(response.data, many=True,context={'request': request})
-                #foreignposts = ForeignPost.objects.all()
-                #foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True, context={'request': request})
-
-                '''
-                posts = post_list(request._request)
-
-                #posts.data.exclude(id=author["id"])
-
-                filtered = {}
-
-                for post in posts.data:
-
-                    temp_author = post["author"]
-
-                    print(temp_uuid, author.id)
-
-                    if (uuid.UUID(temp_uuid) == author.id):
-
-                        print("check")
-
-                        filtered.update({'posts':post})
-                '''
-                
-                #print(filtered)
-
-                #filtered = [filtered]
-
-
-                #posts = posts.filter(author=author["id"])
-
-
-                print(response.data, "Our Data")
-
-
-                for x in response.data:
-                    print(x, "\n\n\n\n")
-
-
-
-                print (len(response.data))
-
-
-
-                response_list = list(response.data)
+                response_list = list(cursor)
                 response_list.sort(key=lambda x: x['post_date'], reverse=True)
                 paginator = Paginator(response_list, 5)
                 page = request.GET.get('page')
@@ -161,7 +122,7 @@ class AuthorDetail(APIView):
                 foreignposts_serializer = ForeignPostSerializer(foreignposts, many=True)
 
                 return Response({'author': author_serializer.data, 'form': form, \
-                    'foreignposts': foreignposts_serializer.data, 'allPosts': allPosts})
+                    'foreignposts': foreignposts_serializer.data})
 
     # Clean Up After
     def post(self, request, pk, *args, **kwargs):
