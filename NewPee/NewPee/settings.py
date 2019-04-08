@@ -136,7 +136,7 @@ STATIC_ROOT = "/static/"
 APPEND_SLASH = False
 trailing_slash = False
 
-HOSTNAME = "http://newpee.herokuapp.com/"
+HOSTNAME = "https://newpee.herokuapp.com/"
 
 
 MEDIA_URL = '/media/'

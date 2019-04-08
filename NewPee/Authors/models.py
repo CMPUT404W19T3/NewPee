@@ -5,12 +5,22 @@ import NewPee.settings
 import requests
 import Servers.models
 import uuid
-
+import json
+from uuid import UUID
 
 
 #from Servers.models import Server
 
 HOSTNAME = NewPee.settings.HOSTNAME
+
+
+class UUIDEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, UUID):
+            # if the obj is uuid, we simply return the value of uuid
+            return obj.hex
+        return json.JSONEncoder.default(self, obj)
+
 # Author represents a user that creates posts
 class Author(models.Model):
 
@@ -153,10 +163,10 @@ class Author(models.Model):
 
 
         if(author.host != HOSTNAME):
-            try:
-                self.send_foreign_request(author) # send a friend request to another serve
-            except:
-                pass
+            
+            self.send_foreign_request(author) # send a friend request to another serve
+            
+            
 
 
         # if they are following us, add them to our friends.
@@ -196,23 +206,25 @@ class Author(models.Model):
         request = None
         author_serializer = AuthorSerializer(author, context={'request': request})
         self_serializer = AuthorSerializer(self_author, context={'request': request})
-        print(author_serializer.data, self_serializer.data, "my serializers")
 
+        PARAMS = {}
 
-        PARAMS = {
-            'query' : "friendrequest",
-            'author': author_serializer.data,
-            'friend': self_serializer.data
+        PARAMS['query'] = "friendrequest"
+        PARAMS['author'] =  author_serializer.data
+        PARAMS['friend'] =  self_serializer.data
+        
+        headers = {
+            'Content-Type': 'application/json'
         }
-
         # send a request to foreign server
         
         session = requests.Session()
         session.auth = (foreignServer.getUsername, foreignServer.getPassword)
-        request = session.post(url = foreignServer.friend_endpoint, data= PARAMS)
+        request = session.post(url = foreignServer.friend_endpoint, data=  json.dumps(PARAMS, cls=UUIDEncoder), headers=headers )
 
-        #request = session.post(url = "http://127.0.0.1:8000/api/friendrequest", data=  PARAMS )
+        #request = session.post(url = "http://127.0.0.1:8000/api/friendrequest", data=  json.dumps(PARAMS, cls=UUIDEncoder), headers=headers )
 
+        return
 
         
 
