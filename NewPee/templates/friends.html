@@ -41,7 +41,7 @@
     {% if authors %}
 
     <span >{{ user_author }}</span>
-    <h1> Friend requests</h1>
+    <h1 style="color: #8bbeb2"> Friend requests</h1>
 
     {% for author in authors %}
 
@@ -53,7 +53,7 @@
         </div>
         <h2 class="authorDisplayName">{{ author.displayName }} sent a friend request.</h2>
         <span id="author_id"> {{ author.id }} </span>
-        <a href="/authors/{{author.id}}">{{ author.user.first_name }} {{ author.user.last_name }}</a>
+        <a href="/authors/{{author.id}}" style="color: #36558f">{{ author.user.first_name }} {{ author.user.last_name }}</a>
     </div>
 
     {% endfor %}
