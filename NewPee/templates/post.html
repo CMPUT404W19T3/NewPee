@@ -23,10 +23,11 @@
 
       <div class ="text-right">
 
-            
+            {% if logged_in_author == posts.author %}
             <form action="/authors/" >
-            <button id="remove_post_submit" type="submit" class="btn btn-danger btn-sm"> Delete</button>
+              <button id="remove_post_submit" type="submit" class="btn btn-danger btn-sm"> Delete</button>
             </form>
+            {% endif %}
 
 
     </div>

@@ -91,18 +91,9 @@ class AuthorDetail(APIView):
 
                 cursor = response.data
 
-
-                print(response)
-                
-                if(len(cursor) > 0):
-
-                    for index in range(len(cursor)-1, -1, -1):
-                        if uuid.UUID(cursor[index]["author"]["id"].split("/")[-1]) != author.id:
-                            print(cursor[index]["author"]["id"].split("/")[-1], "?")
-                            cursor.pop(index)
-
-
-                
+                for index in range(len(cursor)-1, -1, -1):
+                    if uuid.UUID(cursor[index]["author"]["id"].split("/")[-1]) != author.id:
+                        cursor.pop(index)
 
                 response_list = list(cursor)
                 response_list.sort(key=lambda x: x['post_date'], reverse=True)
