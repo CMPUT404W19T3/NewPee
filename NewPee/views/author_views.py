@@ -193,12 +193,12 @@ def respond_to_friends(request, format = None):
 
 def get_author(request, format=None):
 
-        print(request)
+        print(request, "?")
 
         pariedAuthor = Author.objects.get(user = request.user)
         author_id = pariedAuthor.get_author_id()
 
-        print(author_id)
+        print(author_id, "?")
 
         return HttpResponseRedirect("/authors/" + str(pariedAuthor.get_author_id()))
 

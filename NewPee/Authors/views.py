@@ -65,13 +65,16 @@ class AuthorDetail(APIView):
 
 
 
+
             author = self.get_object(pk)
             author_serializer = AuthorSerializer(author, context = {'request': request})
             logged_in_author = Author.objects.get(user = request.user)
             logged_in_author_serializer = AuthorSerializer(logged_in_author, context= {'request': request})
             form = SearchForm()
-            #print("\n\nSEARCH:", request.GET.get('search'))
             search = request.GET.get('search')
+
+            
+
 
             if search:
 
@@ -88,10 +91,15 @@ class AuthorDetail(APIView):
 
                 cursor = response.data
 
-                for index in range(len(cursor)-1, 0, -1):
-                    if uuid.UUID(cursor[index]["author"]["id"].split("/")[-1]) != author.id:
-                        print(cursor[index]["author"]["id"].split("/")[-1])
-                        cursor.pop(index)
+
+                
+                if(len(cursor) > 0):
+                    for index in range(len(cursor)-1, 0, -1):
+                        if uuid.UUID(cursor[index]["author"]["id"].split("/")[-1]) != author.id:
+                            print(cursor[index]["author"]["id"].split("/")[-1], "?")
+                            cursor.pop(index)
+
+                
 
                 response_list = list(cursor)
                 response_list.sort(key=lambda x: x['post_date'], reverse=True)
@@ -101,6 +109,9 @@ class AuthorDetail(APIView):
 
                 followers = author.get_followers()
                 following = author.get_following()
+
+
+
 
                 if(logged_in_author not in followers):
                     followingBool = True
@@ -123,7 +134,6 @@ class AuthorDetail(APIView):
     # Clean Up After
     def post(self, request, pk, *args, **kwargs):
 
-        print(">")
 
         if request.method == 'POST' and request.FILES['myfile']:
 
@@ -183,7 +193,7 @@ class AuthorList(APIView):
 
             authors = Author.objects.all()
 
-            print(authors)
+            print(authors, "?")
 
             author_serializer = AuthorSerializer(authors, many=True,context={'request': request})
             posts = Post.objects.all()

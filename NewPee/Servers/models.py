@@ -124,7 +124,7 @@ class Server(models.Model):
                 data2 = request2.json()
 
 
-                print(data2, foreign_author["id"])
+                print(data2, foreign_author["id"], "?")
 
                 friends = data2["friends"]
 

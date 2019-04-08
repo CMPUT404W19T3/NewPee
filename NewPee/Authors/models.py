@@ -237,7 +237,9 @@ class Author(models.Model):
 
 
             if( author in self.friends.all()):
-                self.remove_friend(author)
+                #self.remove_friend(author)
+                pass
+                
 
 
 
