@@ -15,7 +15,7 @@
 
 <body>
   <div class="swagger-ui">
-    <div class="topbar">
+    <div class="topbar" style="background: #18314f;">
       <div class="wraanonymouspper">
         <div class="topbar-wrapper">
           <a href="#" class="link">
@@ -25,7 +25,7 @@
           <div class="download-url-wrapper">
           {% if USE_SESSION_AUTH %}
             {% if request.user.is_authenticated %}
-            <a class="download-url-button button" href="{% url 'api_logout' %}">{% trans "Logout" %}</a>
+            <a class="download-url-button button" style="background: #8bbeb2; border-radius: 1rem 0px 0px 1rem; color: #e6f9af" href="{% url 'api_logout' %}">{% trans "Logout" %}</a>
             {% else %}
             <a class="download-url-button button" href="{% url 'api_login' %}">{% trans "Session Login" %}</a>
             {% endif %}

@@ -20,72 +20,67 @@ from django.contrib.auth.models import AnonymousUser
 import collections
 import json
 
-
-
 # https://www.django-rest-framework.org/tutorial/2-requests-and-responses/
 def view_access(post, author, unlisted=False):
 
+    returnStatement = True
+
+    print(post, post.visibility)
+
+    # Admin can see all posts.
+    if author.Admin:
+        print("Author is Admin")
+        return True
+
+    if unlisted == True:
+        return False
+
+    if post.visibility == "PUBLIC":
         returnStatement = True
 
-        print(post, post.visibility)
-
-
-        # Admin can see all posts.
-        if author.Admin:
-            print("Author is Admin")
-            return True
-
-
-        if unlisted == True:
-            return False
-
-        if post.visibility == "PUBLIC":
+    elif post.visibility == "PRIVATE":
+        if post.privateViewAccess(author):
             returnStatement = True
+        else:
+            returnStatement = False
 
-        elif post.visibility == "PRIVATE":
-            if post.privateViewAccess(author):
-                returnStatement = True
-            else:
-                returnStatement = False
+    elif post.visibility == "FRIENDS":
+        if post.friendViewAccess(author):
+            returnStatement = True
+        else:
+            returnStatement = False
 
-        elif post.visibility == "FRIENDS":
-            if post.friendViewAccess(author):
-                returnStatement = True
-            else:
-                returnStatement = False
+    elif post.visibility == "FOAF":
+        if post.FOAFViewAccess(author):
+            returnStatement = True
+        else:
+            returnStatement = False
 
-        elif post.visibility == "FOAF":
-            if post.FOAFViewAccess(author):
-                returnStatement = True
-            else:
-                returnStatement = False
+    elif post.visibility == "SERVER":
+        if post.ServerViewAcces(author):
+            returnStatement = True
+        else:
+            returnStatement = False
+            
+    elif post.visibility == "SERVERFRIEND":
+        if post.ServerFriendsViewAcces(author):
+            returnStatement = True
+        else:
+            returnStatement = False
 
-        elif post.visibility == "SERVER":
-            if post.ServerViewAcces(author):
-                returnStatement = True
-            else:
-                returnStatement = False
-                
-        elif post.visibility == "SERVERFRIEND":
-            if post.ServerFriendsViewAcces(author):
-                returnStatement = True
-            else:
-                returnStatement = False
-
-
-
-
-        print("retuning", returnStatement)
-        return returnStatement
-
-
+    print("retuning", returnStatement)
+    return returnStatement
 
 @permission_classes((IsAuthenticated,IsOwnerOrReadOnlyAuthor, ))
 @api_view(['GET', 'POST'])
 def Author_list(request, format=None):
 
     """
-    List all Authors, or create an Author
+    get:
+        List all Authors
+
+    post:
+        Create an Author
     """
 
     #TODO: Update the context to be specific to server.
@@ -118,7 +113,17 @@ def Author_list(request, format=None):
 def Author_detail(request, pk, format= None):
 
     """
-    Retrieve, update or delete an Author.
+    get:
+        Retreieve an Author.
+
+    put:
+        Update and Author.
+
+    delete:
+        Delete and Author.
+    
+    patch:
+        Update and Author.
     """
 
     #TODO: Update the context to be specific to server.
@@ -165,16 +170,17 @@ def Author_detail(request, pk, format= None):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
 @permission_classes((IsOwnerOrReadOnlyAuthor, ))
 @api_view(['GET', 'POST'])
 def post_list(request):
     
     """
-    List all Posts, or create anew new Post.
+    get:
+        List all Posts.
+    
+    post:
+        Create a new Post.
     """
-
 
     if request.user.is_anonymous:
 
@@ -186,17 +192,11 @@ def post_list(request):
 
         return Response(serializer.data)
 
-
     if request.method == 'GET':
 
         posts = Post.objects.filter(unlisted=False)
-
         public_posts = Post.objects.filter(visibility="PUBLIC")
-
         posts = posts.exclude(visibility="PUBLIC")
-
-        
-
         serializer = PostSerializer(posts, many=True, context={'request': request})
         non_visible_filtered_post = posts
 
@@ -212,27 +212,18 @@ def post_list(request):
                 non_visible_filtered_post = posts.exclude(id = post["id"])
                 posts = posts & non_visible_filtered_post
 
-
         #serializer2 = PostSerializer(posts, many=True, context={'request': request})
         serializer = PostSerializer(public_posts, many=True, context={'request': request})
         serializer2 = PostSerializer(posts, many=True, context={'request': request})
-
-
         combined = list(chain(serializer.data, serializer2.data))
-
-
-
         #json = serializers.serialize('json', combined)
         api_response = {}
         api_response["query"] = "posts"
         api_response["posts"] = combined
         
-
-
         return Response(api_response)
 
     elif request.method == 'POST':
-
 
         author_id = request.data["author"]
 
@@ -244,9 +235,7 @@ def post_list(request):
         unserialized_author.posts_created += 1
         unserialized_author.save()
         author = AuthorSerializer(unserialized_author, context={'request': request})
-
         request.data["author"] = author.data
-
         update_vis = False
 
         # clean the visible to field
@@ -254,24 +243,21 @@ def post_list(request):
 
             visible_to = request.data["visible_to"]
 
-
-            
             try:
+
                 other_vis_author =  Author.objects.get( displayName = request.data["other_author"])
                 visible_to.append(other_vis_author)
                 print("found author")
 
             except:
+
                 pass
-
-
 
             del request.data["visible_to"]
 
             update_vis = True
 
         serializer = PostSerializer(data=request.data, context={'request': request})
-
         #serializer.initial_data["author"] = author
 
         if serializer.is_valid():
@@ -301,27 +287,34 @@ def post_list(request):
 def post_detail(request, pk):
 
     """
-    Retrieve, update or delete a Post.
+    get:
+        Retrieve a Post.
 
+    put:
+        Update a Post.
+
+    delete:
+        Delete a Post.
     """
 
     if request.user.is_anonymous:
+
         if request.method == 'DELETE':
+
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-
         post = Post.objects.get(pk=pk)
-
 
         if post.visibility == "PUBLIC":
 
             serializer = PostSerializer(post, context={'request': request})
+
             return Response(serializer.data)
+
         else:
+
             return Response(status=status.HTTP_401_UNAUTHORIZED)
  
-
-
     try:
 
         post = Post.objects.get(pk=pk)
@@ -361,7 +354,6 @@ def post_detail(request, pk):
 
         print(request.user, "checking")
 
-
         post = Post.objects.get(pk=pk)
         author = Author.objects.get(user=request.user)
 
@@ -371,12 +363,19 @@ def post_detail(request, pk):
         else:
             post.delete()
 
-
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 #@permission_classes((IsAuthenticated,IsOwnerOrReadOnlyAuthor, ))
 @api_view(['GET', 'POST'])
 def foreignpost_list(request):
+
+    """
+    get:
+        REEEEE
+
+    post:
+        REEEEE
+    """
 
     if request.method == 'GET':
 
@@ -397,7 +396,11 @@ def foreignpost_list(request):
 def comment_list(request):
 
     """
-    List all code snippets, or create a new snippet.
+    get:
+        List all comments.
+    
+    post:
+        Create a new comment.
     """
 
     if request.method == 'GET':
@@ -421,6 +424,11 @@ def comment_list(request):
 
 @api_view(['POST'])
 def image_detail(request):
+
+    """
+    post:
+        Post an image.
+    """
 
     if request.method == 'POST' and request.FILES:
         print(request.FILES['image'])
