@@ -201,10 +201,7 @@ class Author(models.Model):
     def send_foreign_request(self, author ):
 
 
-        try:
-            foreignServer = Servers.models.Server.objects.get(host=self.host)
-        except:
-            print("we are on local")
+        foreignServer = Servers.models.Server.objects.get(host=self.host)
 
         self_author = Author.objects.get(id=self.id)        # Is there a better way?
 
