@@ -47,27 +47,6 @@ class Server(models.Model):
             pass
 
     def retrieveAuthors(self,data):
-
-        '''
-        URL = self.posts_endpoint
-        location = self.name
-
-        PARAMS = {
-            'username': self.username,
-            'password': self.password
-        }
-
-        print(self.username, self.password, URL)
-
-        session = requests.Session()
-        session.auth = (self.username, self.password)
-        r = session.get(url= URL)
-        data = r.json()
-
-        print(data, "our data retrieved")
-        '''
-
-
         foreign_posts = (data["posts"])
 
         for post in foreign_posts:
@@ -118,19 +97,12 @@ class Server(models.Model):
                     url = foreign_author["id"]
 
 
-                print(url, "connecting to...")
 
                 request2 = session.get(url = url)
                 data2 = request2.json()
 
 
-                print(data2, foreign_author["id"], "?")
-
                 friends = data2["friends"]
-
-                #for friend in friends:
-
-                #    new_author.friends.add(friend)
 
 
                 new_author.displayName = data2["displayName"]
@@ -204,17 +176,10 @@ class Server(models.Model):
 
 
     def updatePosts(self):
-
         data = self.retrievePosts()
-
         self.createPosts(data)
 
         #self.isActive = False # Already retrieved data
 
         #print(self.isActive)
         #self.save()
-
-        print("Done retrieving Data..")
-
-        #self.createPosts(data)
-        #async_task(self.retrievePosts, hook = self.createPosts)
