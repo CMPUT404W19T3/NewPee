@@ -196,6 +196,7 @@ def post_list(request):
 
         posts = Post.objects.filter(unlisted=False)
         public_posts = Post.objects.filter(visibility="PUBLIC")
+        public_posts = public_posts.exclude(unlisted=True)
         posts = posts.exclude(visibility="PUBLIC")
         serializer = PostSerializer(posts, many=True, context={'request': request})
         non_visible_filtered_post = posts
