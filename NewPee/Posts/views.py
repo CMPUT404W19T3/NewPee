@@ -91,7 +91,8 @@ class PostDetail(APIView):
                 if (post.privateViewAccess(logged_in_author)) or \
                      (post.friendViewAccess(logged_in_author)) or \
                          (post.FriendServerViewAcess(logged_in_author)) or \
-                             (post.FOAFViewAccess(logged_in_author)):
+                             (post.FOAFViewAccess(logged_in_author)) or \ 
+                                 post_serializer.data["visibility"] == "PUBLIC":
                                 try:
 
                                     comments = Comment.objects.filter(parent=pk)
