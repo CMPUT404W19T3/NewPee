@@ -190,7 +190,7 @@ class Author(models.Model):
 
 
         try:
-            foreignServer = Servers.models.Server.objects.get(host=self.host)
+            foreignServer = Servers.models.Server.objects.get(host=author.host)
         except:
             print("couldn't find foreignServer")
 
@@ -214,7 +214,11 @@ class Author(models.Model):
         }
         # send a request to foreign server
 
-        url = "https://newpee-dev.herokuapp.com/api/friendrequest"
+
+
+
+        url = foreignServer.friend_endpoint
+
 
         session = requests.Session()
         #session.auth = (foreignServer.getUsername, foreignServer.getPassword)
