@@ -67,7 +67,7 @@ urlpatterns = [
     path('feed/', feed, name="feed"),
 
     # Admin
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name="admin"),
 
     # Author API
     path('api/authors', api_views.Author_list, name="api-author"),

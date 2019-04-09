@@ -153,7 +153,7 @@ def feed(request, format=None):
     #serializer = PostSerializer(response.data,many=True,context={'request': request})
     response_list = list(response.data["posts"])
     response_list.sort(key=lambda x: x['published'], reverse=True)
-    paginator = Paginator(response_list, 5)
+    paginator = Paginator(response_list, 7)
     page = request.GET.get('page')
     pages = paginator.get_page(page)
 
