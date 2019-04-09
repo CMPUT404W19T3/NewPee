@@ -190,7 +190,7 @@ class Author(models.Model):
 
 
         try:
-            foreignServer = Servers.models.Server.objects.get(host=author.host)
+            foreignServer = Servers.models.Server.objects.get(host=self.host)
         except:
             print("couldn't find foreignServer")
 
