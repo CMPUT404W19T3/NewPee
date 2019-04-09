@@ -205,9 +205,6 @@ class Author(models.Model):
         self_serializer = AuthorSerializer(self_author, context={'request': request})
 
         PARAMS = {}
-
-        print("sending foreign request")
-
         PARAMS['query'] = "friendrequest"
         PARAMS['author'] =  author_serializer.data
         PARAMS['friend'] =  self_serializer.data
