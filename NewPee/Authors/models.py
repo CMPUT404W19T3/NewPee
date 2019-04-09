@@ -217,7 +217,7 @@ class Author(models.Model):
         url = "https://newpee-dev.herokuapp.com/api/friendrequest"
 
         session = requests.Session()
-        session.auth = (foreignServer.getUsername, foreignServer.getPassword)
+        #session.auth = (foreignServer.getUsername, foreignServer.getPassword)
         request = session.post(url = url, data=  json.dumps(PARAMS, cls=UUIDEncoder), headers=headers )
 
         #request = session.post(url = "http://127.0.0.1:8000/api/friendrequest", data=  json.dumps(PARAMS, cls=UUIDEncoder), headers=headers )
