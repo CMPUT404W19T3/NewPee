@@ -60,6 +60,9 @@ Clicking the NewPee logo takes you to your feed, which allows you to see all of 
 ## Search
 At the top of most pages when you are logged in, there is a header that contains a search bar. Here, you can search for an Author by their username or by part of their username. From there, you can click on their page, follow them, or give a friend request!
 
+## Friend Requests
+The icon with two people at the top-right represents the Friend Request page. This is where you can see any friend requests that you have, and either approve or reject them. 
+
 # References
 * [Seperating models out](https://stackoverflow.com/questions/5534206/how-do-i-separate-my-models-out-in-django)
 * [Adjusting __init__.py](https://stackoverflow.com/questions/13718656/can-i-divide-the-models-in-different-files-in-django)
