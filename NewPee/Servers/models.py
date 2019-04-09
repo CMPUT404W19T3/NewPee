@@ -161,21 +161,28 @@ class Server(models.Model):
 
                 db_post = Posts.models.Post.objects.get(id = post['id'])
 
+
             except :
 
-                foreign_author = Authors.models.Author.objects.get(url = post["author"]["id"])
+                try:
+                    foreign_author = Authors.models.Author.objects.get(url = post["author"]["id"])
+                    Posts.models.Post.objects.create(
+                        id = post['id'],
+                        author=foreign_author,
+                        title = post["title"],
+                        source = post["source"],
+                        origin = post["origin"],
+                        description = post["description"],
+                        visibility = post["visibility"],
+                        unlisted = post["unlisted"]
+                    )
+                # post belongs to another site we don't affiliate with.
+                except:
+                    pass
 
 
-                Posts.models.Post.objects.create(
-                    id = post['id'],
-                    author=foreign_author,
-                    title = post["title"],
-                    source = post["source"],
-                    origin = post["origin"],
-                    description = post["description"],
-                    visibility = post["visibility"],
-                    unlisted = post["unlisted"]
-                )
+
+
 
 
     def retrievePosts(self):
