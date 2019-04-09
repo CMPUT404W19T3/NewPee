@@ -505,7 +505,7 @@ try {
     var post_content = document.querySelector("#post-comment-content").value;
     var post_description = document.querySelector("#post-comment-description").value;
     var postType = document.getElementById("markdown");
-    var post_type 
+    var post_type
     if (postType.checked){
         post_type = postType.value;
     }else{
@@ -576,7 +576,7 @@ const private_author_text = document.querySelector("#private-author");
 
 
 $('input[type="radio"]').click(function(){
-    var demovalue = $(this).val(); 
+    var demovalue = $(this).val();
 
     if (demovalue == 4){
         private_author_text.hidden = false;
@@ -593,7 +593,7 @@ const other_author_text = document.getElementById("other_author");
 const other_author_start_text = document.getElementById("other_author_start_text");
 
 other_author_start_text
-function tog(v){return v?'addClass':'removeClass';} 
+function tog(v){return v?'addClass':'removeClass';}
 $(document).on('input', '.clearable', function(){
     $(this)[tog(this.value)]('x');
 }).on('mousemove', '.x', function( e ){
@@ -740,7 +740,7 @@ try {
         data["visible_to"] = [user_id];
     }
 
-  
+
     data= JSON.stringify(data);
     // Goes to post_created
     // author.view post_created view
