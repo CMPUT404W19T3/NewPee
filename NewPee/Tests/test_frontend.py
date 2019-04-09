@@ -10,7 +10,7 @@ from Tests.factory import GeneralBuilding
 from urllib.parse import urlencode
 from views.forms import UserCreateForm, UserLoginForm, PostTitleForm, PostInfoForm, PasswordLoginForm, SearchForm
 
-import json 
+import json
 
 class FrontEndTests(TestCase):
 
@@ -23,26 +23,135 @@ class FrontEndTests(TestCase):
     # update data with a patch
     def test_author_update_displayName(self):
 
-        pass
-        
-        # author = self.helper_functions.create_author()
-        # author_serializer = AuthorSerializer(author)
-        # old_data = author_serializer.data 
-        # old_display_Name = old_data["displayName"]
+        request = None
 
-        # self.client.login(username=author.user.username, password=author.user.password)
+        author = self.helper_functions.create_author()
+        author.user.set_password("password")
+        author.user.save()
+        author_serializer = AuthorSerializer(author, context={'request': request})
+        old_data = author_serializer.data
+        old_display_Name = old_data["displayName"]
 
-        # id = str(author.id)
-        # url = "/api/authors/" + id
+        self.client.login(username=author.user.username, password="password")
 
-        # data = json.dumps( {'displayName': "newDisplayName", 'bio':"test"} )
-        # response = self.client.patch(url, data=data, content_type='application/json')
 
-        # updated_author = Author.objects.get(user=author.user)
-        # new_data = AuthorSerializer(updated_author).data
-        # new_Display_name = new_data["displayName"]
+        id = str(author.id)
+        url = "/api/authors/" + id
 
-        # self.assertNotEqual(old_display_Name, new_Display_name)
+        data = json.dumps( {'displayName': "newDisplayName", 'bio':"test"} )
+        response = self.client.patch(url, data=data, content_type='application/json')
+
+
+        updated_author = Author.objects.get(user=author.user)
+        new_data = AuthorSerializer(updated_author, context={'request': request}).data
+        new_Display_name = new_data["displayName"]
+
+        self.assertNotEqual(old_display_Name, new_Display_name)
+
+
+    def test_send_friend_request(self):
+
+        request = None
+
+        author = self.helper_functions.create_author()
+        author.user.set_password("password")
+        author.user.save()
+
+        author2 = self.helper_functions.create_author(username="testuser2")
+
+        self.client.login(username=author.user.username, password="password")
+
+        url = "/api/friendrequest"
+
+        author_serializer = AuthorSerializer(author, context={'request': request})
+        author2_serializer = AuthorSerializer(author2, context={'request': request})
+
+        data = {}
+
+        data["friend"] = author2_serializer.data
+        data["author"] = author_serializer.data
+        data["query"] = "friendrequest"
+
+        response = self.client.post(url, data, content_type='application/json')
+
+        # friend request should be posted, user following and a follower for other user
+        self.assertTrue(author2 in author.following.all())
+        self.assertTrue(author in author2.followers.all())
+
+
+    def test_send_decline_request(self):
+
+        request = None
+
+        author = self.helper_functions.create_author()
+        author.user.set_password("password")
+        author.user.save()
+
+
+        author2 = self.helper_functions.create_author(username="testuser2")
+
+        self.client.login(username=author.user.username, password="password")
+
+        author_serializer = AuthorSerializer(author, context={'request': request})
+        author2_serializer = AuthorSerializer(author2, context={'request': request})
+
+        data = {}
+
+        data["friend"] = author2_serializer.data
+        data["author"] = author_serializer.data
+        data["query"] = "unfollow"
+
+
+        url = "/api/friendrequest"
+        response = self.client.post(url, data, content_type='application/json') # followers and following added
+
+
+        url = "/api/author/" +  str(author2.id) + "/decline-friend-request";
+        response = self.client.post(url, data, content_type='application/json')
+
+        # friend request should be posted, user following and a follower for other user
+        self.assertTrue(author2 not in author.following.all())
+        self.assertTrue(author not in author2.followers.all())
+
+
+    def test_dual_friend_request(self):
+
+        request = None
+
+        author = self.helper_functions.create_author()
+        author.user.set_password("password")
+        author.user.save()
+
+        author2 = self.helper_functions.create_author(username="testuser2")
+
+        self.client.login(username=author.user.username, password="password")
+
+        url = "/api/friendrequest"
+
+        author_serializer = AuthorSerializer(author, context={'request': request})
+        author2_serializer = AuthorSerializer(author2, context={'request': request})
+
+        data = {}
+
+        data["friend"] = author2_serializer.data
+        data["author"] = author_serializer.data
+        data["query"] = "friendrequest"
+        response = self.client.post(url, data, content_type='application/json')
+
+
+        data["friend"] = author_serializer.data
+        data["author"] = author2_serializer.data
+        data["query"] = "friendrequest"
+        response = self.client.post(url, data, content_type='application/json')
+
+
+        # both sent requests to each other, are friends
+        self.assertTrue(author in author2.friends.all())
+        self.assertTrue(author2 in author.friends.all())
+
+
+
+
 
     # Test that you can sign in.
     def test_author_sign_in(self):
@@ -52,17 +161,17 @@ class FrontEndTests(TestCase):
         self.assertEqual(logged_in, True)
 
     def test_unknown_sign_in_fail(self):
-    
+
         url = "/login/"
         data = urlencode({"username": "fake_user", "password":"not_a_real_password"})
         response = self.client.post(url, data , content_type="application/x-www-form-urlencoded")
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        
+
 
     # Test an author can create a post with the api
     def test_author_create_post(self):
-    
+
 
 
         request = None # used to ignore
@@ -77,7 +186,7 @@ class FrontEndTests(TestCase):
 
         response = self.client.post(url, data=post_serializer.data, content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-    
+
         created_post = Post.objects.get(id= post_id)
         self.assertEqual(created_post, post)
 

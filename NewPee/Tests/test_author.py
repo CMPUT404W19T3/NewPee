@@ -6,7 +6,7 @@ from django.urls import reverse
 from Tests.factory import GeneralBuilding
 from django.db.models.query import EmptyQuerySet
 
-import json 
+import json
 
 class AuthorModelTests(TestCase):
 
@@ -38,43 +38,43 @@ class AuthorModelTests(TestCase):
     #     self.assertTrue(author2.is_friend(author1.get_author_id()))
 
     def test_follow(self):
-        #create two author object 
+        #create two author object
         person_to_follow = Author()
         person_to_follow.save()
         person_following = Author()
         person_following.save()
         #call follow
         person_following.follow(person_to_follow)
-        #assert person_to_follow and first element(there is only one) of person_following's following list 
+        #assert person_to_follow and first element(there is only one) of person_following's following list
         self.assertEqual(person_following.following.all()[0], person_to_follow)
 
     def test_followed(self):
-        #create two author object 
+        #create two author object
         person_to_follow = Author()
         person_to_follow.save()
         person_following = Author()
         person_following.save()
         #call follow
         person_following.followed(person_to_follow)
-        #assert person_to_follow and first element(there is only one) of person_following's followers list 
+        #assert person_to_follow and first element(there is only one) of person_following's followers list
         self.assertEqual(person_following.followers.all()[0], person_to_follow)
 
     def test_unfollow(self):
-        #create two author object 
+        #create two author object
         person_to_follow = Author()
         person_to_follow.save()
         person_following = Author()
         person_following.save()
         #call follow
         person_following.follow(person_to_follow)
-        #assert person_to_follow and first element(there is only one) of person_following's following list 
+        #assert person_to_follow and first element(there is only one) of person_following's following list
         self.assertEqual(person_following.following.all()[0], person_to_follow)
         person_following.unfollow(person_to_follow)
         #assert if the the following list is empty
         self.assertQuerysetEqual(person_following.following.all(), person_following.following.none())
-    
+
     def test_get_following(self):
-        #create two author object 
+        #create two author object
         person_to_follow = Author()
         person_to_follow.save()
         person_following = Author()
@@ -84,24 +84,24 @@ class AuthorModelTests(TestCase):
         following = person_following.get_following()
         self.assertEqual(following[0], person_to_follow)
 
-    def test_get_friend_request(self):
-        person_to_follow = Author()
-        person_to_follow.save()
-        person_following = Author()
-        person_following.save()
-        person_to_follow.followed(person_following)
-        friend_requests = person_to_follow.get_friend_requests()
-        self.assertEqual(friend_requests[0], person_following)
-
-    # def test_add_friend(self):
-    #     author1 = Author()
-    #     author1.save()
-    #     author2 = Author()
-    #     author2.save()
-    #     author1.follow(author2)
-    #     author1.add_friend(author2)
-    #     author1_friends = author1.friends.all()
-    #     self.assertEqual(author1_friends[0], author2)
+        #def test_get_friend_request(self):
+        # person_to_follow = Author()
+        # person_to_follow.save()
+        # person_following = Author()
+        # person_following.save()
+        # person_to_follow.followed(person_following)
+        # friend_requests = person_to_follow.get_friend_requests()
+        # self.assertEqual(friend_requests[0], person_following)
+        #
+        # # def test_add_friend(self):
+        #     author1 = Author()
+        #     author1.save()
+        #     author2 = Author()
+        #     author2.save()
+        #     author1.follow(author2)
+        #     author1.add_friend(author2)
+        #     author1_friends = author1.friends.all()
+        #     self.assertEqual(author1_friends[0], author2)
 
     def test_add_friend_request(self):
         author1 = Author()
@@ -113,24 +113,7 @@ class AuthorModelTests(TestCase):
         self.assertEqual(requests[0], author2)
 
 
-    # def test_send_friend_request_not_friends(self):
-    #     author1 = Author()
-    #     author1.save()
-    #     author2 = Author()
-    #     author2.save()
-    #     author1.send_friend_request(author2)
-    #     following = author1.get_following()
-    #     self.assertEqual(following[0], author2)
 
-
-
-    # #     has_friend = Author()
-    #     has_friend.add_friend(friend)
-    #     has_friend.get_friends().get()
-    #     self.assertIsNotNone(has_friend.get_friends())
-    #     self.assertIsNotNone(friend.get_friends())
-
-    
     def test_check_if_friend(self):
 
         original_user = self.helper_functions.create_author()
@@ -140,7 +123,7 @@ class AuthorModelTests(TestCase):
         friend.follow(original_user)
         original_user.respond_to_friend_request(friend.get_author_id(), "accept")
 
-    
+
     def test_check_if_not_friend(self):
 
         original_user = self.helper_functions.create_author()
@@ -149,7 +132,7 @@ class AuthorModelTests(TestCase):
         original_user.respond_to_friend_request(not_friend.get_author_id(), "reject")
         self.assertNotIn(not_friend.id, original_user.friends.all())
 
-   
+
     def test_remove_friend(self):
         author1 = Author()
         author2 = Author()
@@ -159,4 +142,3 @@ class AuthorModelTests(TestCase):
         self.assertEqual(author1.friends.all()[0], author2)
         author1.remove_friend(author2)
         self.assertQuerysetEqual(author1.friends.all(), author1.friends.none())
-
