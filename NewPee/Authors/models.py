@@ -192,7 +192,7 @@ class Author(models.Model):
         try:
             foreignServer = Servers.models.Server.objects.get(host=self.host)
         except:
-            pass
+            print("couldn't find foreignServer")
 
 
         self_author = Author.objects.get(id=self.id)        # Is there a better way?
@@ -214,14 +214,15 @@ class Author(models.Model):
         }
         # send a request to foreign server
 
-        print(foreignServer.friend_endpoint)
-        
+        url = "https://newpee-dev.herokuapp.com/api/friendrequest"
+
         session = requests.Session()
         session.auth = (foreignServer.getUsername, foreignServer.getPassword)
-        request = session.post(url = foreignServer.friend_endpoint, data=  json.dumps(PARAMS, cls=UUIDEncoder), headers=headers )
+        request = session.post(url = url, data=  json.dumps(PARAMS, cls=UUIDEncoder), headers=headers )
 
         #request = session.post(url = "http://127.0.0.1:8000/api/friendrequest", data=  json.dumps(PARAMS, cls=UUIDEncoder), headers=headers )
 
+        print("finished sending foreign request...\n\n")
         return
 
 
