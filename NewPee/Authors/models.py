@@ -214,6 +214,8 @@ class Author(models.Model):
         }
         # send a request to foreign server
 
+        print(foreignServer.friend_endpoint)
+        
         session = requests.Session()
         session.auth = (foreignServer.getUsername, foreignServer.getPassword)
         request = session.post(url = foreignServer.friend_endpoint, data=  json.dumps(PARAMS, cls=UUIDEncoder), headers=headers )
