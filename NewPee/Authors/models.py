@@ -242,6 +242,7 @@ class Author(models.Model):
 
         if( choice == "decline"):
             author.followers.remove(self)   #
+            self.following.remove(author)
 
             if( author in self.friends.all()):  # remove friends.
                 self.remove_friend(author)

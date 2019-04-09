@@ -435,8 +435,6 @@ class AuthorFriendRequestActionsView( RedirectView):
 
         if method == "decline":
 
-            print("GOT HERE")
-
             sender_author.respond_to_friend_request(target_author, "decline")
 
             if (sender_author.is_friend(target_author.id)):
