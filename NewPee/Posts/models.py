@@ -107,9 +107,8 @@ class Post(models.Model):
 
     def FriendServerViewAcess(self, viewing_author):
 
-        if (viewing_author in self.author.friend.all()):
-
-            if(viewing_author.host != settings.HOSTNAME):
+        if (viewing_author in self.author.friends.all()):
+            if(viewing_author.host == settings.HOSTNAME):
                 return True
 
         return False

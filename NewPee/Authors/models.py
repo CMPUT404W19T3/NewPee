@@ -38,7 +38,6 @@ class Author(models.Model):
     following = models.ManyToManyField("self", related_name="_following", symmetrical=False, blank=True)
     followers = models.ManyToManyField("self", related_name="_followers", symmetrical=False, blank=True)
     friend_requests = models.ManyToManyField("self", related_name="_friend_requests", symmetrical=False, blank=True)
-
     Admin = models.BooleanField(default=False)
 
     # Only Admin can Change.
@@ -48,11 +47,8 @@ class Author(models.Model):
     def __str__(self):
 
         try:
-
             return self.user.get_username()
-
         except:
-
             return self.displayName
 
     # All "get" functions for username, password, email, etc... are inherited from Django User
@@ -164,14 +160,11 @@ class Author(models.Model):
         if(author not in self.followers.all()): # make sure we are in reciever followers.
             self.followers.add(author)
 
-
-
-        print(self, "author with host")
-        print(author, "the author being sent")
-
-    
-            
-            
+        if(author.host != HOSTNAME):
+            try:
+                self.send_foreign_request(author) # send a friend request to another serve
+            except:
+                pass
 
 
         # if they are following us, add them to our friends.
@@ -189,6 +182,7 @@ class Author(models.Model):
     def add_friend_request(self, author):
 
         self.friend_requests.add(author)
+        self.save()
 
     def get_declined_requests(self):
 
@@ -231,13 +225,7 @@ class Author(models.Model):
 
         return
 
-        
-
-
-
-
-
-
+    
     # we have recieved a friend request from the author
     def send_friend_request(self, author):
 
