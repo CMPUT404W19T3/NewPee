@@ -93,15 +93,15 @@ class AuthorModelTests(TestCase):
         friend_requests = person_to_follow.get_friend_requests()
         self.assertEqual(friend_requests[0], person_following)
 
-    def test_add_friend(self):
-        author1 = Author()
-        author1.save()
-        author2 = Author()
-        author2.save()
-        author1.follow(author2)
-        author1.add_friend(author2)
-        author1_friends = author1.friends.all()
-        self.assertEqual(author1_friends[0], author2)
+    # def test_add_friend(self):
+    #     author1 = Author()
+    #     author1.save()
+    #     author2 = Author()
+    #     author2.save()
+    #     author1.follow(author2)
+    #     author1.add_friend(author2)
+    #     author1_friends = author1.friends.all()
+    #     self.assertEqual(author1_friends[0], author2)
 
     def test_add_friend_request(self):
         author1 = Author()

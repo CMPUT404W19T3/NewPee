@@ -100,8 +100,8 @@ class PostModelTests(TestCase):
 
 
     def test_FriendServerViewAcess_true(self):
-        author1 = Author(host="http://newpee.herokuapp.com/")
-        author2 = Author(host="http://newpee.herokuapp.com/")
+        author1 = Author(host="https://newpee.herokuapp.com/")
+        author2 = Author(host="https://newpee.herokuapp.com/")
         author1.save()
         author2.save()
         author1.friends.add(author2)
@@ -111,8 +111,8 @@ class PostModelTests(TestCase):
         self.assertTrue(test_post.FriendServerViewAcess(author2))
 
     def test_FriendServerViewAcess_false_not_friend_same_server(self):
-        author1 = Author(host="host1")
-        author2 = Author(host="host1")
+        author1 = Author(host="https://newpee.herokuapp.com/")
+        author2 = Author(host="https://newpee.herokuapp.com/")
         author1.save()
         author2.save()
         test_post = Post(author=author1)
@@ -120,7 +120,7 @@ class PostModelTests(TestCase):
         self.assertFalse(test_post.FriendServerViewAcess(author2))
     
     def test_FriendServerViewAcess_false_friend_not_same_server(self):
-        author1 = Author(host="host1")
+        author1 = Author(host="https://newpee.herokuapp.com/")
         author2 = Author(host="host2")
         author1.save()
         author2.save()
@@ -162,8 +162,8 @@ class PostModelTests(TestCase):
         self.assertFalse(test_post.FOAFViewAccess(author3))
 
     def test_ServerViewAcces_true(self):
-        author1 = Author(host="http://newpee.herokuapp.com/")
-        author2 = Author(host="http://newpee.herokuapp.com/")
+        author1 = Author(host="https://newpee.herokuapp.com/")
+        author2 = Author(host="https://newpee.herokuapp.com/")
         author1.save()
         author2.save()
         test_post = Post(author=author1)
@@ -171,7 +171,7 @@ class PostModelTests(TestCase):
         self.assertTrue(test_post.ServerViewAcces(author2))
 
     def test_ServerViewAcces_false(self):
-        author1 = Author(host="http://newpee.herokuapp.com/")
+        author1 = Author(host="https://newpee.herokuapp.com/")
         author2 = Author(host="testhost")
         author1.save()
         author2.save()
