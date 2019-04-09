@@ -148,7 +148,7 @@ class Author(models.Model):
 
 
         # we want to send data
-        if(sending):    
+        if(sending):
             if(author.host != HOSTNAME):
                 self.send_foreign_request(author) # send a friend request to another serve
 
@@ -160,20 +160,14 @@ class Author(models.Model):
         if(author not in self.followers.all()): # make sure we are in reciever followers.
             self.followers.add(author)
 
-        if(author.host != HOSTNAME):
-            try:
-                self.send_foreign_request(author) # send a friend request to another serve
-            except:
-                pass
-
 
         # if they are following us, add them to our friends.
         if (author in self.following.all()):
 
             # add author locally and then send a request to their server
-            self.friends.add(author)    
+            self.friends.add(author)
             self.save()
-        
+
         print("finished request?")
 
         return
@@ -195,7 +189,11 @@ class Author(models.Model):
     def send_foreign_request(self, author ):
 
 
-        foreignServer = Servers.models.Server.objects.get(host=self.host)
+        try:
+            foreignServer = Servers.models.Server.objects.get(host=self.host)
+        except:
+            pass
+
 
         self_author = Author.objects.get(id=self.id)        # Is there a better way?
 
@@ -208,15 +206,17 @@ class Author(models.Model):
 
         PARAMS = {}
 
+        print("sending foreign request")
+
         PARAMS['query'] = "friendrequest"
         PARAMS['author'] =  author_serializer.data
         PARAMS['friend'] =  self_serializer.data
-        
+
         headers = {
             'Content-Type': 'application/json'
         }
         # send a request to foreign server
-        
+
         session = requests.Session()
         session.auth = (foreignServer.getUsername, foreignServer.getPassword)
         request = session.post(url = foreignServer.friend_endpoint, data=  json.dumps(PARAMS, cls=UUIDEncoder), headers=headers )
@@ -225,7 +225,7 @@ class Author(models.Model):
 
         return
 
-    
+
     # we have recieved a friend request from the author
     def send_friend_request(self, author):
 
@@ -244,7 +244,7 @@ class Author(models.Model):
     def respond_to_friend_request(self, author, choice):
 
         if( choice == "decline"):
-            author.followers.remove(self)   # 
+            author.followers.remove(self)   #
 
             if( author in self.friends.all()):  # remove friends.
                 self.remove_friend(author)
@@ -364,4 +364,3 @@ class ForeignAuthor(models.Model):
     def remove_friend(self,author):
         self.friends.remove(author)
         self.save()
-

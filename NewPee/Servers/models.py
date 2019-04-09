@@ -79,7 +79,7 @@ class Server(models.Model):
             try:
 
                 Authors.models.Author.objects.get(id = foreign_author_uuid)
-                
+
             except Authors.models.Author.DoesNotExist:
 
 
@@ -99,7 +99,7 @@ class Server(models.Model):
 
                 #    new_author.friends.add(friend)
                 print("\n\n\n\ CREATED AUTHOR \n\n\n")
-                
+
 
                 PARAMS = {
                 'username': self.username,
@@ -140,12 +140,12 @@ class Server(models.Model):
                     new_author.lastname = data2["lastName"]
                 except:
                     pass # Their server doesn't include lastname, firstname
-                
+
 
         return data
 
     def updateAuthors(self,data):
-        
+
         data = self.retrieveAuthors(data)
 
         #async_task(retrieveAuthors, hook = createAuthors)
@@ -155,7 +155,7 @@ class Server(models.Model):
         for post in data['posts']:
 
             self.updateAuthors(data)
-            
+
 
             try:
 
@@ -182,7 +182,7 @@ class Server(models.Model):
 
         URL = self.posts_endpoint
         location = self.name
-        
+
         PARAMS = {
             'username': self.username,
             'password' : self.password

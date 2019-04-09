@@ -268,7 +268,7 @@ class AuthorIsfriendsView(APIView):
     get:
         Retrieve friendship status with another user.
     """
-    
+
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
@@ -348,7 +348,7 @@ class AuthorUpdateFriendRequestsView(APIView):
     """
     get:
         Retrieve Friend Request.
-    
+
     post:
         Submit a Friend Request.
     """
@@ -372,7 +372,7 @@ class AuthorUpdateFriendRequestsView(APIView):
         try:
             type_of_req = request.data["type"]
             if type_of_req == "local_add":
-                sending = True  
+                sending = True
         except:
             pass
 
@@ -380,7 +380,7 @@ class AuthorUpdateFriendRequestsView(APIView):
         friend = request.data["friend"]             # friend being added to author.
 
         print(friend["id"], "this friend")
-        
+
         friend_uuid = friend["id"].split("/")[-1]
         recieving_author_uuid = recieving_author["id"].split("/")[-1]
 
@@ -403,10 +403,10 @@ class AuthorUpdateFriendRequestsView(APIView):
             return Response(status=status.HTTP_201_CREATED)
 
 
-       
+
         friend.add_friend(author, sending)
-            
-                
+
+
 
 
         return Response(status=status.HTTP_200_OK)
