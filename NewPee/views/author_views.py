@@ -131,7 +131,7 @@ def log_in(request, format=None):
 def feed(request, format=None):
 
     response = post_list(request)
-    
+
     author = Author.objects.get(user=request.user)
     followers = author.get_followers()
     following = author.get_following()
@@ -157,7 +157,7 @@ def feed(request, format=None):
     page = request.GET.get('page')
     pages = paginator.get_page(page)
 
-    return render(request, 'feed.html', {'posts':response.data, 'form': form, 'pages': pages, 'following':following, 'followers': followers})
+    return render(request, 'feed.html', {'posts':response.data, 'current_author':author, 'form': form, 'pages': pages, 'following':following, 'followers': followers})
 
 def respond_to_friends(request, format = None):
 

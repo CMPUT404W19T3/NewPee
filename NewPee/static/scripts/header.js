@@ -18,11 +18,8 @@ $(document).ready(function(){
     var user_id = document.getElementById("userIDSpan").innerHTML;
     //var user_id = document.getElementById("userID").value; // grabbing from hidden value through django context
     var user_id_spliced = user_id.split("/");
-    console.log(user_id, "?");
     var user_api_url = "/api/authors/" + user_id_spliced[user_id_spliced.length-1];
     var friend_api_url =   "/api/author/"+ user_id_spliced[user_id_spliced.length-1] +  "/friendrequest"
-    console.log(friend_api_url);
-    console.log(user_api_url, "user api");
 
     function grabFriendRequest(){
         $.ajax({
@@ -32,7 +29,7 @@ $(document).ready(function(){
             headers:{"X-CSRFToken": csrftoken},  // Key/Value pairs to send along with the request.
             success : function(json) {
                 data = json;
-                //print(data, "our friend data")         
+                //print(data, "our friend data")
                 badge_number.innerHTML = data["size"];
                 $("#request-access").hide();
             },  // This function is called if the request is successful. Data is returned from the server.
@@ -50,7 +47,6 @@ $(document).ready(function(){
             headers:{"X-CSRFToken": csrftoken},  // Key/Value pairs to send along with the request.
             success : function(json) {
                 user = json;
-                console.log(user);
                 $("#request-access").hide();
             },  // This function is called if the request is successful. Data is returned from the server.
             error: function (e) {
