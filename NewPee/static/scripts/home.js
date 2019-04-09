@@ -346,6 +346,8 @@ function sendFriendRequest(){
     data["friend"] = recieving_author;
     data["type"] = "local_add";
 
+    console.log(JSON.stringify(data));
+
 
     $.ajax({
         method: "POST", // type --> method, the HTTP method used for the request.
@@ -460,8 +462,12 @@ async function makePost(post_title,post_content, post_description, contentType){
      //update friends stuff here
     if (radio_value==4){
         data["visible_to"] =  [page_author["id"]];
-        data["other_author"] =  other_author_text.innerHTML;        
+        if (other_author_text){
+            data["visible_to"].push(other_author_text.innerHTML);
+        } 
     }
+
+    console.log(data["visible_to"]);
     if (unlistedBool.checked){
         data["unlisted"] = true;
     }
@@ -479,7 +485,7 @@ async function makePost(post_title,post_content, post_description, contentType){
         data : data, // Data to be sent to the server. Transoformed to query string if not one yet.
         success : function(json) {
             $("#request-access").hide();
-            location.reload();
+            //location.reload();
         }, // This function is called if the request is successful. Data is returned from the server.
         error: function (e) {
             console.log("ERROR: ", e);
