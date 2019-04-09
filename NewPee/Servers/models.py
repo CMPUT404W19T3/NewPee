@@ -30,21 +30,7 @@ class Server(models.Model):
 
         return self.isActive
 
-    def createAuthors(self,author):
 
-
-        author_uuid = author["id"]
-        author_url = author["url"]
-        author_host = author["host"]
-        author_displayName = author["displayName"]
-
-        #firstname = author["firstname"]
-        #lastname = author["lastname"]
-        #email= author["email"]
-
-        if ( Author.objects.filter(id=author_uuid)):
-
-            pass
 
     def retrieveAuthors(self,data):
         foreign_posts = (data["posts"])
@@ -60,6 +46,8 @@ class Server(models.Model):
                 Authors.models.Author.objects.get(id = foreign_author_uuid)
 
             except Authors.models.Author.DoesNotExist:
+
+
 
 
                 #author_uuid = foreign_author["id"]
@@ -91,27 +79,32 @@ class Server(models.Model):
 
 
                 # Can't pull data from other servers, only pull others server data from our authorized host
-                if(self.host not in foreign_author["id"]):
-                    url = self.author_endpoint + foreign_author_uuid
-                else:
-                    url = foreign_author["id"]
-
-
-
-                request2 = session.get(url = url)
-                data2 = request2.json()
-
-
-                friends = data2["friends"]
-
-
-                new_author.displayName = data2["displayName"]
-
                 try:
-                    new_author.firstname = data2["firstName"]
-                    new_author.lastname = data2["lastName"]
+                    if(self.host not in foreign_author["id"]):
+                        url = self.author_endpoint + foreign_author_uuid
+                    else:
+                        url = foreign_author["id"]
+
+
+
+                    request2 = session.get(url = url)
+                    data2 = request2.json()
+
+
+                    friends = data2["friends"]
+
+
+                    new_author.displayName = data2["displayName"]
+
+                    try:
+                        new_author.firstname = data2["firstName"]
+                        new_author.lastname = data2["lastName"]
+                    except:
+                        pass # Their server doesn't include lastname, firstname
+                        
+                #their server doesn't have author end points
                 except:
-                    pass # Their server doesn't include lastname, firstname
+                    pass
 
 
         return data
