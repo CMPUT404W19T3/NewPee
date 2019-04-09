@@ -202,10 +202,10 @@ class Server(models.Model):
 
         self.createPosts(data)
 
-        self.isActive = False # Already retrieved data
+        #self.isActive = False # Already retrieved data
 
-        print(self.isActive)
-        self.save()
+        #print(self.isActive)
+        #self.save()
 
         print("Done retrieving Data..")
 
