@@ -91,17 +91,17 @@ class PostDetail(APIView):
                 if (post.privateViewAccess(logged_in_author)) or \
                      (post.friendViewAccess(logged_in_author)) or \
                          (post.FriendServerViewAcess(logged_in_author)) or \
-                             (post.FOAFViewAccess(logged_in_author)) or \ 
-                                 post_serializer.data["visibility"] == "PUBLIC":
-                                try:
+                             (post.FOAFViewAccess(logged_in_author)) or \
+                                (post_serializer.data["visibility"] == "PUBLIC") :
+                                    try:
 
-                                    comments = Comment.objects.filter(parent=pk)
-                                    comment_serializer = CommentSerializer(comments, many=True)
+                                        comments = Comment.objects.filter(parent=pk)
+                                        comment_serializer = CommentSerializer(comments, many=True)
 
-                                    return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
+                                        return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
 
-                                except Comment.DoesNotExist:
+                                    except Comment.DoesNotExist:
 
-                                    return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'form': form, 'comment_form': comment_form})
+                                        return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'form': form, 'comment_form': comment_form})
                 else:
                     raise PermissionDenied
