@@ -28,13 +28,14 @@ class PostModelTests(TestCase):
 
     def test_post_date(self):
 
-        test_post = Post(post_date=datetime.datetime.now())
+        test_post = Post(published=datetime.datetime.now())
         
         self.assertIsNotNone(test_post.get_post_date())
 
     def test_time_linear(self):
 
-        test_post = Post(post_date=datetime.datetime.now()-datetime.timedelta(days=1))
+
+        test_post = Post(published=datetime.datetime.now()-datetime.timedelta(days=1))
         later_time = datetime.datetime.now()
 
         self.assertLess(test_post.get_post_date(), later_time)
