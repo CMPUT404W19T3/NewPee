@@ -315,7 +315,7 @@ class AuthorFriendRequestsView(APIView):
 
     def get(self, request, pk, *args, **kwargs):
 
-        author = get_object_or_404(models.Author, id= pk)
+        author = get_object_or_404(Author, id= pk)
 
         response_data = OrderedDict()
         response_data['query'] = 'friends'

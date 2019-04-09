@@ -9,6 +9,7 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from views.forms import SearchForm, CommentForm
+from django.core.exceptions import PermissionDenied
 
 # from Posts.forms import ImageUploadForm
 
@@ -84,16 +85,23 @@ class PostDetail(APIView):
                         return Response({'posts': post_serializer.data, 'form': form, 'comment_form': comment_form})
 
             else: 
+               
                 logged_in_author = Author.objects.get(user = request.user)
                 logged_in_author_serializer = AuthorSerializer(logged_in_author, context={'request': request})
+                if (post.privateViewAccess(logged_in_author)) or \
+                     (post.friendViewAccess(logged_in_author)) or \
+                         (post.FriendServerViewAcess(logged_in_author)) or \
+                             (post.FOAFViewAccess(logged_in_author)) or \ 
+                                 post_serializer.data["visibility"] == "PUBLIC":
+                                try:
 
-                try:
+                                    comments = Comment.objects.filter(parent=pk)
+                                    comment_serializer = CommentSerializer(comments, many=True)
 
-                    comments = Comment.objects.filter(parent=pk)
-                    comment_serializer = CommentSerializer(comments, many=True)
+                                    return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
 
-                    return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'comments': comment_serializer.data, 'form': form, 'comment_form': comment_form})
+                                except Comment.DoesNotExist:
 
-                except Comment.DoesNotExist:
-
-                    return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'form': form, 'comment_form': comment_form})
+                                    return Response({'posts': post_serializer.data, 'logged_in_author':logged_in_author_serializer.data, 'form': form, 'comment_form': comment_form})
+                else:
+                    raise PermissionDenied
