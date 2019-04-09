@@ -2,8 +2,6 @@
 {% load static %}
 {% block baseHead %}
 
-<script src="{% static 'scripts/home.js' %}"></script>
-
 {% endblock %}
 {% block rightColumn %}
 
@@ -21,11 +19,11 @@
                 {% else %}
                     <li class="disabled"><span><i class="fa fa-chevron-left" aria-hidden="true"></i></span></li>
                 {% endif %}
-        
+
                 {% if pages.number|add:'-3' > 1 %}
                     <li><a href="?page={{ pages.number|add:'-4' }}">&hellip;</a></li>
                 {% endif %}
-        
+
                 {% for page in pages.paginator.page_range %}
                     {% if pages.number == page %}
                         <li class="active"><span>{{ page }} <span class="sr-only">(current)</span></span></li>
@@ -33,11 +31,11 @@
                         <li class="available"><a href="?page={{ page }}">{{ page }}</a></li>
                     {% endif %}
                 {% endfor %}
-                    
+
                 {% if pages.paginator.num_pages > pages.number|add:'3' %}
                     <li><a href="?page={{ pages.number|add:'4' }}">&hellip;</a></li>
                 {% endif %}
-        
+
                 {% if pages.has_next %}
                     <li class="able"><a href="?page={{ pages.next_page_number }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
                 {% else %}
