@@ -1,4 +1,4 @@
-arrow==0.13.1
+arrow==0.15.1
 bleach==3.1.0
 bleach-whitelist==0.0.9
 blessed==1.15.0
